@@ -1,0 +1,164 @@
+#rootContainer {
+    -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    /*-fx-background-color: #A0F;*/
+    /*-fx-background-color: transparent;*/
+
+    /* A little darker than -fx-color and used to draw boxes around objects such
+     * as progress bars, scroll bars, scroll panes, trees, tables, and lists.
+     */
+    /*-fx-box-border: ladder(*/
+            /*-fx-color,*/
+            /*black 20%,*/
+            /*derive(-fx-color,-30%) 30%*/
+    /*);*/
+
+    /* A bright blue for highlighting/accenting objects.  For example: selected
+     * text; selected items in menus, lists, trees, and tables; progress bars;
+     * default buttons.
+     */
+    /*-fx-accent: #0093ff;*/
+}
+
+.menu-item {
+    -fx-background-color: #F0A;
+}
+
+.menu-bar {
+    -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+}
+
+.button {
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+.button {
+    -fx-background-color: linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #C8Fe46 45%, #90D810 50%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ProgressBar                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+.progress-bar {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ProgressBarSkin";
+    -fx-background-color:
+    -fx-box-border,
+    linear-gradient(to bottom, derive(-fx-color,30%) 5%, derive(-fx-color,-17%));
+    -fx-background-insets: 0, 1;
+    -fx-indeterminate-bar-length: 60;
+    -fx-indeterminate-bar-escape: true;
+    -fx-indeterminate-bar-flip: true;
+    -fx-indeterminate-bar-animation-time: 2;
+    -fx-accent: #070;
+}
+
+.progress-bar .bar {
+    -fx-background-color:
+    -fx-box-border,
+    linear-gradient(to bottom, derive(-fx-accent,95%), derive(-fx-accent,10%)),
+    linear-gradient(to bottom, derive(-fx-accent,38%), -fx-accent);
+    -fx-background-insets: 0;
+    -fx-padding: 0.1em; /* 5 */
+    /*-fx-background-insets: 0, 1, 2;*/
+    /*-fx-padding: 0.416667em; /!* 5 *!/*/
+}
+
+.progress-bar:indeterminate .bar {
+    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+}
+
+.progress-bar .track {
+    -fx-background-color: #50AA00;
+    /*-fx-background-color:*/
+    /*-fx-box-border,*/
+    /*linear-gradient(to bottom, derive(-fx-color,-15%), derive(-fx-color,2.2%) 20%, derive(-fx-color,60%));*/
+    -fx-background-insets:  0, 1;
+}
+
+.progress-bar:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ProgressIndicator                                                           *
+ *                                                                             *
+ ******************************************************************************/
+
+.progress-indicator {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ProgressIndicatorSkin";
+    -fx-progress-color: #FFF;
+}
+
+.progress-indicator .indicator {
+    -fx-background-color:
+    -fx-box-border,
+    -fx-outer-border,
+    -fx-inner-border,
+    -fx-body-color;
+    -fx-background-insets: 1 0 -1 0, 0, 1, 2;
+    -fx-padding: 0.083333em; /* 1 */
+}
+
+.progress-indicator .progress {
+    -fx-background-color:
+    linear-gradient(to bottom, derive(-fx-box-border,38%), derive(-fx-box-border,-60%)),
+    linear-gradient(to bottom, derive(-fx-box-border,38%), -fx-box-border);
+    -fx-background-insets: 0, 1;
+    -fx-padding: 0.75em; /* 9 */
+}
+
+/* TODO: scaling the shape seems to make it disappear */
+.progress-indicator .tick {
+    -fx-background-color: -fx-mark-color, white;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.416667em; /* 5 */
+    -fx-shape: "M 0,5 L 2.5,5 L 3.7,7.5 L 7.5,0 L 10,0 L 5,10 L 2.5,10 Z";
+    -fx-scale-shape: false;
+}
+
+.progress-indicator:indeterminate .spinner {
+    -fx-padding: 0.833333em; /* 10 */
+}
+
+.progress-indicator .percentage {
+    -fx-font-size: 0.916667em; /* 11pt - 1 less than the default font */
+    -fx-fill: -fx-text-background-color;
+}
+
+.progress-indicator:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+/*####################################################################################################################*/
+
+/*.button {*/
+    /*-fx-background-color:*/
+            /*#c3c4c4,*/
+            /*linear-gradient(#d6d6d6 50%, white 100%),*/
+            /*radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);*/
+    /*-fx-background-radius: 30;*/
+    /*-fx-background-insets: 0,1,1;*/
+    /*-fx-text-fill: black;*/
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );*/
+/*}*/
+
+/*.button:hover {*/
+    /*-fx-background-color:*/
+            /*#c3c4c4,*/
+            /*linear-gradient(#dFdFdF 50%, white 100%),*/
+            /*radial-gradient(center 50% -40%, radius 200%, #eFeFeF 45%, rgba(230,230,230,0) 50%);*/
+/*}*/
