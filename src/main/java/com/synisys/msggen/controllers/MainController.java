@@ -1,6 +1,5 @@
 package com.synisys.msggen.controllers;
 
-import com.synisys.msggen.Main;
 import com.synisys.msggen.components.ButtonTableCell;
 import com.synisys.msggen.components.CheckBoxTableCell;
 import com.synisys.msggen.domains.FileItem;
@@ -30,7 +29,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Callback;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -47,11 +45,18 @@ public class MainController implements Initializable {
     private MessageTransferService messageTransferService;
     private MessageFinder messageFinder;
 
-    private StringProperty projectPathProperty = new SimpleStringProperty();
+    private StringProperty
+            projectPathProperty = new SimpleStringProperty(),
+            serverTypeProperty = new SimpleStringProperty(),
+            serverHostProperty = new SimpleStringProperty(),
+            portNumberProperty = new SimpleStringProperty(),
+            usernameProperty = new SimpleStringProperty(),
+            databaseProperty = new SimpleStringProperty()
+            ;
     private ListProperty<FileItem> fileItemsTableViewData = new SimpleListProperty<>();
 
-    private List<Message> emptyMessagesList;
-    private List<Message> messagesToTransfer;
+    private List<Message> emptyMessagesList = new ArrayList<>();
+    private List<Message> messagesToTransfer = new ArrayList<>();
 
     private Range currentMessageRange;
 
@@ -77,6 +82,7 @@ public class MainController implements Initializable {
             lbl_portNumberVisibleProperty =             new SimpleBooleanProperty(false),
             lbl_usernameVisibleProperty =               new SimpleBooleanProperty(false),
             lbl_databaseVisibleProperty =               new SimpleBooleanProperty(false),
+
             fileItemsTableViewVisibleProperty =         new SimpleBooleanProperty(false)
             ;
 
@@ -87,6 +93,8 @@ public class MainController implements Initializable {
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
             connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, aboutAppMenuItem;
+    @FXML
+    private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
     @FXML
     private CheckMenuItem toggleFullScreenModeMenuItem;
     @FXML
@@ -99,8 +107,6 @@ public class MainController implements Initializable {
     private TableColumn<FileItem, Boolean> checkboxColumn, moreActions;
     @FXML
     private TableColumn<FileItem, String> filePathColumn, messageQuantity;
-    @FXML
-    private Pagination fileItemsTablePagination;
 
 
 
@@ -127,6 +133,12 @@ public class MainController implements Initializable {
 
     private void initPropertyBindings() {
         lbl_projectPath.textProperty().bind(projectPathProperty);
+        lbl_serverType.textProperty().bind(serverTypeProperty);
+        lbl_serverHost.textProperty().bind(serverHostProperty);
+        lbl_portNumber.textProperty().bind(portNumberProperty);
+        lbl_username.textProperty().bind(usernameProperty);
+        lbl_database.textProperty().bind(databaseProperty);
+
 
         lbl_projectPath.visibleProperty().bind(lbl_projectPathVisibleProperty);
         lbl_serverType.visibleProperty().bind(lbl_serverTypeVisibleProperty);
@@ -134,6 +146,7 @@ public class MainController implements Initializable {
         lbl_portNumber.visibleProperty().bind(lbl_portNumberVisibleProperty);
         lbl_username.visibleProperty().bind(lbl_usernameVisibleProperty);
         lbl_database.visibleProperty().bind(lbl_databaseVisibleProperty);
+
         fileItemsTableView.visibleProperty().bind(fileItemsTableViewVisibleProperty);
 
         browseProjectMenuItem.disableProperty().bind(browseProjectMenuItemDisabledProperty);
@@ -149,6 +162,10 @@ public class MainController implements Initializable {
         connectMySQLMenuItem.disableProperty().bind(connectMySQLMenuItemDisabledProperty);
         configConnectionMenuItem.disableProperty().bind(configConnectionMenuItemDisabledProperty);
         aboutAppMenuItem.disableProperty().bind(aboutAppMenuItemDisabledProperty);
+
+        scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
+        transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
+        cleanMessageRangeButton.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
 
         fileItemsTableView.itemsProperty().bind(fileItemsTableViewData);
     }
@@ -205,6 +222,14 @@ public class MainController implements Initializable {
         configConnectionMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null);
 
         aboutAppMenuItemDisabledProperty.set(false);
+    }
+
+    private void updateConnectionDetails(ConnectionConfig config) {
+        serverTypeProperty.setValue(config.getDbServerType().getName());
+        serverHostProperty.setValue(config.getHostName());
+        portNumberProperty.setValue(String.valueOf(config.getPort()));
+        usernameProperty.setValue(config.getUserName());
+        databaseProperty.setValue(config.getDbName());
     }
 
     private void initFilesTable() {
@@ -443,56 +468,44 @@ public class MainController implements Initializable {
 
     @FXML
     private void connectToMSSQL(ActionEvent event) {
-        String title = ResourceManager.getMessage("title.dialog.idmVersion");
-        String header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
-        String content = ResourceManager.getMessage("label.idmVersion");
-        IDMVersion idmVersion = Dialogs.showChoicePopup(title, header, content, Arrays.asList(IDMVersion.values()));
+        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
         ConnectionConfig config = null;
         if (idmVersion != null) {
             config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.MSSQLServer));
         }
-        if (config != null) {
+        if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
-            title = ResourceManager.getMessage("title.dialog.idmVersion");
-            header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
-            content = ResourceManager.getMessage("label.idmVersion");
-            config.setDbName(Dialogs.showChoicePopup(title, header, content, messageTransferService.loadSchemaNames()));
+            config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            updateConnectionDetails(config);
         }
         validate();
     }
 
     @FXML
     private void connectToOracle(ActionEvent event) {
-        String title = ResourceManager.getMessage("title.dialog.idmVersion");
-        String header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
-        String content = ResourceManager.getMessage("label.idmVersion");
-        IDMVersion idmVersion = Dialogs.showChoicePopup(title, header, content, Arrays.asList(IDMVersion.values()));
+        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
         ConnectionConfig config = null;
         if (idmVersion != null) {
             config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.ORAServer));
         }
-        if (config != null) {
+        if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
+            updateConnectionDetails(config);
         }
         validate();
     }
 
     @FXML
     private void connectToMySQL(ActionEvent event) {
-        String title = ResourceManager.getMessage("title.dialog.idmVersion");
-        String header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
-        String content = ResourceManager.getMessage("label.idmVersion");
-        IDMVersion idmVersion = Dialogs.showChoicePopup(title, header, content, Arrays.asList(IDMVersion.values()));
+        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
         ConnectionConfig config = null;
         if (idmVersion != null) {
             config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.MySQLServer));
         }
-        if (config != null) {
+        if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
-            title = ResourceManager.getMessage("title.dialog.idmVersion");
-            header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
-            content = ResourceManager.getMessage("label.idmVersion");
-            config.setDbName(Dialogs.showChoicePopup(title, header, content, messageTransferService.loadSchemaNames()));
+            config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            updateConnectionDetails(config);
         }
         validate();
     }
@@ -502,6 +515,7 @@ public class MainController implements Initializable {
         ConnectionConfig config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), messageTransferService.getConfig());
         if (config != null) {
             messageTransferService = new MessageTransferService(config);
+            updateConnectionDetails(config);
         }
         validate();
     }

@@ -1,17 +1,20 @@
 package com.synisys.msggen.utils;
 
 import com.synisys.msggen.domains.IntegerRange;
+import com.synisys.msggen.enums.IDMVersion;
 import com.synisys.msggen.interfaces.ConnectionConfig;
 import com.synisys.msggen.interfaces.Range;
 import javafx.application.Platform;
-import javafx.beans.property.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.Reflection;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
@@ -22,7 +25,10 @@ import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,6 +108,7 @@ public final class Dialogs {
         Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
         okButton.setDefaultButton(true);
         okButton.setOnAction(event -> {
+
             processCancelled[0] = false;
             dialog.close();
         });
@@ -152,6 +159,20 @@ public final class Dialogs {
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.YES;
+    }
+
+    public static IDMVersion showIDMVersionPopup() {
+        String title = ResourceManager.getMessage("title.dialog.idmVersion");
+        String header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");
+        String content = ResourceManager.getMessage("label.idmVersion");
+        return showChoicePopup(title, header, content, Arrays.asList(IDMVersion.values()));
+    }
+
+    public static <T> T showSchemaNamesPopup(List<T> choiceList) {
+        String title = ResourceManager.getMessage("title.dialog.schemaName");
+        String header = ResourceManager.getMessage("label.pleaseChooseSchemaName");
+        String content = ResourceManager.getMessage("label.schemaName");
+        return showChoicePopup(title, header, content, choiceList);
     }
 
     public static <T> T showChoicePopup(String title, String header, String content, List<T> choiceList) {
@@ -379,10 +400,10 @@ public final class Dialogs {
     }
 
     public static void showAboutAppDialog(Window ownerWindow) {
-        String title = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.VERSION");
+        String title = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.RELEASE.VERSION");
 
         Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNIFIED);
+        stage.initStyle(StageStyle.UTILITY);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerWindow);
         stage.setResizable(false);
@@ -390,34 +411,39 @@ public final class Dialogs {
 
         Reflection reflection = new Reflection();
 
-        VBox root = new VBox();
+        ImageView background = new ImageView("/images/splashScreen.jpg");
 
-        HBox hBox = new HBox(10);
+        String aboutTheApp = ResourceManager.getMessage("label.aboutTheApp");
 
-        ImageView appLogo = new ImageView("/images/mg_logo.png");
-        appLogo.setEffect(reflection);
+        aboutTheApp = aboutTheApp.replace("{productName}", ResourceManager.getParam("APPLICATION.NAME"));
+        aboutTheApp = aboutTheApp.replace("{releaseVersion}", ResourceManager.getParam("APPLICATION.RELEASE.VERSION"));
+        aboutTheApp = aboutTheApp.replace("{releaseDate}", ResourceManager.getParam("APPLICATION.RELEASE.DATE"));
+        aboutTheApp = aboutTheApp.replace("{javaVersion}", ResourceManager.getParam("APPLICATION.JAVA.VERSION"));
+        aboutTheApp = aboutTheApp.replace("{developers}", ResourceManager.getParam("APPLICATION.DEVELOPERS").replace(';', '\n'));
+        aboutTheApp = aboutTheApp.replace("{designers}", ResourceManager.getParam("APPLICATION.DESIGNERS"));
+        aboutTheApp = aboutTheApp.replace("{copyrights}", ResourceManager.getParam("APPLICATION.COPYRIGHTS"));
 
-        VBox vBox = new VBox();
-        vBox.setSpacing(5);
-        vBox.setPadding(new Insets(5));
+        TextArea aboutTheAppTextArea = new TextArea(aboutTheApp);
+        aboutTheAppTextArea.setEditable(false);
+        aboutTheAppTextArea.setFocusTraversable(false);
+        aboutTheAppTextArea.setWrapText(true);
+        aboutTheAppTextArea.setPrefSize(300, 200);
+        aboutTheAppTextArea.setMinSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
+        aboutTheAppTextArea.setMaxSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
 
-        Label appTitle = new Label(title);
+        AnchorPane p = new AnchorPane(background, aboutTheAppTextArea);
+        AnchorPane.setTopAnchor(background, (double) 0);
+        AnchorPane.setRightAnchor(background, (double) 0);
+        AnchorPane.setBottomAnchor(background, (double) 0);
+        AnchorPane.setLeftAnchor(background, (double) 0);
 
-        TextArea textArea = new TextArea(ResourceManager.getMessage("label.aboutTheApp"));
-        textArea.setEditable(false);
-        textArea.setFocusTraversable(false);
-        textArea.setWrapText(true);
+        AnchorPane.setTopAnchor(aboutTheAppTextArea, (double) 200);
+        AnchorPane.setRightAnchor(aboutTheAppTextArea, (double) 50);
+        AnchorPane.setLeftAnchor(aboutTheAppTextArea, (double) 50);
 
-        vBox.getChildren().addAll(appTitle, textArea);
+        p.setStyle("-fx-background-color: transparent;");
 
-        hBox.getChildren().addAll(appLogo, vBox);
-
-        Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
-        okButton.setOnAction(event -> stage.close());
-
-        root.getChildren().addAll(hBox, okButton);
-
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(p);
         scene.getStylesheets().addAll("css/style.css");
 
         stage.setScene(scene);

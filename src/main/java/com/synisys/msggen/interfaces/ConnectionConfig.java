@@ -38,42 +38,37 @@ public interface ConnectionConfig extends Cloneable {
     SimpleStringProperty getConnectionNameProperty();
 
     String getConnectionName();
-
     void setConnectionName(String connectionName);
 
     SimpleStringProperty getHostNameProperty();
-
     String getHostName();
-
     void setHostName(String hostName);
+    boolean isHostNameEmpty();
 
     SimpleIntegerProperty getPortProperty();
-
     Integer getPort();
-
     void setPort(Integer port);
+    boolean isPortEmpty();
 
     SimpleStringProperty getDbNameProperty();
-
     String getDbName();
-
     void setDbName(String dbName);
+    boolean isDbNameEmpty();
 
     SimpleStringProperty getSIDProperty();
-
     String getSID();
-
     void setSID(String SID);
+    boolean isSIDEmpty();
 
     SimpleStringProperty getUserNameProperty();
-
     String getUserName();
-
     void setUserName(String userName);
+    boolean isUserNameEmpty();
 
     SimpleStringProperty getPasswordProperty();
-
     String getPassword();
-
     void setPassword(String password);
+    boolean isPasswordEmpty();
+
+    boolean isValid();
 }

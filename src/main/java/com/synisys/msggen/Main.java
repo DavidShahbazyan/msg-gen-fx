@@ -6,9 +6,7 @@ import com.synisys.msggen.utils.FXMLFactory;
 import com.synisys.msggen.utils.ResourceManager;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.application.Preloader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.log4j.LogManager;
@@ -43,7 +41,7 @@ public class Main extends Application {
     @Override
     public void init() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             initLogger();
             Logger.getLogger(Main.class).info("Application init completed!");
         } catch (Exception ex) {
@@ -53,7 +51,7 @@ public class Main extends Application {
     }
 
     private void initLogger() throws IOException {
-        String loggingFileName = "logs/" + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "/log";
+        String loggingFileName = "logs/" + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "/messageGenerator.log";
         Properties props = new Properties();
         InputStream input = getClass().getResourceAsStream("/properties/log4j.properties");
         if (input == null) {

@@ -131,6 +131,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public void setHostName(String hostName) {
         this.hostName.set(hostName);
     }
+    public boolean isHostNameEmpty() {
+        return this.hostName == null || this.hostName.get() == null || this.hostName.get().trim().equals("");
+    }
 
     @Override
     public SimpleIntegerProperty getPortProperty() {
@@ -142,6 +145,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     }
     public void setPort(Integer port) {
         this.port.set(port);
+    }
+    public boolean isPortEmpty() {
+        return this.port == null;
     }
 
     @Override
@@ -155,6 +161,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public void setDbName(String dbName) {
         this.dbName.set(dbName);
     }
+    public boolean isDbNameEmpty() {
+        return this.dbName == null || this.dbName.get() == null || this.dbName.get().trim().equals("");
+    }
 
     @Override
     public SimpleStringProperty getSIDProperty() {
@@ -166,6 +175,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     }
     public void setSID(String SID) {
         this.SID.set(SID);
+    }
+    public boolean isSIDEmpty() {
+        return this.SID == null || this.SID.get() == null || this.SID.get().trim().equals("");
     }
 
     @Override
@@ -179,6 +191,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public void setUserName(String userName) {
         this.userName.set(userName);
     }
+    public boolean isUserNameEmpty() {
+        return this.userName == null || this.userName.get() == null && this.userName.get().trim().equals("");
+    }
 
     @Override
     public SimpleStringProperty getPasswordProperty() {
@@ -191,5 +206,20 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public void setPassword(String password) {
         this.password.set(password);
     }
+    public boolean isPasswordEmpty() {
+        return this.password == null || this.password.get() == null || this.password.get().trim().equals("");
+    }
 
+    @Override
+    public boolean isValid() {
+        boolean valid = false;
+        if (isMSSQLServer()) {
+            valid = !isHostNameEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
+        } else if (isORAServer()) {
+            valid = !isHostNameEmpty() && !isPortEmpty() && !isSIDEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
+        } else if (isMySQLServer()) {
+            valid = !isHostNameEmpty() && !isPortEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
+        }
+        return valid;
+    }
 }

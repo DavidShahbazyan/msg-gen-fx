@@ -1,14 +1,9 @@
 package com.synisys.msggen;
 
-import com.synisys.msggen.utils.ResourceManager;
 import javafx.application.Preloader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -23,57 +18,35 @@ import javafx.stage.StageStyle;
  */
 public class MainPreloader extends Preloader {
     ProgressBar bar;
-    ProgressIndicator ind;
     Stage stage;
     Label applicationName;
-    Label creators;
 
     private Scene createPreloaderScene() {
-//        ind = new ProgressIndicator();
-//        ind.setPrefSize(5, 5);
-
         bar = new ProgressBar();
         bar.setPrefHeight(3);
 
         Reflection reflection = new Reflection();
         reflection.setTopOpacity(0.3);
 
-//        InnerShadow innerShadow = new InnerShadow();
-//        innerShadow.setColor(Color.WHITE);
+//        applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.VERSION"));
+//        applicationName.setStyle("-fx-font-size: 25px");
+//        applicationName.setEffect(reflection);
 
-//        Blend blend = new Blend();
-//        blend.setMode(BlendMode.MULTIPLY);
-//        blend.setBottomInput(reflection);
-//        blend.setTopInput(innerShadow);
-
-        applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.VERSION"));
-        applicationName.setStyle("-fx-font-size: 25px");
-        applicationName.setEffect(reflection);
-
-        creators = new Label(ResourceManager.getParam("APPLICATION.CREATORS"));
-        creators.setStyle("-fx-font-size: 12px");
-//        creators.setEffect(reflection);
-
-        ImageView splash = new ImageView("/images/splashScreen.png");
-        AnchorPane p = new AnchorPane(splash, bar, applicationName, creators);
+//        ImageView splash = new ImageView("/images/splashScreen.png");
+        ImageView splash = new ImageView("/images/splashScreen.jpg");
+        AnchorPane p = new AnchorPane(splash, bar/*, applicationName*/);
         AnchorPane.setTopAnchor(splash, (double) 0);
 
         AnchorPane.setRightAnchor(splash, (double) 0);
         AnchorPane.setBottomAnchor(splash, (double) 0);
         AnchorPane.setLeftAnchor(splash, (double) 0);
 
-//        AnchorPane.setTopAnchor(ind, (double) 5);
-//        AnchorPane.setRightAnchor(ind, (double) 5);
+        AnchorPane.setRightAnchor(bar, (double) 150);
+        AnchorPane.setBottomAnchor(bar, (double) 290);
+        AnchorPane.setLeftAnchor(bar, (double) 150);
 
-        AnchorPane.setRightAnchor(bar, (double) 0);
-        AnchorPane.setBottomAnchor(bar, (double) 0);
-        AnchorPane.setLeftAnchor(bar, (double) 0);
-
-        AnchorPane.setLeftAnchor(applicationName, (double) 20);
-        AnchorPane.setTopAnchor(applicationName, (double) 110);
-
-        AnchorPane.setRightAnchor(creators, (double) 20);
-        AnchorPane.setBottomAnchor(creators, (double) 20);
+//        AnchorPane.setLeftAnchor(applicationName, (double) 20);
+//        AnchorPane.setTopAnchor(applicationName, (double) 110);
 
         p.setStyle("-fx-background-color: transparent;");
         return new Scene(p);
