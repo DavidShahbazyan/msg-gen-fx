@@ -114,7 +114,7 @@
                         </GridPane>
                     </content>
                 </TitledPane>
-                <Button mnemonicParsing="false" onAction="#testAction" text="TestAction" />
+                <!--<Button mnemonicParsing="false" onAction="#testAction" text="TestAction" />-->
                 <TableView fx:id="fileItemsTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="checkboxColumn" prefWidth="75.0" text="" />
@@ -133,9 +133,21 @@
         </VBox>
         <ButtonBar prefHeight="40.0" prefWidth="200.0">
             <buttons>
-                <Button fx:id="scanProjectButton" mnemonicParsing="false" onAction="#scanForNewMessagesInProject" text="%label.menuItem.edit.scanProject" />
-                <Button fx:id="cleanMessageRangeButton" mnemonicParsing="false" onAction="#removeUnusedMessagesFromDB" text="%label.menuItem.edit.removeFromDB" />
-                <Button fx:id="transferMessagesButton" mnemonicParsing="false" onAction="#transferMessagesToDB" text="%label.menuItem.edit.transferToDB" />
+                <Button fx:id="scanProjectButton" mnemonicParsing="false" onAction="#scanForNewMessagesInProject" text="%label.menuItem.edit.scanProject">
+                    <tooltip>
+                        <Tooltip text="%label.menuItem.edit.scanProject" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="cleanMessageRangeButton" mnemonicParsing="false" onAction="#removeUnusedMessagesFromDB" text="%label.menuItem.edit.removeFromDB">
+                    <tooltip>
+                        <Tooltip text="%label.menuItem.edit.removeFromDB" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="transferMessagesButton" mnemonicParsing="false" onAction="#transferMessagesToDB" text="%label.menuItem.edit.transferToDB">
+                    <tooltip>
+                        <Tooltip text="%label.menuItem.edit.transferToDB" />
+                    </tooltip>
+                </Button>
             </buttons>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
