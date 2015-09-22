@@ -1,6 +1,6 @@
 #rootContainer {
     -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
-            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
     /*-fx-background-color: #A0F;*/
     /*-fx-background-color: transparent;*/
 
@@ -8,9 +8,9 @@
      * as progress bars, scroll bars, scroll panes, trees, tables, and lists.
      */
     /*-fx-box-border: ladder(*/
-            /*-fx-color,*/
-            /*black 20%,*/
-            /*derive(-fx-color,-30%) 30%*/
+    /*-fx-color,*/
+    /*black 20%,*/
+    /*derive(-fx-color,-30%) 30%*/
     /*);*/
 
     /* A bright blue for highlighting/accenting objects.  For example: selected
@@ -26,24 +26,38 @@
 
 .menu-bar {
     -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
-            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
 }
 
-.button {
+/*.button {
     -fx-background-radius: 30;
     -fx-background-insets: 0,1,1;
     -fx-text-fill: black;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}*/
+
+.button {
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow( three-pass-box , rgba(240, 165, 37, 0.60), 3, 0.0 , 0 , 1 );
 }
 
 .button {
-    -fx-background-color: linear-gradient(#f0ff35, #a9ff00),
-        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+    /*-fx-background-color: linear-gradient(#f0a525, #f0a525),
+    linear-gradient(#f0a525, #f0a525);*/
+    -fx-background-color:#f0a525;
+    -fx-background-radius: 0;
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(#f0ff35, #a9ff00),
-        radial-gradient(center 50% -40%, radius 200%, #C8Fe46 45%, #90D810 50%);
+    radial-gradient(center 50% -40%, radius 200%, #C8Fe46 45%, #90D810 50%);
+}
+.details-panel > .title {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-border-color: #cccccc;
 }
 
 /*******************************************************************************
@@ -100,19 +114,19 @@
 /*####################################################################################################################*/
 
 /*.button {*/
-    /*-fx-background-color:*/
-            /*#c3c4c4,*/
-            /*linear-gradient(#d6d6d6 50%, white 100%),*/
-            /*radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);*/
-    /*-fx-background-radius: 30;*/
-    /*-fx-background-insets: 0,1,1;*/
-    /*-fx-text-fill: black;*/
-    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );*/
+/*-fx-background-color:*/
+/*#c3c4c4,*/
+/*linear-gradient(#d6d6d6 50%, white 100%),*/
+/*radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);*/
+/*-fx-background-radius: 30;*/
+/*-fx-background-insets: 0,1,1;*/
+/*-fx-text-fill: black;*/
+/*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );*/
 /*}*/
 
 /*.button:hover {*/
-    /*-fx-background-color:*/
-            /*#c3c4c4,*/
-            /*linear-gradient(#dFdFdF 50%, white 100%),*/
-            /*radial-gradient(center 50% -40%, radius 200%, #eFeFeF 45%, rgba(230,230,230,0) 50%);*/
+/*-fx-background-color:*/
+/*#c3c4c4,*/
+/*linear-gradient(#dFdFdF 50%, white 100%),*/
+/*radial-gradient(center 50% -40%, radius 200%, #eFeFeF 45%, rgba(230,230,230,0) 50%);*/
 /*}*/

@@ -82,7 +82,7 @@
         </MenuBar>
         <VBox spacing="5.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
             <children>
-                <TitledPane fx:id="detailsPanel" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" text="%label.detailsPanel.title" VBox.vgrow="NEVER">
+                <TitledPane fx:id="detailsPanel" styleClass="details-panel" collapsible="true" maxHeight="200" minHeight="-Infinity" text="%label.detailsPanel.title" VBox.vgrow="NEVER">
                     <content>
                         <GridPane>
                             <columnConstraints>
