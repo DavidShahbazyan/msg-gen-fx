@@ -316,7 +316,17 @@ public class MainController implements Initializable {
                     if (messageFinder != null) {
                         updateMessage(ResourceManager.getMessage("label.scanningProjectForMessages"));
                         messageFinder.findFileList();
-                        fileItemsTableViewData.setValue(FXCollections.observableArrayList(messageFinder.getFilesList()));
+                        updateMessage(ResourceManager.getMessage("label.filteringEmptyMessages"));
+                        List<FileItem> retVal = new ArrayList<>();
+                        if (messageFinder != null) {
+                            for (FileItem item : messageFinder.getFilesList()) {
+                                if (item.getLineItems().size() > 0) {
+                                    retVal.add(item);
+                                }
+                            }
+                        }
+                        updateMessage(ResourceManager.getMessage("label.finalizing"));
+                        fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
                     }
                     validate();
                     Logger.getLogger(MainController.class).info("Project scan completed.");
@@ -538,18 +548,6 @@ public class MainController implements Initializable {
             item.setIsSelected(isSelected);
         }
         validate();
-    }
-
-    private List<FileItem> getFilesList() {
-        List<FileItem> retVal = new ArrayList<>();
-        if (messageFinder != null) {
-            for (FileItem item : messageFinder.getFilesList()) {
-                if (item.getLineItems().size() > 0) {
-                    retVal.add(item);
-                }
-            }
-        }
-        return retVal;
     }
 
     private void putMessagesToFiles(List<File> filesList, List<Message> messages) throws IOException {
