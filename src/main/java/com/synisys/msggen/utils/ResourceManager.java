@@ -6,6 +6,8 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 /**
@@ -17,7 +19,8 @@ public final class ResourceManager {
     private static final String DELIMITER = " ";
     private static final String MESSAGES_RESOURCE_FILE = "properties/messages.properties";
     private static final String PARAMS_RESOURCE_FILE = "properties/params.properties";
-    private static final String SETTINGS_RESOURCE_FILE = "properties/settings.properties";
+    private static final String DEFAULT_SETTINGS_RESOURCE_FILE = "properties/settings.properties";
+    private static final String CUSTOM_SETTINGS_RESOURCE_FILE = "./settings.properties";
 
 //    private static final ResourceBundle messagesResource = ResourceBundle.getBundle(MESSAGES_RESOURCE_FILE);
 //    private static final ResourceBundle paramsResource = ResourceBundle.getBundle(PARAMS_RESOURCE_FILE);
@@ -33,7 +36,11 @@ public final class ResourceManager {
 
             paramsResourceConfig = new PropertiesConfiguration(PARAMS_RESOURCE_FILE);
 
-            settingsResourceConfig = new PropertiesConfiguration(SETTINGS_RESOURCE_FILE);
+            String settingsResourceFile = DEFAULT_SETTINGS_RESOURCE_FILE;
+            if (Files.exists(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE)) && !Files.isDirectory(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE))) {
+                settingsResourceFile = CUSTOM_SETTINGS_RESOURCE_FILE;
+            }
+            settingsResourceConfig = new PropertiesConfiguration(settingsResourceFile);
             settingsResourceConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
         } catch (ConfigurationException ex) {
             Logger.getLogger(ResourceManager.class).error(ex);

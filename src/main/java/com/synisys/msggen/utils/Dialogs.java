@@ -5,10 +5,7 @@ import com.synisys.msggen.enums.IDMVersion;
 import com.synisys.msggen.interfaces.ConnectionConfig;
 import com.synisys.msggen.interfaces.Range;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -28,6 +25,8 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -342,6 +341,7 @@ public final class Dialogs {
 
         IntegerProperty workingCopyIdProperty = new SimpleIntegerProperty(Integer.valueOf(ResourceManager.getSetting("workingCopyId")));
         StringProperty messagePatternProperty = new SimpleStringProperty(ResourceManager.getSetting("message.pattern"));
+        BooleanProperty exportLogToFileProperty = new SimpleBooleanProperty(Boolean.valueOf(ResourceManager.getSetting("exportLogToFile")));
 
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(5));
@@ -361,19 +361,30 @@ public final class Dialogs {
         TextField txtMessagePattern = new TextField();
         txtMessagePattern.textProperty().bindBidirectional(messagePatternProperty);
 
+        Label lblExportLogToFile = new Label(ResourceManager.getMessage("label.exportLogToFile"));
+        CheckBox checkExportLogToFile = new CheckBox();
+        checkExportLogToFile.selectedProperty().bindBidirectional(exportLogToFileProperty);
+
         tilePane.getChildren().add(lblWorkingCopyId);
         tilePane.getChildren().add(txtWorkingCopyId);
 
         tilePane.getChildren().add(lblMessagePattern);
         tilePane.getChildren().add(txtMessagePattern);
 
+        tilePane.getChildren().add(lblExportLogToFile);
+        tilePane.getChildren().add(checkExportLogToFile);
+
         Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
         okButton.setDefaultButton(true);
         okButton.setOnAction(event -> {
             try {
-                PropertiesConfiguration config = new PropertiesConfiguration("properties/settings.properties");
+                if (!Files.exists(Paths.get("./settings.properties"))) {
+                    Files.createFile(Paths.get("./settings.properties"));
+                }
+                PropertiesConfiguration config = new PropertiesConfiguration("./settings.properties");
                 config.setProperty("workingCopyId", "" + workingCopyIdProperty.get());
                 config.setProperty("message.pattern", messagePatternProperty.get());
+                config.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
                 config.save();
             } catch (Exception ex) {
                 Logger.getLogger(Dialogs.class).error("Error occurred in showSettingsDialog method: ", ex);

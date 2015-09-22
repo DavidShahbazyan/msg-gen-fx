@@ -58,7 +58,9 @@ public class Main extends Application {
             throw new FileNotFoundException(ErrorCodes.LOG4J_PROP_MISSING.getErrorMessage());
         }
         props.load(input);
-        props.setProperty("log4j.appender.fileAppender.File", loggingFileName);
+        if (Boolean.valueOf(ResourceManager.getSetting("exportLogToFile"))) {
+            props.setProperty("log4j.appender.fileAppender.File", loggingFileName);
+        }
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(props);
         LOGGER.info("Logging has been successfully initialized.");
