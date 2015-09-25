@@ -4,9 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.synisys</groupId>
+    <groupId>arm.davsoft</groupId>
     <artifactId>msggen</artifactId>
     <version>2.0-SNAPSHOT</version>
+
+    <developers>
+        <developer>
+            <name>David Shahbazyan</name>
+            <email>d.shahbazyan@gmail.com</email>
+            <roles>
+                <role>Product Owner</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Tatev Petrosyan</name>
+            <email></email>
+            <roles>
+                <role>Graphic and UX designer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -80,7 +98,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.synisys.msggen.Main</mainClass>
+                            <mainClass>arm.davsoft.msggen.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
