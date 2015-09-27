@@ -1,10 +1,12 @@
 package arm.davsoft.msggen;
 
+import arm.davsoft.msggen.utils.ResourceManager;
 import javafx.application.Preloader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.Reflection;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -54,6 +56,8 @@ public class MainPreloader extends Preloader {
 
     public void start(Stage stage) throws Exception {
         this.stage = stage;
+        stage.setTitle(ResourceManager.getMessage("title.window.main"));
+        stage.getIcons().add(new Image("images/mg_logo.png"));
         stage.setScene(createPreloaderScene());
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getScene().setFill(Color.TRANSPARENT);

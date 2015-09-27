@@ -20,13 +20,29 @@
     /*-fx-accent: #0093ff;*/
 }
 
-.menu-item {
-    -fx-background-color: #F0A;
-}
-
 .menu-bar {
     -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
     radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+}
+
+.context-menu {
+    /*-fx-background-color: #CCC;*/
+}
+
+.menu-item {
+    /*-fx-background-color: #EEE;*/
+}
+
+.menu-item .label {
+    /*-fx-text-fill: white;*/
+}
+
+.menu-item:focused {
+    /*-fx-background-color: #AAA;*/
+}
+
+.menu-item:focused .label {
+    /*-fx-text-fill: #FFF;*/
 }
 
 /*.button {

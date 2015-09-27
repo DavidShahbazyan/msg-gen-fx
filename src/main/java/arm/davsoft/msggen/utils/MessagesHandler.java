@@ -50,6 +50,7 @@ public class MessagesHandler extends DefaultHandler {
                     fileItem.getLineItems().add(lineItem);
                 }
             }
+            fileItem.updateTotMessagesQuantity();
         }
     }
 

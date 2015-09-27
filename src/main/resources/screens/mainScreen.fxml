@@ -117,10 +117,11 @@
                 <!--<Button mnemonicParsing="false" onAction="#testAction" text="TestAction" />-->
                 <TableView fx:id="fileItemsTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="checkboxColumn" prefWidth="75.0" text="" />
-                        <TableColumn fx:id="filePathColumn" prefWidth="75.0" text="%label.fileItemsTableView.filePathColumn" />
-                        <TableColumn fx:id="messageQuantity" prefWidth="75.0" text="%label.fileItemsTableView.messageQuantity" />
-                        <TableColumn fx:id="moreActions" prefWidth="75.0" text="%label.fileItemsTableView.moreActions" />
+                        <TableColumn fx:id="checkboxColumn" text="" />
+                        <TableColumn fx:id="filePathColumn" text="%label.fileItemsTableView.filePathColumn" />
+                        <TableColumn fx:id="selMessages" text="%label.fileItemsTableView.messagesSel" />
+                        <TableColumn fx:id="totMessages" text="%label.fileItemsTableView.messagesTot" />
+                        <TableColumn fx:id="moreActions" text="%label.fileItemsTableView.moreActions" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

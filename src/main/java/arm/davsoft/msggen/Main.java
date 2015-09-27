@@ -2,11 +2,12 @@ package arm.davsoft.msggen;
 
 import arm.davsoft.msggen.enums.ErrorCodes;
 import arm.davsoft.msggen.utils.AppSpecUncaughtExceptionHandler;
-import arm.davsoft.msggen.utils.ResourceManager;
 import arm.davsoft.msggen.utils.FXMLFactory;
+import arm.davsoft.msggen.utils.ResourceManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.log4j.LogManager;
@@ -78,6 +79,7 @@ public class Main extends Application {
 //        Parent root = fxmlLoader.load(this.getClass().getResource("/screens/mainScreen.fxml").openStream());
 
         primaryStage.setTitle(ResourceManager.getMessage("title.window.main"));
+        primaryStage.getIcons().add(new Image("images/mg_logo.png"));
         primaryStage.setScene(new Scene(FXMLFactory.getFXMLParent("/screens/mainScreen.fxml"), 800, 600));
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);

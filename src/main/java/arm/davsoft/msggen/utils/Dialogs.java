@@ -1,9 +1,9 @@
 package arm.davsoft.msggen.utils;
 
-import arm.davsoft.msggen.interfaces.ConnectionConfig;
-import arm.davsoft.msggen.interfaces.Range;
 import arm.davsoft.msggen.domains.IntegerRange;
 import arm.davsoft.msggen.enums.IDMVersion;
+import arm.davsoft.msggen.interfaces.ConnectionConfig;
+import arm.davsoft.msggen.interfaces.Range;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.concurrent.Task;
@@ -107,7 +107,6 @@ public final class Dialogs {
         Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
         okButton.setDefaultButton(true);
         okButton.setOnAction(event -> {
-
             processCancelled[0] = false;
             dialog.close();
         });

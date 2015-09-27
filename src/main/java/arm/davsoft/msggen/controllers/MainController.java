@@ -1,6 +1,5 @@
 package arm.davsoft.msggen.controllers;
 
-import arm.davsoft.msggen.interfaces.ConnectionConfig;
 import arm.davsoft.msggen.components.ButtonTableCell;
 import arm.davsoft.msggen.components.CheckBoxTableCell;
 import arm.davsoft.msggen.domains.FileItem;
@@ -9,6 +8,7 @@ import arm.davsoft.msggen.enums.DBServerType;
 import arm.davsoft.msggen.enums.IDMVersion;
 import arm.davsoft.msggen.implementations.ConnectionConfigImpl;
 import arm.davsoft.msggen.implementations.MessageFinderImpl;
+import arm.davsoft.msggen.interfaces.ConnectionConfig;
 import arm.davsoft.msggen.interfaces.MessageFinder;
 import arm.davsoft.msggen.interfaces.Range;
 import arm.davsoft.msggen.service.MessageTransferService;
@@ -106,7 +106,7 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<FileItem, Boolean> checkboxColumn, moreActions;
     @FXML
-    private TableColumn<FileItem, String> filePathColumn, messageQuantity;
+    private TableColumn<FileItem, String> filePathColumn, selMessages, totMessages;// messageQuantity;
 
 
 
@@ -247,10 +247,16 @@ public class MainController implements Initializable {
             checkboxColumn.setEditable(true);
 
             filePathColumn.setCellValueFactory(new PropertyValueFactory<>("relativePath"));
-            messageQuantity.setCellValueFactory(new PropertyValueFactory<>("messagesSelTot"));
-            messageQuantity.setPrefWidth(80);
-            messageQuantity.setMinWidth(messageQuantity.getPrefWidth());
-            messageQuantity.setMaxWidth(messageQuantity.getPrefWidth());
+
+            selMessages.setCellValueFactory(new PropertyValueFactory<>("selMessagesQuantity"));
+            selMessages.setPrefWidth(80);
+            selMessages.setMinWidth(selMessages.getPrefWidth());
+            selMessages.setMaxWidth(selMessages.getPrefWidth());
+
+            totMessages.setCellValueFactory(new PropertyValueFactory<>("totMessagesQuantity"));
+            totMessages.setPrefWidth(80);
+            totMessages.setMinWidth(totMessages.getPrefWidth());
+            totMessages.setMaxWidth(totMessages.getPrefWidth());
 
             moreActions.setSortable(false);
             moreActions.setCellValueFactory(p -> new SimpleBooleanProperty(p.getValue() != null));
