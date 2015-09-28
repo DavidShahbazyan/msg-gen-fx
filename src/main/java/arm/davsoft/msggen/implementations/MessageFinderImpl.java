@@ -1,24 +1,29 @@
 package arm.davsoft.msggen.implementations;
 
 import arm.davsoft.msggen.domains.FileItem;
+import arm.davsoft.msggen.domains.LineItem;
 import arm.davsoft.msggen.enums.FileType;
 import arm.davsoft.msggen.interfaces.MessageFinder;
 import arm.davsoft.msggen.utils.MessagesHandler;
 import arm.davsoft.msggen.utils.Utils;
-import arm.davsoft.msggen.domains.LineItem;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MessageFinderImpl implements MessageFinder {
     private final File projectDir;
@@ -59,6 +64,7 @@ public class MessageFinderImpl implements MessageFinder {
     public void findFileList() throws IOException, ParserConfigurationException, SAXException {
         MessageGenerationVisitor messageGenerationVisitor = new MessageGenerationVisitor();
         Path path = projectDir.toPath();
+        this.filesList = new ArrayList<>();
         Files.walkFileTree(path, messageGenerationVisitor);
     }
 

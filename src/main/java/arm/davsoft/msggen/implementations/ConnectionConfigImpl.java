@@ -1,9 +1,9 @@
 package arm.davsoft.msggen.implementations;
 
-import arm.davsoft.msggen.interfaces.ConnectionConfig;
-import arm.davsoft.msggen.interfaces.SQLQuery;
 import arm.davsoft.msggen.enums.DBServerType;
 import arm.davsoft.msggen.enums.IDMVersion;
+import arm.davsoft.msggen.interfaces.ConnectionConfig;
+import arm.davsoft.msggen.interfaces.SQLQuery;
 import arm.davsoft.msggen.utils.DataSourceFactory;
 import arm.davsoft.msggen.utils.SQLQueryFactory;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -21,6 +21,7 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     private final DBServerType dbServerType;
     private final SQLQuery sqlQuery;
 
+    private boolean isNew;
     private SimpleStringProperty connectionName = new SimpleStringProperty();
     private SimpleStringProperty hostName = new SimpleStringProperty();
     private SimpleIntegerProperty port = new SimpleIntegerProperty();
@@ -30,6 +31,7 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     private SimpleStringProperty password = new SimpleStringProperty();
 
     public ConnectionConfigImpl(IDMVersion idmVersion, DBServerType dbServerType) {
+        this.isNew = true;
         this.idmVersion = idmVersion;
         this.dbServerType = dbServerType;
         this.sqlQuery = SQLQueryFactory.getSqlQuery(idmVersion, dbServerType);
@@ -116,8 +118,18 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getConnectionName() {
         return connectionName.get();
     }
+    @Override
     public void setConnectionName(String connectionName) {
         this.connectionName.set(connectionName);
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew;
+    }
+    @Override
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
     @Override
@@ -128,9 +140,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getHostName() {
         return hostName.get();
     }
+    @Override
     public void setHostName(String hostName) {
         this.hostName.set(hostName);
     }
+    @Override
     public boolean isHostNameEmpty() {
         return this.hostName == null || this.hostName.get() == null || this.hostName.get().trim().equals("");
     }
@@ -143,9 +157,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public Integer getPort() {
         return port.get();
     }
+    @Override
     public void setPort(Integer port) {
         this.port.set(port);
     }
+    @Override
     public boolean isPortEmpty() {
         return this.port == null;
     }
@@ -158,9 +174,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getDbName() {
         return dbName.get();
     }
+    @Override
     public void setDbName(String dbName) {
         this.dbName.set(dbName);
     }
+    @Override
     public boolean isDbNameEmpty() {
         return this.dbName == null || this.dbName.get() == null || this.dbName.get().trim().equals("");
     }
@@ -173,9 +191,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getSID() {
         return SID.get();
     }
+    @Override
     public void setSID(String SID) {
         this.SID.set(SID);
     }
+    @Override
     public boolean isSIDEmpty() {
         return this.SID == null || this.SID.get() == null || this.SID.get().trim().equals("");
     }
@@ -188,9 +208,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getUserName() {
         return userName.get();
     }
+    @Override
     public void setUserName(String userName) {
         this.userName.set(userName);
     }
+    @Override
     public boolean isUserNameEmpty() {
         return this.userName == null || this.userName.get() == null && this.userName.get().trim().equals("");
     }
@@ -203,9 +225,11 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public String getPassword() {
         return password.get();
     }
+    @Override
     public void setPassword(String password) {
         this.password.set(password);
     }
+    @Override
     public boolean isPasswordEmpty() {
         return this.password == null || this.password.get() == null || this.password.get().trim().equals("");
     }

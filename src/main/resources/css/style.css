@@ -1,6 +1,6 @@
 #rootContainer {
-    -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
-    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-color: #C3C4C4, linear-gradient(#D6D6D6 50%, #FFF 100%),
+    radial-gradient(center 50% -40%, radius 200%, #E6E6E6 45%, rgba(230, 230, 230, 0) 50%);
     /*-fx-background-color: #A0F;*/
     /*-fx-background-color: transparent;*/
 
@@ -21,8 +21,8 @@
 }
 
 .menu-bar {
-    -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),
-    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-color: #C3C4C4, linear-gradient(#D6D6D6 50%, #FFF 100%),
+    radial-gradient(center 50% -40%, radius 200%, #E6E6E6 45%, rgba(230, 230, 230, 0) 50%);
 }
 
 .context-menu {
@@ -54,26 +54,25 @@
 
 .button {
     -fx-background-insets: 0,1,1;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #FFF;
     -fx-effect: dropshadow( three-pass-box , rgba(240, 165, 37, 0.60), 3, 0.0 , 0 , 1 );
-}
 
-.button {
     /*-fx-background-color: linear-gradient(#f0a525, #f0a525),
     linear-gradient(#f0a525, #f0a525);*/
-    -fx-background-color:#f0a525;
+    -fx-background-color:#F0A525;
     -fx-background-radius: 0;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(#f0ff35, #a9ff00),
-    radial-gradient(center 50% -40%, radius 200%, #C8Fe46 45%, #90D810 50%);
+    -fx-background-color: linear-gradient(#F0FF35, #A9FF00),
+    radial-gradient(center 50% -40%, radius 200%, #C8FE46 45%, #90D810 50%);
 }
+
 .details-panel > .title {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFF;
     -fx-border-width: 1px;
     -fx-border-style: solid;
-    -fx-border-color: #cccccc;
+    -fx-border-color: #CCC;
 }
 
 /*******************************************************************************
@@ -82,10 +81,21 @@
  *                                                                             *
  ******************************************************************************/
 
+.progress-bar.white {
+    -fx-border-color: #FFF;
+    -fx-accent: #FFF;
+}
+
+.progress-bar.dark {
+    -fx-border-color: #888;
+    -fx-accent: #888;
+}
+
 .progress-bar {
     -fx-skin: "com.sun.javafx.scene.control.skin.ProgressBarSkin";
     -fx-border-style: solid;
     -fx-border-color: #FFF;
+    -fx-accent: #FFF;
     -fx-border-radius: 5px;
     -fx-padding: 2px;
     -fx-background-radius: 5px;
@@ -97,7 +107,6 @@
     -fx-indeterminate-bar-escape: true;
     -fx-indeterminate-bar-flip: true;
     -fx-indeterminate-bar-animation-time: 2;
-    -fx-accent: #FFF;
 }
 
 .progress-bar .bar {

@@ -14,13 +14,9 @@ import javax.sql.DataSource;
  */
 public interface ConnectionConfig extends Cloneable {
     boolean isMSSQLServer();
-
     boolean isMySQLServer();
-
     boolean isORAServer();
-
     boolean isIDM6Project();
-
     boolean isIDM7Project();
 
     IDMVersion getIdmVersion();
@@ -36,9 +32,11 @@ public interface ConnectionConfig extends Cloneable {
     ConnectionConfig clone();
 
     SimpleStringProperty getConnectionNameProperty();
-
     String getConnectionName();
     void setConnectionName(String connectionName);
+
+    boolean isNew();
+    void setIsNew(boolean isNew);
 
     SimpleStringProperty getHostNameProperty();
     String getHostName();

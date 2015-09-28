@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -53,7 +54,11 @@ public final class Dialogs {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(ownerWindow);
-        dialog.setTitle(ResourceManager.getMessage("title.dialog.configureConnection"));
+        if (config.isNew()) {
+            dialog.setTitle(ResourceManager.getMessage("title.dialog.newConnection") + " " + config.getDbServerType().getName());
+        } else {
+            dialog.setTitle(ResourceManager.getMessage("title.dialog.configureConnection"));
+        }
 
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(5));
@@ -129,6 +134,8 @@ public final class Dialogs {
 
         if (processCancelled[0]) {
             configClone = null;
+        } else {
+            configClone.setIsNew(false);
         }
 
         return configClone;
@@ -228,11 +235,12 @@ public final class Dialogs {
         dialog.initOwner(ownerWindow);
         dialog.titleProperty().bind(task.titleProperty());
 //        dialog.setTitle(ResourceManager.getMessage("title.dialog.processing"));
-        dialog.setOnCloseRequest(event -> Logger.getLogger(Dialogs.class).info("Task terminated by user."));
+        dialog.setOnCloseRequest(event -> Logger.getLogger(Dialogs.class).info(ResourceManager.getMessage("notification.task.terminatedByUser")));
 
         ProgressBar progressBar = new ProgressBar(0);
         progressBar.progressProperty().bind(task.progressProperty());
         progressBar.setMaxWidth(Double.MAX_VALUE);
+        progressBar.getStyleClass().add("dark");
 
         Label label = new Label(ResourceManager.getMessage("label.pleaseWaitWhile"));
         Label taskMessage = new Label();
@@ -241,7 +249,7 @@ public final class Dialogs {
         Button cancelButton = new Button(ResourceManager.getMessage("label.button.cancel"));
         cancelButton.setOnAction(event -> {
             task.cancel();
-            Logger.getLogger(Dialogs.class).info("Task terminated by user.");
+            Logger.getLogger(Dialogs.class).info(ResourceManager.getMessage("notification.task.terminatedByUser"));
         });
 
         ButtonBar buttonBar = new ButtonBar();
@@ -260,6 +268,7 @@ public final class Dialogs {
         dialogVBox.getChildren().add(buttonBar);
 
         Scene dialogScene = new Scene(dialogVBox);
+        dialogScene.getStylesheets().add("/css/style.css");
         dialog.setScene(dialogScene);
         dialog.setResizable(false);
         dialog.show();
@@ -351,6 +360,7 @@ public final class Dialogs {
         tilePane.setHgap(10);
         tilePane.setVgap(5);
         tilePane.setPrefColumns(2);
+        tilePane.setTileAlignment(Pos.CENTER_LEFT);
 
         Label lblWorkingCopyId = new Label(ResourceManager.getMessage("label.workingCopyId"));
         TextField txtWorkingCopyId = new TextField();

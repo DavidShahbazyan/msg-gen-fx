@@ -322,13 +322,19 @@ public class MainController implements Initializable {
                     if (messageFinder != null) {
                         updateMessage(ResourceManager.getMessage("label.scanningProjectForMessages"));
                         messageFinder.findFileList();
-                        updateMessage(ResourceManager.getMessage("label.filteringEmptyMessages"));
+                        updateTitle(ResourceManager.getMessage("label.filteringEmptyMessages"));
                         List<FileItem> retVal = new ArrayList<>();
                         if (messageFinder != null) {
+                            int workDone = 0;
+                            int workToDo = messageFinder.getFilesList().size();
                             for (FileItem item : messageFinder.getFilesList()) {
                                 if (item.getLineItems().size() > 0) {
                                     retVal.add(item);
                                 }
+                                workDone++;
+                                updateMessage(ResourceManager.getMessage("label.filtered") + workDone + " / " + workToDo);
+                                updateProgress(workDone, workToDo);
+                                Thread.sleep(100);
                             }
                         }
                         updateMessage(ResourceManager.getMessage("label.finalizing"));

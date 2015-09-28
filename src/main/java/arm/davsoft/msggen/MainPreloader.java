@@ -26,6 +26,7 @@ public class MainPreloader extends Preloader {
     private Scene createPreloaderScene() {
         bar = new ProgressBar();
         bar.setPrefHeight(3);
+        bar.getStyleClass().add("white");
 
         Reflection reflection = new Reflection();
         reflection.setTopOpacity(0.3);

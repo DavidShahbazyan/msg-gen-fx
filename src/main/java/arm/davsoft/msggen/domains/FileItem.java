@@ -97,20 +97,8 @@ public class FileItem extends File implements Selectable {
         return false;
     }
 
-//    @Override
-//    public void setSelected(boolean selected) {
-//        for (LineItem lineItem : lineItems) {
-//            lineItem.setSelected(selected);
-//        }
-//    }
-
     public int getTotalMessagesQuantity() {
         return lineItems.size();
-    }
-
-    private void updateMessagesSelTotProperties() {
-//        this.selMessagesQuantity.setValue(getSelectedMessagesQuantity());
-//        this.totMessagesQuantity.setValue(getTotalMessagesQuantity());
     }
 
     public int getSelMessagesQuantity() {
