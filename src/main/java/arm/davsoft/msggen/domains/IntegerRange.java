@@ -16,11 +16,28 @@ public class IntegerRange implements Range<Integer> {
         this.to = to;
     }
 
+    @Override
     public Integer getFrom() {
         return this.from;
     }
 
+    @Override
     public Integer getTo() {
         return this.to;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.from == null || this.to == null;
+    }
+
+    @Override
+    public boolean isValid() {
+        return !isEmpty() && from.compareTo(to) <= 0;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + this.from + ',' + this.to + ']';
     }
 }

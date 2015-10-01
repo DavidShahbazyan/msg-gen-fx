@@ -1,5 +1,6 @@
 package arm.davsoft.msggen.utils;
 
+import arm.davsoft.msggen.dialogs.ConnectionConfigDialog;
 import arm.davsoft.msggen.domains.IntegerRange;
 import arm.davsoft.msggen.enums.IDMVersion;
 import arm.davsoft.msggen.interfaces.ConnectionConfig;
@@ -47,98 +48,8 @@ public final class Dialogs {
     public static File getUserHomeDir() { return new File(System.getProperty("user.home")); }
 
     public static ConnectionConfig showConnectionPopup(Window ownerWindow, ConnectionConfig config) {
-        ConnectionConfig configClone = config.clone();
-
-        final boolean processCancelled[] = {false};
-
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(ownerWindow);
-        if (config.isNew()) {
-            dialog.setTitle(ResourceManager.getMessage("title.dialog.newConnection") + " " + config.getDbServerType().getName());
-        } else {
-            dialog.setTitle(ResourceManager.getMessage("title.dialog.configureConnection"));
-        }
-
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(5));
-        vBox.setSpacing(5);
-        vBox.setPrefSize(VBox.USE_COMPUTED_SIZE, VBox.USE_COMPUTED_SIZE);
-
-        TilePane tilePane = new TilePane();
-        tilePane.setHgap(10);
-        tilePane.setVgap(5);
-        tilePane.setPrefColumns(2);
-
-        Label lblHostName = new Label(ResourceManager.getMessage("label.hostNameIPAddress"));
-        TextField txtHostName = new TextField();
-        txtHostName.textProperty().bindBidirectional(configClone.getHostNameProperty());
-
-        Label lblPort = new Label(ResourceManager.getMessage("label.port"));
-        TextField txtPort = new TextField();
-        txtPort.textProperty().bindBidirectional(configClone.getPortProperty(), new NumberStringConverter("####"));
-
-        Label lblSID = new Label(ResourceManager.getMessage("label.serviceNameSID"));
-        TextField txtSID = new TextField();
-        txtSID.textProperty().bindBidirectional(configClone.getSIDProperty());
-
-        Label lblUserName = new Label(ResourceManager.getMessage("label.userName"));
-        TextField txtUserName = new TextField();
-        txtUserName.textProperty().bindBidirectional(configClone.getUserNameProperty());
-
-        Label lblPassword = new Label(ResourceManager.getMessage("label.password"));
-        PasswordField txtPassword = new PasswordField();
-        txtPassword.textProperty().bindBidirectional(configClone.getPasswordProperty());
-
-
-        tilePane.getChildren().add(lblHostName);
-        tilePane.getChildren().add(txtHostName);
-
-        if (configClone.isORAServer() || configClone.isMySQLServer()) {
-            tilePane.getChildren().add(lblPort);
-            tilePane.getChildren().add(txtPort);
-        }
-
-        if (configClone.isORAServer()) {
-            tilePane.getChildren().add(lblSID);
-            tilePane.getChildren().add(txtSID);
-        }
-
-        tilePane.getChildren().add(lblUserName);
-        tilePane.getChildren().add(txtUserName);
-        tilePane.getChildren().add(lblPassword);
-        tilePane.getChildren().add(txtPassword);
-
-        Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
-        okButton.setDefaultButton(true);
-        okButton.setOnAction(event -> {
-            processCancelled[0] = false;
-            dialog.close();
-        });
-
-        Button cancelButton = new Button(ResourceManager.getMessage("label.button.cancel"));
-        cancelButton.setOnAction(event -> {
-            processCancelled[0] = true;
-            dialog.close();
-        });
-
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(cancelButton, okButton);
-
-        vBox.getChildren().addAll(tilePane, buttonBar);
-
-        Scene dialogScene = new Scene(vBox);
-        dialog.setScene(dialogScene);
-        dialog.setResizable(false);
-        dialog.showAndWait();
-
-        if (processCancelled[0]) {
-            configClone = null;
-        } else {
-            configClone.setIsNew(false);
-        }
-
-        return configClone;
+        ConnectionConfigDialog dialog = new ConnectionConfigDialog(config, ownerWindow);
+        return dialog.getConfig();
     }
 
     public static void showInfoPopup(String title, String header, String content) {
@@ -288,7 +199,7 @@ public final class Dialogs {
 //        dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
 
         // Set the button types.
-        ButtonType generateButtonType = new ButtonType(ResourceManager.getMessage("label.button.generate"), ButtonBar.ButtonData.OK_DONE);
+        ButtonType generateButtonType = new ButtonType(ResourceManager.getMessage("label.button.ok"), ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(generateButtonType, ButtonType.CANCEL);
 
         // Create the username and password labels and fields.
@@ -314,11 +225,11 @@ public final class Dialogs {
 
         // Do some validation (using the Java 8 lambda syntax).
         fromTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty() || toTextField.getText().trim().isEmpty());
+            loginButton.setDisable(newValue.trim().isEmpty() || toTextField.getText().trim().isEmpty() || Integer.valueOf(newValue.trim()).compareTo(Integer.valueOf(toTextField.getText().trim())) > 0);
         });
 
         toTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(fromTextField.getText().trim().isEmpty() || newValue.trim().isEmpty());
+            loginButton.setDisable(fromTextField.getText().trim().isEmpty() || newValue.trim().isEmpty() || Integer.valueOf(fromTextField.getText().trim()).compareTo(Integer.valueOf(newValue.trim())) > 0);
         });
 
         dialog.getDialogPane().setContent(grid);
@@ -416,7 +327,8 @@ public final class Dialogs {
         dialog.setScene(dialogScene);
         dialog.getScene().getStylesheets().add("css/style.css");
         dialog.setResizable(false);
-        dialog.showAndWait();
+        dialog.show();
+        dialog.requestFocus();
     }
 
     public static void showAboutAppDialog(Window ownerWindow) {
@@ -467,6 +379,7 @@ public final class Dialogs {
         scene.getStylesheets().addAll("css/style.css");
 
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.show();
+        stage.requestFocus();
     }
 }

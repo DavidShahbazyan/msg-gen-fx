@@ -9,4 +9,8 @@ public interface Range<T extends Number> {
     T getFrom();
 
     T getTo();
+
+    boolean isEmpty();
+
+    boolean isValid();
 }

@@ -82,64 +82,36 @@
         </MenuBar>
         <VBox spacing="5.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
             <children>
-                <TitledPane fx:id="detailsPanel" collapsible="true" maxHeight="200" minHeight="-Infinity" styleClass="details-panel" text="%label.detailsPanel.title" VBox.vgrow="NEVER">
+                <TitledPane fx:id="detailsPanel" styleClass="details-panel" collapsible="true" maxHeight="200" minHeight="-Infinity" text="%label.detailsPanel.title" VBox.vgrow="NEVER">
                     <content>
-                        <VBox spacing="5.0">
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="NEVER" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
                             <children>
-                                <HBox spacing="5.0">
-                                    <children>
-                                        <Label styleClass="bold" text="Project path:" />
-                                        <Label fx:id="lbl_projectPath" text="Label" />
-                                    </children>
-                                </HBox>
-                                <TilePane hgap="5.0" tileAlignment="CENTER_LEFT" vgap="5.0">
-                                    <children>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Server type:" />
-                                                <Label fx:id="lbl_serverType" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Server host:" />
-                                                <Label fx:id="lbl_serverHost" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Port number:" />
-                                                <Label fx:id="lbl_portNumber" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Username:" />
-                                                <Label fx:id="lbl_username" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Database:" />
-                                                <Label fx:id="lbl_database" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Empty messages:" />
-                                                <Label fx:id="lbl_emptyMessagesQuantity" text="Label" />
-                                            </children>
-                                        </HBox>
-                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
-                                            <children>
-                                                <Label styleClass="bold" text="Message range:" />
-                                                <Label fx:id="lbl_messageRange" text="Label" />
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </TilePane>
+                                <Label text="Project path:" />
+                                <Label fx:id="lbl_projectPath" text="Label" GridPane.columnIndex="1" />
+                                <Label text="Server type:" GridPane.rowIndex="1" />
+                                <Label fx:id="lbl_serverType" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label text="Server host:" GridPane.rowIndex="2" />
+                                <Label fx:id="lbl_serverHost" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label text="Port number:" GridPane.rowIndex="3" />
+                                <Label fx:id="lbl_portNumber" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Label text="Username:" GridPane.rowIndex="4" />
+                                <Label fx:id="lbl_username" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Label text="Database:" GridPane.rowIndex="5" />
+                                <Label fx:id="lbl_database" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                             </children>
-                        </VBox>
+                        </GridPane>
                     </content>
                 </TitledPane>
                 <!--<Button mnemonicParsing="false" onAction="#testAction" text="TestAction" />-->

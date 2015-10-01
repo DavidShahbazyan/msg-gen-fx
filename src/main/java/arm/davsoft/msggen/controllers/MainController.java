@@ -46,12 +46,14 @@ public class MainController implements Initializable {
     private MessageFinder messageFinder;
 
     private StringProperty
-            projectPathProperty = new SimpleStringProperty(),
-            serverTypeProperty = new SimpleStringProperty(),
-            serverHostProperty = new SimpleStringProperty(),
-            portNumberProperty = new SimpleStringProperty(),
-            usernameProperty = new SimpleStringProperty(),
-            databaseProperty = new SimpleStringProperty()
+            projectPathProperty =           new SimpleStringProperty(),
+            serverTypeProperty =            new SimpleStringProperty(),
+            serverHostProperty =            new SimpleStringProperty(),
+            portNumberProperty =            new SimpleStringProperty(),
+            usernameProperty =              new SimpleStringProperty(),
+            databaseProperty =              new SimpleStringProperty(),
+            emptyMessagesQuantityProperty = new SimpleStringProperty(),
+            messageRangeProperty =          new SimpleStringProperty()
             ;
     private ListProperty<FileItem> fileItemsTableViewData = new SimpleListProperty<>();
 
@@ -82,6 +84,8 @@ public class MainController implements Initializable {
             lbl_portNumberVisibleProperty =             new SimpleBooleanProperty(false),
             lbl_usernameVisibleProperty =               new SimpleBooleanProperty(false),
             lbl_databaseVisibleProperty =               new SimpleBooleanProperty(false),
+            lbl_emptyMessagesQuantityVisibleProperty =  new SimpleBooleanProperty(false),
+            lbl_messageRangeVisibleProperty =           new SimpleBooleanProperty(false),
 
             fileItemsTableViewVisibleProperty =         new SimpleBooleanProperty(false)
             ;
@@ -100,7 +104,7 @@ public class MainController implements Initializable {
     @FXML
     private TitledPane detailsPanel;
     @FXML
-    private Label lbl_projectPath, lbl_serverType, lbl_serverHost, lbl_portNumber, lbl_username, lbl_database;
+    private Label lbl_projectPath, lbl_serverType, lbl_serverHost, lbl_portNumber, lbl_username, lbl_database, lbl_emptyMessagesQuantity, lbl_messageRange;
     @FXML
     private TableView<FileItem> fileItemsTableView;
     @FXML
@@ -132,23 +136,29 @@ public class MainController implements Initializable {
     }
 
     private void initPropertyBindings() {
+        // Data bindings
         lbl_projectPath.textProperty().bind(projectPathProperty);
         lbl_serverType.textProperty().bind(serverTypeProperty);
         lbl_serverHost.textProperty().bind(serverHostProperty);
         lbl_portNumber.textProperty().bind(portNumberProperty);
         lbl_username.textProperty().bind(usernameProperty);
         lbl_database.textProperty().bind(databaseProperty);
+        lbl_emptyMessagesQuantity.textProperty().bind(emptyMessagesQuantityProperty);
+        lbl_messageRange.textProperty().bind(messageRangeProperty);
+        fileItemsTableView.itemsProperty().bind(fileItemsTableViewData);
 
-
+        // Visibility bindings
         lbl_projectPath.visibleProperty().bind(lbl_projectPathVisibleProperty);
         lbl_serverType.visibleProperty().bind(lbl_serverTypeVisibleProperty);
         lbl_serverHost.visibleProperty().bind(lbl_serverHostVisibleProperty);
         lbl_portNumber.visibleProperty().bind(lbl_portNumberVisibleProperty);
         lbl_username.visibleProperty().bind(lbl_usernameVisibleProperty);
         lbl_database.visibleProperty().bind(lbl_databaseVisibleProperty);
-
+        lbl_emptyMessagesQuantity.visibleProperty().bind(lbl_emptyMessagesQuantityVisibleProperty);
+        lbl_messageRange.visibleProperty().bind(lbl_messageRangeVisibleProperty);
         fileItemsTableView.visibleProperty().bind(fileItemsTableViewVisibleProperty);
 
+        // Disability bindings
         browseProjectMenuItem.disableProperty().bind(browseProjectMenuItemDisabledProperty);
         appSettingsMenuItem.disableProperty().bind(appSettingsMenuItemDisabledProperty);
         exitAppMenuItem.disableProperty().bind(exitAppMenuItemDisabledProperty);
@@ -162,12 +172,9 @@ public class MainController implements Initializable {
         connectMySQLMenuItem.disableProperty().bind(connectMySQLMenuItemDisabledProperty);
         configConnectionMenuItem.disableProperty().bind(configConnectionMenuItemDisabledProperty);
         aboutAppMenuItem.disableProperty().bind(aboutAppMenuItemDisabledProperty);
-
         scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
         transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
         cleanMessageRangeButton.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
-
-        fileItemsTableView.itemsProperty().bind(fileItemsTableViewData);
     }
 
     private void validate() {
@@ -187,6 +194,8 @@ public class MainController implements Initializable {
         lbl_portNumberVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
         lbl_usernameVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
         lbl_databaseVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
+        lbl_emptyMessagesQuantityVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
+        lbl_messageRangeVisibleProperty.set(currentMessageRange != null && currentMessageRange.isValid());
 
         detailsPanelVisibleProperty.set(lbl_projectPathVisibleProperty.get()
                         || lbl_serverTypeVisibleProperty.get()
@@ -194,6 +203,7 @@ public class MainController implements Initializable {
                         || lbl_portNumberVisibleProperty.get()
                         || lbl_usernameVisibleProperty.get()
                         || lbl_databaseVisibleProperty.get()
+                        || lbl_emptyMessagesQuantityVisibleProperty.get()
         );
 
         fileItemsTableViewVisibleProperty.set(!fileItemsTableViewData.isEmpty());
@@ -224,12 +234,14 @@ public class MainController implements Initializable {
         aboutAppMenuItemDisabledProperty.set(false);
     }
 
-    private void updateConnectionDetails(ConnectionConfig config) {
-        serverTypeProperty.setValue(config.getDbServerType().getName());
-        serverHostProperty.setValue(config.getHostName());
-        portNumberProperty.setValue(String.valueOf(config.getPort()));
-        usernameProperty.setValue(config.getUserName());
-        databaseProperty.setValue(config.getDbName());
+    private void updateConnectionDetails() {
+        serverTypeProperty.setValue(messageTransferService.getConfig().getDbServerType().getName());
+        serverHostProperty.setValue(messageTransferService.getConfig().getHostName());
+        portNumberProperty.setValue(String.valueOf(messageTransferService.getConfig().getPort()));
+        usernameProperty.setValue(messageTransferService.getConfig().getUserName());
+        databaseProperty.setValue(messageTransferService.getConfig().getDbName());
+        emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
+        messageRangeProperty.setValue(currentMessageRange.toString());
     }
 
     private void initFilesTable() {
@@ -313,76 +325,75 @@ public class MainController implements Initializable {
 
     @FXML
     private void scanForNewMessagesInProject(ActionEvent event) {
-//        if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.scanProject"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
-            Task task = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    Logger.getLogger(MainController.class).info("Project scan started.");
-                    updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanProject"));
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                Logger.getLogger(MainController.class).info("Project scan started.");
+                updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanProject"));
+                if (messageFinder != null) {
+                    updateMessage(ResourceManager.getMessage("label.scanningProjectForMessages"));
+                    messageFinder.findFileList();
+                    updateTitle(ResourceManager.getMessage("label.filteringEmptyMessages"));
+                    List<FileItem> retVal = new ArrayList<>();
                     if (messageFinder != null) {
-                        updateMessage(ResourceManager.getMessage("label.scanningProjectForMessages"));
-                        messageFinder.findFileList();
-                        updateTitle(ResourceManager.getMessage("label.filteringEmptyMessages"));
-                        List<FileItem> retVal = new ArrayList<>();
-                        if (messageFinder != null) {
-                            int workDone = 0;
-                            int workToDo = messageFinder.getFilesList().size();
-                            for (FileItem item : messageFinder.getFilesList()) {
-                                if (item.getLineItems().size() > 0) {
-                                    retVal.add(item);
-                                }
-                                workDone++;
-                                updateMessage(ResourceManager.getMessage("label.filtered") + workDone + " / " + workToDo);
-                                updateProgress(workDone, workToDo);
-                                Thread.sleep(100);
+                        int workDone = 0;
+                        int workToDo = messageFinder.getFilesList().size();
+                        for (FileItem item : messageFinder.getFilesList()) {
+                            if (item.getLineItems().size() > 0) {
+                                retVal.add(item);
                             }
+                            workDone++;
+                            updateMessage(ResourceManager.getMessage("label.filtered") + workDone + " / " + workToDo);
+                            updateProgress(workDone, workToDo);
+                            Thread.sleep(1);
                         }
-                        updateMessage(ResourceManager.getMessage("label.finalizing"));
-                        fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
                     }
-                    validate();
-                    Logger.getLogger(MainController.class).info("Project scan completed.");
-                    return null;
+                    updateMessage(ResourceManager.getMessage("label.finalizing"));
+                    fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
                 }
-            };
+                validate();
+                Logger.getLogger(MainController.class).info("Project scan completed.");
+                return null;
+            }
+        };
 
-            Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
+        Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
-//        }
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML
     private void scanForNewMessagesInDB(ActionEvent event) {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.scanDB"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
-            Task task = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    Logger.getLogger(MainController.class).info("DB scan started.");
-                    updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanDB"));
-//                    messageTransferService.generateNewEmptyMessages(currentMessageRange);
-//                    initEmptyMessages();
-                    Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
-                    validate();
-                    Logger.getLogger(MainController.class).info("DB scan completed.");
-                    return null;
-                }
-            };
+            if (checkTheMessageRangeToBeSet()) {
+                Task task = new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        Logger.getLogger(MainController.class).info("DB scan started.");
+                        updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanDB"));
+                        messageTransferService.generateNewEmptyMessages(currentMessageRange);
+                        initEmptyMessages();
+                        Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
+                        validate();
+                        Logger.getLogger(MainController.class).info("DB scan completed.");
+                        return null;
+                    }
+                };
 
-            Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
+                Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
 
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
+                Thread thread = new Thread(task);
+                thread.setDaemon(true);
+                thread.start();
+            }
         }
     }
 
     @FXML
     private void generateEmptyMessages(ActionEvent event) {
-        currentMessageRange = Dialogs.showRangeDialog("Message Range", "Please define message range.");
-        if (currentMessageRange != null) {
+        if (checkTheMessageRangeToBeSet()) {
             if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
                 Task task = new Task() {
                     @Override
@@ -448,24 +459,26 @@ public class MainController implements Initializable {
     @FXML
     private void removeUnusedMessagesFromDB(ActionEvent event) {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"), null, ResourceManager.getMessage("label.confirmation.removeFromDB"))) {
-            Task task = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    Logger.getLogger(MainController.class).info("Message cleaning started.");
-                    updateTitle(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"));
-                    messageTransferService.removeUnusedMessages(currentMessageRange, getUsedMessages());
-                    initEmptyMessages();
-                    validate();
-                    Logger.getLogger(MainController.class).info("Message cleaning completed.");
-                    return null;
-                }
-            };
+            if (checkTheMessageRangeToBeSet()) {
+                Task task = new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        Logger.getLogger(MainController.class).info("Message cleaning started.");
+                        updateTitle(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"));
+                        messageTransferService.removeUnusedMessages(currentMessageRange, getUsedMessages());
+                        initEmptyMessages();
+                        validate();
+                        Logger.getLogger(MainController.class).info("Message cleaning completed.");
+                        return null;
+                    }
+                };
 
-            Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
+                Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
 
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
+                Thread thread = new Thread(task);
+                thread.setDaemon(true);
+                thread.start();
+            }
         }
     }
 
@@ -498,7 +511,8 @@ public class MainController implements Initializable {
         if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
             config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
-            updateConnectionDetails(config);
+            initEmptyMessages();
+            updateConnectionDetails();
         }
         validate();
     }
@@ -512,7 +526,8 @@ public class MainController implements Initializable {
         }
         if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
-            updateConnectionDetails(config);
+            initEmptyMessages();
+            updateConnectionDetails();
         }
         validate();
     }
@@ -527,7 +542,8 @@ public class MainController implements Initializable {
         if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
             config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
-            updateConnectionDetails(config);
+            initEmptyMessages();
+            updateConnectionDetails();
         }
         validate();
     }
@@ -537,7 +553,7 @@ public class MainController implements Initializable {
         ConnectionConfig config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), messageTransferService.getConfig());
         if (config != null) {
             messageTransferService = new MessageTransferService(config);
-            updateConnectionDetails(config);
+            updateConnectionDetails();
         }
         validate();
     }
@@ -549,6 +565,12 @@ public class MainController implements Initializable {
 //        String content = ResourceManager.getMessage("label.aboutTheApp");
 //        Dialogs.showInfoPopup(title, header, content);
         Dialogs.showAboutAppDialog(rootContainer.getScene().getWindow());
+    }
+
+    @FXML
+    private void specifyNewMessageRange(ActionEvent event) {
+        currentMessageRange = Dialogs.showRangeDialog("Message Range", "Please define message range.");
+        updateConnectionDetails();
     }
     /* ------------- /Main Menu Actions ------------- */
 
@@ -626,7 +648,16 @@ public class MainController implements Initializable {
     }
 
     private void initEmptyMessages() {
-        emptyMessagesList = messageTransferService.loadEmptyMessages(currentMessageRange);
+        if (checkTheMessageRangeToBeSet()) {
+            emptyMessagesList = messageTransferService.loadEmptyMessages(currentMessageRange);
+        }
+    }
+
+    private boolean checkTheMessageRangeToBeSet() {
+        if (currentMessageRange == null) {
+            specifyNewMessageRange(new ActionEvent());
+        }
+        return currentMessageRange != null && currentMessageRange.isValid();
     }
     /* ------------- /Other methods ------------- */
 
