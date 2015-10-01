@@ -62,7 +62,7 @@ public class MainPreloader extends Preloader {
         stage.setScene(createPreloaderScene());
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getScene().setFill(Color.TRANSPARENT);
-        stage.getScene().getStylesheets().add("/css/style.css");
+        stage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         stage.show();
     }
 

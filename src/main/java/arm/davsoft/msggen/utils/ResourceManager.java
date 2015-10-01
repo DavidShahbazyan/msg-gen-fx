@@ -68,5 +68,7 @@ public final class ResourceManager {
 
     public static String getSetting(String settingName) { return settingsResourceConfig.getString(settingName); }
 
+    public static String getUIThemeStyle() { return "css/" + getSetting("uiTheme") + ".css"; }
+
     public static URL getScene(String sceneName) { return ResourceManager.class.getResource("/screens/" + sceneName); }
 }

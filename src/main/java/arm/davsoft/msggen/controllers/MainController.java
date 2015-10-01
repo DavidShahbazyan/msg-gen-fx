@@ -331,6 +331,7 @@ public class MainController implements Initializable {
                 Logger.getLogger(MainController.class).info("Project scan started.");
                 updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanProject"));
                 if (messageFinder != null) {
+                    fileItemsTableViewData.clear();
                     updateMessage(ResourceManager.getMessage("label.scanningProjectForMessages"));
                     messageFinder.findFileList();
                     updateTitle(ResourceManager.getMessage("label.filteringEmptyMessages"));

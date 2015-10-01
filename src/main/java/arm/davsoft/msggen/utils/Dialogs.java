@@ -179,7 +179,7 @@ public final class Dialogs {
         dialogVBox.getChildren().add(buttonBar);
 
         Scene dialogScene = new Scene(dialogVBox);
-        dialogScene.getStylesheets().add("/css/style.css");
+        dialogScene.getStylesheets().add(ResourceManager.getUIThemeStyle());
         dialog.setScene(dialogScene);
         dialog.setResizable(false);
         dialog.show();
@@ -325,7 +325,7 @@ public final class Dialogs {
 
         Scene dialogScene = new Scene(vBox);
         dialog.setScene(dialogScene);
-        dialog.getScene().getStylesheets().add("css/style.css");
+        dialog.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         dialog.setResizable(false);
         dialog.show();
         dialog.requestFocus();
@@ -376,7 +376,7 @@ public final class Dialogs {
         p.setStyle("-fx-background-color: transparent;");
 
         Scene scene = new Scene(p);
-        scene.getStylesheets().addAll("css/style.css");
+        scene.getStylesheets().addAll(ResourceManager.getUIThemeStyle());
 
         stage.setScene(scene);
         stage.show();

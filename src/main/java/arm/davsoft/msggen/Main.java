@@ -89,7 +89,7 @@ public class Main extends Application {
         });
         primaryStage.setFullScreenExitHint("");
 
-        primaryStage.getScene().getStylesheets().add("css/style.css");
+        primaryStage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         primaryStage.getScene().setFill(Color.web("DDF", 0.75));
 //        primaryStage.initStyle(StageStyle.TRANSPARENT);
 //        primaryStage.setResizable(false);

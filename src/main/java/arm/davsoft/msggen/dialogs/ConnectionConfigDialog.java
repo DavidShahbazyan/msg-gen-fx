@@ -100,6 +100,7 @@ public class ConnectionConfigDialog {
         wrapper.getChildren().addAll(tilePane, buttonBar);
 
         stage.setScene(new Scene(wrapper));
+        stage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         stage.setResizable(false);
         stage.showAndWait();
     }
