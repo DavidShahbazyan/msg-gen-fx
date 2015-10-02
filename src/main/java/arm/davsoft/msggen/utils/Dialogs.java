@@ -1,5 +1,6 @@
 package arm.davsoft.msggen.utils;
 
+import arm.davsoft.msggen.dialogs.AboutAppDialog;
 import arm.davsoft.msggen.dialogs.ConnectionConfigDialog;
 import arm.davsoft.msggen.domains.IntegerRange;
 import arm.davsoft.msggen.enums.IDMVersion;
@@ -13,12 +14,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Reflection;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -332,54 +333,6 @@ public final class Dialogs {
     }
 
     public static void showAboutAppDialog(Window ownerWindow) {
-        String title = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.RELEASE.VERSION");
-
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UTILITY);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(ownerWindow);
-        stage.setResizable(false);
-        stage.setTitle(ResourceManager.getMessage("title.dialog.about") + " " + title);
-
-        Reflection reflection = new Reflection();
-
-        ImageView background = new ImageView("/images/splashScreen.jpg");
-
-        String aboutTheApp = ResourceManager.getMessage("label.aboutTheApp");
-
-        aboutTheApp = aboutTheApp.replace("{productName}", ResourceManager.getParam("APPLICATION.NAME"));
-        aboutTheApp = aboutTheApp.replace("{releaseVersion}", ResourceManager.getParam("APPLICATION.RELEASE.VERSION"));
-        aboutTheApp = aboutTheApp.replace("{releaseDate}", ResourceManager.getParam("APPLICATION.RELEASE.DATE"));
-        aboutTheApp = aboutTheApp.replace("{javaVersion}", ResourceManager.getParam("APPLICATION.JAVA.VERSION"));
-        aboutTheApp = aboutTheApp.replace("{developers}", ResourceManager.getParam("APPLICATION.DEVELOPERS").replace(';', '\n'));
-        aboutTheApp = aboutTheApp.replace("{designers}", ResourceManager.getParam("APPLICATION.DESIGNERS"));
-        aboutTheApp = aboutTheApp.replace("{copyrights}", ResourceManager.getParam("APPLICATION.COPYRIGHTS"));
-
-        TextArea aboutTheAppTextArea = new TextArea(aboutTheApp);
-        aboutTheAppTextArea.setEditable(false);
-        aboutTheAppTextArea.setFocusTraversable(false);
-        aboutTheAppTextArea.setWrapText(true);
-        aboutTheAppTextArea.setPrefSize(300, 200);
-        aboutTheAppTextArea.setMinSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
-        aboutTheAppTextArea.setMaxSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
-
-        AnchorPane p = new AnchorPane(background, aboutTheAppTextArea);
-        AnchorPane.setTopAnchor(background, (double) 0);
-        AnchorPane.setRightAnchor(background, (double) 0);
-        AnchorPane.setBottomAnchor(background, (double) 0);
-        AnchorPane.setLeftAnchor(background, (double) 0);
-
-        AnchorPane.setTopAnchor(aboutTheAppTextArea, (double) 200);
-        AnchorPane.setRightAnchor(aboutTheAppTextArea, (double) 50);
-        AnchorPane.setLeftAnchor(aboutTheAppTextArea, (double) 50);
-
-        p.setStyle("-fx-background-color: transparent;");
-
-        Scene scene = new Scene(p);
-        scene.getStylesheets().addAll(ResourceManager.getUIThemeStyle());
-
-        stage.setScene(scene);
-        stage.show();
-        stage.requestFocus();
+        AboutAppDialog.show(ownerWindow);
     }
 }
