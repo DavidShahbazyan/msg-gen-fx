@@ -21,8 +21,8 @@
 }
 
 .menu-bar {
-    -fx-background-color: #C3C4C4, linear-gradient(#D6D6D6 50%, #FFF 100%),
-    radial-gradient(center 50% -40%, radius 200%, #E6E6E6 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-color: #f9fbfa, linear-gradient(#f9fbfa 50%, #FFF 100%),
+    radial-gradient(center 50% -40%, radius 200%, #f9fbfa 45%, rgba(249, 251, 250, 0) 50%);
 }
 
 .context-menu {
@@ -61,11 +61,16 @@
     linear-gradient(#f0a525, #f0a525);*/
     -fx-background-color:#F0A525;
     -fx-background-radius: 0;
+    -fx-fill: #415b74;
+    -fx-stroke: #415b74;
+    -fx-stroke-width: 5;
+    -fx-stroke-dash-array: 1;
+    -fx-stroke-dash-offset: 1;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(#F0FF35, #A9FF00),
-    radial-gradient(center 50% -40%, radius 200%, #C8FE46 45%, #90D810 50%);
+    -fx-background-color: linear-gradient(#415b74, #415b74),
+    radial-gradient(center 50% -40%, radius 200%, #415b74 45%, #415b74 50%);
 }
 
 .details-panel > .title {
