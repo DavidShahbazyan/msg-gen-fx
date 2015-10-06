@@ -1,8 +1,8 @@
-import arm.davsoft.msggen.enums.DBServerType;
-import arm.davsoft.msggen.enums.IDMVersion;
-import arm.davsoft.msggen.implementations.ConnectionConfigImpl;
-import arm.davsoft.msggen.interfaces.ConnectionConfig;
-import arm.davsoft.msggen.service.MessageTransferService;
+import arm.davsoft.msgman.enums.DBServerType;
+import arm.davsoft.msgman.enums.IDMVersion;
+import arm.davsoft.msgman.implementations.ConnectionConfigImpl;
+import arm.davsoft.msgman.interfaces.ConnectionConfig;
+import arm.davsoft.msgman.service.MessageTransferService;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;

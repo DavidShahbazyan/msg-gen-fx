@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>arm.davsoft</groupId>
-    <artifactId>msggen</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <artifactId>msgman</artifactId>
+    <name>Message Manager</name>
+    <version>1.0-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -98,7 +99,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>arm.davsoft.msggen.Main</mainClass>
+                            <mainClass>arm.davsoft.msgman.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
