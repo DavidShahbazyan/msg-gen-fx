@@ -19,7 +19,7 @@ public class PopupDialogTest extends Application {
         Dialogs.showConfirmPopup("Title", "Header", "Confirm");
         Dialogs.showConfirmPopup("Title", null, "Confirm");
 
-        Dialogs.showExceptionDialog("Header", "Exception", new NullPointerException("Temp exception."));
+        Dialogs.showExceptionDialog("Header", "Exception ", new NullPointerException("Temp exception."));
         Dialogs.showExceptionDialog(null, "Exception", new NullPointerException("Temp exception."));
 
     }
