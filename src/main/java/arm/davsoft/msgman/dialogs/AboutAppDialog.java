@@ -29,7 +29,9 @@ public final class AboutAppDialog {
         stage.setResizable(false);
         stage.setTitle(ResourceManager.getMessage("title.dialog.about") + " " + title);
 
-        ImageView background = new ImageView("/images/splashScreen.jpg");
+        ImageView background = new ImageView("/images/background.jpg");
+        background.setFitWidth(500);
+        background.setFitHeight(500);
 
         String aboutTheApp = ResourceManager.getMessage("label.aboutTheApp");
 
@@ -52,7 +54,7 @@ public final class AboutAppDialog {
         ImageView logo = new ImageView(ResourceManager.getAppLogo());
         logo.setFitWidth(92);
         logo.setFitHeight(92);
-        logo.setEffect(new Reflection());
+        logo.setEffect(new Reflection(0, 1, 0.3, 0));
 
         AnchorPane p = new AnchorPane(background, logo, aboutTheAppTextArea);
         AnchorPane.setTopAnchor(background, (double) 0);
@@ -60,12 +62,12 @@ public final class AboutAppDialog {
         AnchorPane.setBottomAnchor(background, (double) 0);
         AnchorPane.setLeftAnchor(background, (double) 0);
 
+        AnchorPane.setTopAnchor(logo, (double) 20);
+        AnchorPane.setLeftAnchor(logo, (double) 20);
+
         AnchorPane.setTopAnchor(aboutTheAppTextArea, (double) 200);
         AnchorPane.setRightAnchor(aboutTheAppTextArea, (double) 50);
         AnchorPane.setLeftAnchor(aboutTheAppTextArea, (double) 50);
-
-        AnchorPane.setTopAnchor(logo, (double) 25);
-        AnchorPane.setRightAnchor(logo, (double) 25);
 
         p.setStyle("-fx-background-color: transparent;");
 

@@ -87,13 +87,13 @@
  ******************************************************************************/
 
 .progress-bar.white {
-    -fx-border-color: #FFF;
     -fx-accent: #FFF;
+    -fx-border-color: -fx-accent;
 }
 
 .progress-bar.dark {
-    -fx-border-color: #888;
     -fx-accent: #888;
+    -fx-border-color: -fx-accent;
 }
 
 .progress-bar {
@@ -164,3 +164,16 @@
 .bold {
     -fx-font-weight: bold;
 }
+
+.splash-screen-app-name {
+    -fx-font-weight: normal;
+    -fx-text-fill: rgba(0, 0, 0, 1);
+    -fx-font-size: 15px;
+}
+
+.splash-screen-app-ver {
+    -fx-font-weight: normal;
+    -fx-text-fill: rgba(0, 0, 0, 1);
+    -fx-font-size: 10px;
+}
+

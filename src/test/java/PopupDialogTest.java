@@ -1,4 +1,4 @@
-import arm.davsoft.msggen.utils.Dialogs;
+import arm.davsoft.msgman.utils.Dialogs;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

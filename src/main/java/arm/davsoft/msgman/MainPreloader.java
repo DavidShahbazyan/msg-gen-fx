@@ -21,34 +21,49 @@ public class MainPreloader extends Preloader {
     ProgressBar bar;
     Stage stage;
     Label applicationName;
+    Label applicationVersion;
 
     private Scene createPreloaderScene() {
         bar = new ProgressBar();
         bar.setPrefHeight(3);
-        bar.getStyleClass().add("white");
+        bar.getStyleClass().add("red");
 
-        Reflection reflection = new Reflection();
-        reflection.setTopOpacity(0.3);
+        applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME"));
+        applicationName.getStyleClass().add("splash-screen-app-name");
 
-//        applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.VERSION"));
-//        applicationName.setStyle("-fx-font-size: 25px");
-//        applicationName.setEffect(reflection);
+        applicationVersion = new Label(ResourceManager.getParam("APPLICATION.RELEASE.VERSION"));
+        applicationVersion.getStyleClass().add("splash-screen-app-ver");
 
 //        ImageView splash = new ImageView("/images/splashScreen.png");
-        ImageView splash = new ImageView("/images/splashScreen.jpg");
-        AnchorPane p = new AnchorPane(splash, bar/*, applicationName*/);
-        AnchorPane.setTopAnchor(splash, (double) 0);
+        ImageView splash = new ImageView("/images/background.jpg");
+        splash.setFitWidth(500);
+        splash.setFitHeight(500);
 
+        ImageView logo = new ImageView(ResourceManager.getAppLogo());
+        logo.setFitWidth(92);
+        logo.setFitHeight(92);
+        logo.setEffect(new Reflection(0, 1, 0.3, 0));
+
+        AnchorPane p = new AnchorPane(splash, logo, applicationName, bar, applicationVersion);
+
+        AnchorPane.setTopAnchor(splash, (double) 0);
         AnchorPane.setRightAnchor(splash, (double) 0);
         AnchorPane.setBottomAnchor(splash, (double) 0);
         AnchorPane.setLeftAnchor(splash, (double) 0);
 
+        AnchorPane.setTopAnchor(logo, (double) 20);
+        AnchorPane.setLeftAnchor(logo, (double) 20);
+
+        AnchorPane.setRightAnchor(applicationName, (double) 150);
+        AnchorPane.setTopAnchor(applicationName, (double) 200);
+        AnchorPane.setLeftAnchor(applicationName, (double) 150);
+
         AnchorPane.setRightAnchor(bar, (double) 150);
-        AnchorPane.setBottomAnchor(bar, (double) 290);
+        AnchorPane.setTopAnchor(bar, (double) 220);
         AnchorPane.setLeftAnchor(bar, (double) 150);
 
-//        AnchorPane.setLeftAnchor(applicationName, (double) 20);
-//        AnchorPane.setTopAnchor(applicationName, (double) 110);
+        AnchorPane.setRightAnchor(applicationVersion, (double) 15);
+        AnchorPane.setBottomAnchor(applicationVersion, (double) 10);
 
         p.setStyle("-fx-background-color: transparent;");
         return new Scene(p);
