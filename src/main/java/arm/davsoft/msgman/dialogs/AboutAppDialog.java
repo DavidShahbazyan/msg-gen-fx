@@ -40,7 +40,8 @@ public final class AboutAppDialog {
         aboutTheApp = aboutTheApp.replace("{releaseDate}", ResourceManager.getParam("APPLICATION.RELEASE.DATE"));
         aboutTheApp = aboutTheApp.replace("{javaVersion}", ResourceManager.getParam("APPLICATION.JAVA.VERSION"));
         aboutTheApp = aboutTheApp.replace("{developers}", ResourceManager.getParam("APPLICATION.DEVELOPERS").replace(';', '\n'));
-        aboutTheApp = aboutTheApp.replace("{designers}", ResourceManager.getParam("APPLICATION.DESIGNERS"));
+        aboutTheApp = aboutTheApp.replace("{designers}", ResourceManager.getParam("APPLICATION.DESIGNERS").replace(';', '\n'));
+        aboutTheApp = aboutTheApp.replace("{partners}", ResourceManager.getParam("APPLICATION.PARTNERS").replace(';', '\n'));
         aboutTheApp = aboutTheApp.replace("{copyrights}", ResourceManager.getParam("APPLICATION.COPYRIGHTS"));
 
         TextArea aboutTheAppTextArea = new TextArea(aboutTheApp);
