@@ -51,19 +51,25 @@ public final class AboutAppDialog {
         aboutTheAppTextArea.setMinSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
         aboutTheAppTextArea.setMaxSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
 
-        ImageView logo = new ImageView(ResourceManager.getAppLogo());
-        logo.setFitWidth(92);
-        logo.setFitHeight(92);
-        logo.setEffect(new Reflection(0, 1, 0.3, 0));
+        ImageView appLogo = new ImageView(ResourceManager.getAppLogo());
+        appLogo.setFitWidth(92);
+        appLogo.setFitHeight(92);
+        appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
 
-        AnchorPane p = new AnchorPane(background, logo, aboutTheAppTextArea);
+        ImageView davsoftLogo = new ImageView(ResourceManager.getDavsoftLogo());
+        davsoftLogo.prefWidth(32);
+
+        AnchorPane p = new AnchorPane(background, appLogo, davsoftLogo, aboutTheAppTextArea);
         AnchorPane.setTopAnchor(background, (double) 0);
         AnchorPane.setRightAnchor(background, (double) 0);
         AnchorPane.setBottomAnchor(background, (double) 0);
         AnchorPane.setLeftAnchor(background, (double) 0);
 
-        AnchorPane.setTopAnchor(logo, (double) 20);
-        AnchorPane.setLeftAnchor(logo, (double) 20);
+        AnchorPane.setTopAnchor(appLogo, (double) 20);
+        AnchorPane.setLeftAnchor(appLogo, (double) 20);
+
+        AnchorPane.setBottomAnchor(davsoftLogo, (double) 20);
+        AnchorPane.setLeftAnchor(davsoftLogo, (double) 20);
 
         AnchorPane.setTopAnchor(aboutTheAppTextArea, (double) 200);
         AnchorPane.setRightAnchor(aboutTheAppTextArea, (double) 50);

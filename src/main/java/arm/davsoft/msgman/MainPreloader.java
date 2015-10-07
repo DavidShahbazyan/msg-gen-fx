@@ -39,20 +39,26 @@ public class MainPreloader extends Preloader {
         splash.setFitWidth(500);
         splash.setFitHeight(500);
 
-        ImageView logo = new ImageView(ResourceManager.getAppLogo());
-        logo.setFitWidth(92);
-        logo.setFitHeight(92);
-        logo.setEffect(new Reflection(0, 1, 0.3, 0));
+        ImageView appLogo = new ImageView(ResourceManager.getAppLogo());
+        appLogo.setFitWidth(92);
+        appLogo.setFitHeight(92);
+        appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
 
-        AnchorPane p = new AnchorPane(splash, logo, applicationName, bar, applicationVersion);
+        ImageView davsoftLogo = new ImageView(ResourceManager.getDavsoftLogo());
+        davsoftLogo.prefWidth(32);
+
+        AnchorPane p = new AnchorPane(splash, appLogo, davsoftLogo, applicationName, bar, applicationVersion);
 
         AnchorPane.setTopAnchor(splash, (double) 0);
         AnchorPane.setRightAnchor(splash, (double) 0);
         AnchorPane.setBottomAnchor(splash, (double) 0);
         AnchorPane.setLeftAnchor(splash, (double) 0);
 
-        AnchorPane.setTopAnchor(logo, (double) 20);
-        AnchorPane.setLeftAnchor(logo, (double) 20);
+        AnchorPane.setTopAnchor(appLogo, (double) 20);
+        AnchorPane.setLeftAnchor(appLogo, (double) 20);
+
+        AnchorPane.setBottomAnchor(davsoftLogo, (double) 20);
+        AnchorPane.setLeftAnchor(davsoftLogo, (double) 20);
 
         AnchorPane.setRightAnchor(applicationName, (double) 150);
         AnchorPane.setTopAnchor(applicationName, (double) 200);
@@ -62,8 +68,8 @@ public class MainPreloader extends Preloader {
         AnchorPane.setTopAnchor(bar, (double) 220);
         AnchorPane.setLeftAnchor(bar, (double) 150);
 
-        AnchorPane.setRightAnchor(applicationVersion, (double) 15);
-        AnchorPane.setBottomAnchor(applicationVersion, (double) 10);
+        AnchorPane.setRightAnchor(applicationVersion, (double) 20);
+        AnchorPane.setBottomAnchor(applicationVersion, (double) 15);
 
         p.setStyle("-fx-background-color: transparent;");
         return new Scene(p);
