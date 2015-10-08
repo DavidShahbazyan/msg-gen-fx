@@ -244,6 +244,10 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     public void setMessagesRange(Range range) {
         this.messagesRange = range;
     }
+    @Override
+    public boolean isMessageRangeValid() {
+        return this.messagesRange != null && this.messagesRange.isValid();
+    }
 
     @Override
     public boolean isValid() {
@@ -255,7 +259,7 @@ public class ConnectionConfigImpl implements ConnectionConfig {
         } else if (isMySQLServer()) {
             valid = !isHostNameEmpty() && !isPortEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
         }
-        valid = valid && this.messagesRange.isValid();
+        valid = valid && isMessageRangeValid();
         return valid;
     }
 }

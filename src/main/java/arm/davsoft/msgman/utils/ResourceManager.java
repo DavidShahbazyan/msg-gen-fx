@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -54,6 +56,10 @@ public final class ResourceManager {
 
     public static ResourceBundle getBundle(String baseName) {
         return ResourceBundle.getBundle(baseName);
+    }
+
+    public static List<Object> getParamList(String paramId) {
+        return paramsResourceConfig.getList(paramId);
     }
 
     public static String getMessage(String... messageIds) {

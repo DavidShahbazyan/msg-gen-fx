@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
@@ -103,6 +104,14 @@ public final class Dialogs {
             retVal = result.get();
         }
         return retVal;
+    }
+
+    public static void showErrorDialog(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ResourceManager.getMessage("title.dialog.error"));
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     public static void showExceptionDialog(String header, String content, Throwable throwable) {

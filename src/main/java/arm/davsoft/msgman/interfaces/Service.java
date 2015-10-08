@@ -14,12 +14,16 @@ import java.util.Set;
 public interface Service {
     List<String> loadSchemaNames();
 
+    List<Message> loadMessages();
     List<Message> loadMessages(Range range);
 
+    List<Message> loadEmptyMessages();
     List<Message> loadEmptyMessages(Range range);
 
+    void generateNewEmptyMessages() throws SQLException;
     void generateNewEmptyMessages(Range range) throws SQLException;
 
+    void removeUnusedMessages(Set<Integer> exceptIds);
     void removeUnusedMessages(Range range, Set<Integer> exceptIds);
 
     void transferMessages(List<Message> messages);

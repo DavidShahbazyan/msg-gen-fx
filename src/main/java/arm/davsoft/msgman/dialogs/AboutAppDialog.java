@@ -1,6 +1,7 @@
 package arm.davsoft.msgman.dialogs;
 
 import arm.davsoft.msgman.utils.ResourceManager;
+import arm.davsoft.msgman.utils.Utils;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Reflection;
@@ -10,6 +11,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+
+import java.util.Arrays;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -39,9 +42,9 @@ public final class AboutAppDialog {
         aboutTheApp = aboutTheApp.replace("{releaseVersion}", ResourceManager.getParam("APPLICATION.RELEASE.VERSION"));
         aboutTheApp = aboutTheApp.replace("{releaseDate}", ResourceManager.getParam("APPLICATION.RELEASE.DATE"));
         aboutTheApp = aboutTheApp.replace("{javaVersion}", ResourceManager.getParam("APPLICATION.JAVA.VERSION"));
-        aboutTheApp = aboutTheApp.replace("{developers}", ResourceManager.getParam("APPLICATION.DEVELOPERS").replace(';', '\n'));
-        aboutTheApp = aboutTheApp.replace("{designers}", ResourceManager.getParam("APPLICATION.DESIGNERS").replace(';', '\n'));
-        aboutTheApp = aboutTheApp.replace("{partners}", ResourceManager.getParam("APPLICATION.PARTNERS").replace(';', '\n'));
+        aboutTheApp = aboutTheApp.replace("{developers}", Utils.concatStrings(ResourceManager.getParamList("APPLICATION.DEVELOPERS"), "\n"));
+        aboutTheApp = aboutTheApp.replace("{designers}", Utils.concatStrings(ResourceManager.getParamList("APPLICATION.DESIGNERS"), "\n"));
+        aboutTheApp = aboutTheApp.replace("{partners}", Utils.concatStrings(ResourceManager.getParamList("APPLICATION.PARTNERS"), "\n"));
         aboutTheApp = aboutTheApp.replace("{copyrights}", ResourceManager.getParam("APPLICATION.COPYRIGHTS"));
 
         TextArea aboutTheAppTextArea = new TextArea(aboutTheApp);

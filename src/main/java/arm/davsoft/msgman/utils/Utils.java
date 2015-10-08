@@ -14,7 +14,16 @@ import java.util.regex.Pattern;
  */
 public class Utils {
 
-    public static String join(Collection<Integer> items) {
+    public static String concatStrings(Collection<Object> strings, String delimiter) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object o : strings) {
+            stringBuilder.append(o).append(delimiter);
+        }
+        stringBuilder.setLength(stringBuilder.length() - 1);
+        return stringBuilder.toString();
+    }
+
+    public static String joinIntegers(Collection<Integer> items) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Integer item : items) {
             stringBuilder.append(item).append(",");

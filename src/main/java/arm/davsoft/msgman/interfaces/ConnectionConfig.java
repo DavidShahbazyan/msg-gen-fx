@@ -70,6 +70,7 @@ public interface ConnectionConfig extends Cloneable {
 
     Range getMessagesRange();
     void setMessagesRange(Range range);
+    boolean isMessageRangeValid();
 
     boolean isValid();
 }

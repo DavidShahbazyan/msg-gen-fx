@@ -60,7 +60,7 @@ public class MainController implements Initializable {
     private List<Message> emptyMessagesList = new ArrayList<>();
     private List<Message> messagesToTransfer = new ArrayList<>();
 
-    private Range currentMessageRange;
+//    private Range currentMessageRange;
 
     private BooleanProperty
             browseProjectMenuItemDisabledProperty =     new SimpleBooleanProperty(false),
@@ -195,7 +195,8 @@ public class MainController implements Initializable {
         lbl_usernameVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
         lbl_databaseVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
         lbl_emptyMessagesQuantityVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
-        lbl_messageRangeVisibleProperty.set(currentMessageRange != null && currentMessageRange.isValid());
+//        lbl_messageRangeVisibleProperty.set(currentMessageRange != null && currentMessageRange.isValid());
+        lbl_messageRangeVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null && messageTransferService.getConfig().getMessagesRange() != null);
 
         detailsPanelVisibleProperty.set(lbl_projectPathVisibleProperty.get()
                         || lbl_serverTypeVisibleProperty.get()
@@ -241,7 +242,7 @@ public class MainController implements Initializable {
         usernameProperty.setValue(messageTransferService.getConfig().getUserName());
         databaseProperty.setValue(messageTransferService.getConfig().getDbName());
         emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
-        messageRangeProperty.setValue(currentMessageRange.toString());
+        messageRangeProperty.setValue(messageTransferService.getConfig().getMessagesRange().toString());
     }
 
     private void initFilesTable() {
@@ -374,7 +375,7 @@ public class MainController implements Initializable {
                     protected Object call() throws Exception {
                         Logger.getLogger(MainController.class).info("DB scan started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanDB"));
-                        messageTransferService.generateNewEmptyMessages(currentMessageRange);
+                        messageTransferService.generateNewEmptyMessages();
                         initEmptyMessages();
                         Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
                         validate();
@@ -466,7 +467,7 @@ public class MainController implements Initializable {
                     protected Object call() throws Exception {
                         Logger.getLogger(MainController.class).info("Message cleaning started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"));
-                        messageTransferService.removeUnusedMessages(currentMessageRange, getUsedMessages());
+                        messageTransferService.removeUnusedMessages(getUsedMessages());
                         initEmptyMessages();
                         validate();
                         Logger.getLogger(MainController.class).info("Message cleaning completed.");
@@ -570,7 +571,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void specifyNewMessageRange(ActionEvent event) {
-        currentMessageRange = Dialogs.showRangeDialog("Message Range", "Please define message range.");
+        messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
         updateConnectionDetails();
     }
     /* ------------- /Main Menu Actions ------------- */
@@ -650,16 +651,16 @@ public class MainController implements Initializable {
 
     private void initEmptyMessages() {
         if (checkTheMessageRangeToBeSet()) {
-            emptyMessagesList = messageTransferService.loadEmptyMessages(currentMessageRange);
+            emptyMessagesList = messageTransferService.loadEmptyMessages();
         }
         updateConnectionDetails();
     }
 
     private boolean checkTheMessageRangeToBeSet() {
-        if (currentMessageRange == null) {
+        if (messageTransferService.getConfig().getMessagesRange() == null) {
             specifyNewMessageRange(new ActionEvent());
         }
-        return currentMessageRange != null && currentMessageRange.isValid();
+        return messageTransferService.getConfig().isMessageRangeValid();
     }
     /* ------------- /Other methods ------------- */
 

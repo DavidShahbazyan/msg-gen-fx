@@ -4,6 +4,7 @@ import arm.davsoft.msgman.enums.ErrorCodes;
 import arm.davsoft.msgman.utils.AppSpecUncaughtExceptionHandler;
 import arm.davsoft.msgman.utils.FXMLFactory;
 import arm.davsoft.msgman.utils.ResourceManager;
+import com.sun.javafx.css.StyleManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -41,6 +42,7 @@ public class Main extends Application {
     @Override
     public void init() {
         try {
+            setUserAgentStylesheet(ResourceManager.getUIThemeStyle());
             Thread.sleep(3000);
             initLogger();
             Logger.getLogger(Main.class).info("Application init completed!");
@@ -88,7 +90,7 @@ public class Main extends Application {
         });
         primaryStage.setFullScreenExitHint("");
 
-        primaryStage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
+//        primaryStage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         primaryStage.getScene().setFill(Color.web("DDF", 0.75));
 //        primaryStage.initStyle(StageStyle.TRANSPARENT);
 //        primaryStage.setResizable(false);

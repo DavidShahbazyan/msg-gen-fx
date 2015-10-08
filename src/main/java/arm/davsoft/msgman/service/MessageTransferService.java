@@ -33,6 +33,11 @@ public class MessageTransferService extends ServiceImpl {
     }
 
     @Override
+    public List<Message> loadMessages() {
+        return loadMessages(config.getMessagesRange());
+    }
+
+    @Override
     public List<Message> loadMessages(Range range) {
         List<Message> messages = new ArrayList<>();
         try {
@@ -44,6 +49,11 @@ public class MessageTransferService extends ServiceImpl {
             Logger.getLogger(getClass()).error(ex);
         }
         return messages;
+    }
+
+    @Override
+    public List<Message> loadEmptyMessages() {
+        return loadEmptyMessages(config.getMessagesRange());
     }
 
     @Override
@@ -61,6 +71,11 @@ public class MessageTransferService extends ServiceImpl {
     }
 
     @Override
+    public void generateNewEmptyMessages() throws SQLException {
+        generateNewEmptyMessages(config.getMessagesRange());
+    }
+    
+    @Override
     public void generateNewEmptyMessages(Range range) throws SQLException {
         try {
             Map<String, Object> params = new HashMap<>();
@@ -74,12 +89,17 @@ public class MessageTransferService extends ServiceImpl {
     }
 
     @Override
+    public void removeUnusedMessages(Set<Integer> exceptIds) {
+        removeUnusedMessages(config.getMessagesRange(), exceptIds);
+    }
+
+    @Override
     public void removeUnusedMessages(Range range, Set<Integer> exceptIds) {
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("@@RangeStart", range.getFrom());
             params.put("@@RangeEnd", range.getTo());
-            params.put("@@MessageIds", Utils.join(exceptIds));
+            params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
             dao.removeUnusedMessages(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
