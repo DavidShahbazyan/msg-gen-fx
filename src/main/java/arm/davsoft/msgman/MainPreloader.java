@@ -26,7 +26,7 @@ public class MainPreloader extends Preloader {
     private Scene createPreloaderScene() {
         bar = new ProgressBar();
         bar.setPrefHeight(3);
-        bar.getStyleClass().add("red");
+        bar.getStyleClass().add("white");
 
         applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME"));
         applicationName.getStyleClass().add("splash-screen-app-name");

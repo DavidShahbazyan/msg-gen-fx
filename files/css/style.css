@@ -1,28 +1,9 @@
 #rootContainer {
-    -fx-background-color: #C3C4C4, linear-gradient(#D6D6D6 50%, #FFF 100%),
-    radial-gradient(center 50% -40%, radius 200%, #E6E6E6 45%, rgba(230, 230, 230, 0) 50%);
-    /*-fx-background-color: #A0F;*/
-    /*-fx-background-color: transparent;*/
-
-    /* A little darker than -fx-color and used to draw boxes around objects such
-     * as progress bars, scroll bars, scroll panes, trees, tables, and lists.
-     */
-    /*-fx-box-border: ladder(*/
-    /*-fx-color,*/
-    /*black 20%,*/
-    /*derive(-fx-color,-30%) 30%*/
-    /*);*/
-
-    /* A bright blue for highlighting/accenting objects.  For example: selected
-     * text; selected items in menus, lists, trees, and tables; progress bars;
-     * default buttons.
-     */
-    /*-fx-accent: #0093ff;*/
+    -fx-background-color: #FFF;
 }
 
 .menu-bar {
-    -fx-background-color: #f9fbfa, linear-gradient(#f9fbfa 50%, #FFF 100%),
-    radial-gradient(center 50% -40%, radius 200%, #f9fbfa 45%, rgba(249, 251, 250, 0) 50%);
+    -fx-background-color: #FFF;
 }
 
 .context-menu {
@@ -55,11 +36,11 @@
 .button {
     -fx-background-insets: 0,1,1;
     -fx-text-fill: #FFF;
-    -fx-effect: dropshadow( three-pass-box , rgba(240, 165, 37, 0.60), 3, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(65, 91, 116, 0.60), 3, 0.0 , 0 , 1 );
 
     /*-fx-background-color: linear-gradient(#f0a525, #f0a525),
     linear-gradient(#f0a525, #f0a525);*/
-    -fx-background-color:#F0A525;
+    -fx-background-color: #415b74;
     -fx-background-radius: 0;
     -fx-fill: #415b74;
     -fx-stroke: #415b74;
@@ -87,13 +68,13 @@
  ******************************************************************************/
 
 .progress-bar.white {
-    -fx-border-color: #FFF;
     -fx-accent: #FFF;
+    -fx-border-color: -fx-accent;
 }
 
 .progress-bar.dark {
-    -fx-border-color: #888;
     -fx-accent: #888;
+    -fx-border-color: -fx-accent;
 }
 
 .progress-bar {
@@ -105,8 +86,6 @@
     -fx-padding: 2px;
     -fx-background-radius: 5px;
     -fx-background-color: transparent;
-    /*-fx-box-border,*/
-    /*linear-gradient(to bottom, derive(-fx-color,30%) 5%, derive(-fx-color,-17%));*/
     -fx-background-insets: 0, 1;
     -fx-indeterminate-bar-length: 60;
     -fx-indeterminate-bar-escape: true;
@@ -120,9 +99,7 @@
     linear-gradient(to bottom, derive(-fx-accent,95%), derive(-fx-accent,10%)),
     linear-gradient(to bottom, derive(-fx-accent,38%), -fx-accent);
     -fx-background-insets: 0;
-    -fx-padding: 0.1em; /* 5 */
-    /*-fx-background-insets: 0, 1, 2;*/
-    /*-fx-padding: 0.416667em; /!* 5 *!/*/
+    -fx-padding: 0.1em;
 }
 
 .progress-bar:indeterminate .bar {
@@ -131,9 +108,6 @@
 
 .progress-bar .track {
     -fx-background-color: transparent;
-    /*-fx-background-color:*/
-    /*-fx-box-border,*/
-    /*linear-gradient(to bottom, derive(-fx-color,-15%), derive(-fx-color,2.2%) 20%, derive(-fx-color,60%));*/
     -fx-background-insets:  0, 1;
 }
 
@@ -160,3 +134,20 @@
 /*linear-gradient(#dFdFdF 50%, white 100%),*/
 /*radial-gradient(center 50% -40%, radius 200%, #eFeFeF 45%, rgba(230,230,230,0) 50%);*/
 /*}*/
+
+.bold {
+    -fx-font-weight: bold;
+}
+
+.splash-screen-app-name {
+    -fx-font-weight: normal;
+    -fx-text-fill: rgba(0, 0, 0, 1);
+    -fx-font-size: 15px;
+}
+
+.splash-screen-app-ver {
+    -fx-font-weight: normal;
+    -fx-text-fill: rgba(0, 0, 0, 1);
+    -fx-font-size: 10px;
+}
+
