@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,8 +19,6 @@ import java.util.ResourceBundle;
  */
 public final class ResourceManager {
     private static final String DELIMITER = " ";
-    private static final Image APP_LOGO = new Image("images/appLogo.png");
-    private static final Image DAVSOFT_LOGO = new Image("images/davsoftLogo.png");
     private static final String MESSAGES_RESOURCE_FILE = "properties/messages.properties";
     private static final String PARAMS_RESOURCE_FILE = "properties/params.properties";
     private static final String DEFAULT_SETTINGS_RESOURCE_FILE = "properties/settings.properties";
@@ -76,7 +73,7 @@ public final class ResourceManager {
     public static String getParam(String paramName) { return paramsResourceConfig.getString(paramName); }
     public static String getSetting(String settingName) { return settingsResourceConfig.getString(settingName); }
     public static String getUIThemeStyle() { return "css/" + getSetting("uiTheme") + ".css"; }
-    public static Image getAppLogo() { return APP_LOGO; }
-    public static Image getDavsoftLogo() { return DAVSOFT_LOGO; }
+    public static Image getAppLogo() { return new Image("images/appLogo.png"); }
+    public static Image getDavsoftLogo() { return new Image("images/davsoftLogo.png"); }
     public static URL getScene(String sceneName) { return ResourceManager.class.getResource("/screens/" + sceneName); }
 }
