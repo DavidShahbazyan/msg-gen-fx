@@ -18,13 +18,6 @@
                 <role>Developer</role>
             </roles>
         </developer>
-        <developer>
-            <name>Tatev Petrosyan</name>
-            <email></email>
-            <roles>
-                <role>Graphic and UX designer</role>
-            </roles>
-        </developer>
     </developers>
 
     <dependencies>
@@ -101,6 +94,9 @@
                         <manifest>
                             <mainClass>arm.davsoft.msgman.Main</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <JavaFX-Preloader-Class>arm.davsoft.msgman.MainPreloader</JavaFX-Preloader-Class>
+                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>
