@@ -476,12 +476,9 @@ is being used to size a border should also be in pixels.
 .color-picker.split-button:focused > .color-picker-label,
 .combo-box-base:focused,
 .slider:focused .thumb {
-    -fx-background-color: -fx-body-color;
-    -fx-background-insets: 0;
+    -fx-background-color: -fx-focus-color, -fx-inner-border, -fx-body-color, -fx-faint-focus-color, -fx-body-color;
+    -fx-background-insets: -0.2, 1, 2, -1.4, 2.6;
     -fx-background-radius: 3, 2, 1, 4, 1;
-    /*-fx-background-color: -fx-focus-color, -fx-inner-border, -fx-body-color, -fx-faint-focus-color, -fx-body-color;*/
-    /*-fx-background-insets: -0.2, 1, 2, -1.4, 2.6;*/
-    /*-fx-background-radius: 3, 2, 1, 4, 1;*/
 }
 
 /* ====   DISABLED THINGS   ================================================= */
@@ -3432,4 +3429,6 @@ is being used to size a border should also be in pixels.
     -fx-border-color: -fx-accent;
 }
 
+.bold {
 
+}

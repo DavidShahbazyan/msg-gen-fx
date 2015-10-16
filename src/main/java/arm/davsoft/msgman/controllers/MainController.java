@@ -69,6 +69,7 @@ public class MainController implements Initializable {
             scanProjectMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
             scanDbMenuItemDisabledProperty =            new SimpleBooleanProperty(false),
             generateMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
+            putMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
             transferMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
             cleanMessageRangeMenuItemDisabledProperty = new SimpleBooleanProperty(false),
             connectMSSQLMenuItemDisabledProperty =      new SimpleBooleanProperty(false),
@@ -95,7 +96,7 @@ public class MainController implements Initializable {
     private VBox rootContainer;
     @FXML
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
-            generateMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
+            generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
             connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, aboutAppMenuItem;
     @FXML
     private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
@@ -165,6 +166,7 @@ public class MainController implements Initializable {
         scanProjectMenuItem.disableProperty().bind(scanProjectMenuItemDisabledProperty);
         scanDbMenuItem.disableProperty().bind(scanDbMenuItemDisabledProperty);
         generateMessagesMenuItem.disableProperty().bind(generateMessagesMenuItemDisabledProperty);
+        putMessagesMenuItem.disableProperty().bind(putMessagesMenuItemDisabledProperty);
         transferMessagesMenuItem.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
         cleanMessageRangeMenuItem.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
         connectMSSQLMenuItem.disableProperty().bind(connectMSSQLMenuItemDisabledProperty);
@@ -223,6 +225,7 @@ public class MainController implements Initializable {
         scanProjectMenuItemDisabledProperty.set(messageFinder == null);
         scanDbMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
         generateMessagesMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
+        putMessagesMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
         transferMessagesMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
         cleanMessageRangeMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
 
@@ -243,6 +246,14 @@ public class MainController implements Initializable {
         databaseProperty.setValue(messageTransferService.getConfig().getDbName());
         emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
         messageRangeProperty.setValue(messageTransferService.getConfig().getMessagesRange().toString());
+
+        if (fileItemsTableViewData != null && fileItemsTableViewData.get() != null) {
+            int quantity = 0;
+            for (FileItem fileItem : fileItemsTableViewData.get()) {
+                quantity += fileItem.getTotalMessagesQuantity();
+            }
+            System.out.println(quantity);
+        }
     }
 
     private void initFilesTable() {
@@ -354,6 +365,7 @@ public class MainController implements Initializable {
                     fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
                 }
                 validate();
+                updateConnectionDetails();
                 Logger.getLogger(MainController.class).info("Project scan completed.");
                 return null;
             }
@@ -421,6 +433,15 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    private void putMessagesToFiles(ActionEvent event) {
+        try {
+            putMessagesToFiles(messageFinder.getMarkedFiles(), messageTransferService.loadMessages());
+        } catch (IOException e) {
+            Logger.getLogger(MainController.class).error(e);
+        }
+    }
+
+    @FXML
     private void transferMessagesToDB(ActionEvent event) {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.transferToDB"), null, ResourceManager.getMessage("label.confirmation.transferToDB"))) {
             Task task = new Task() {
@@ -440,8 +461,8 @@ public class MainController implements Initializable {
                         updateMessage("Messages transferred: " + messageCounter + "/" + totalMessagesToTransfer);
                         updateProgress(++messageCounter, totalMessagesToTransfer);
                     }
-                    updateMessage("Putting messages into files...");
-                    putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
+//                    updateMessage("Putting messages into files...");
+//                    putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
                     updateMessage("Getting empty messages...");
                     initEmptyMessages();
                     validate();
@@ -452,6 +473,13 @@ public class MainController implements Initializable {
 
             Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
+            task.setOnSucceeded(event1 -> {
+                try {
+                    putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
+                } catch (IOException e) {
+                    Logger.getLogger(MainController.class).error(e);
+                }
+            });
             Thread thread = new Thread(task);
             thread.setDaemon(true);
             thread.start();

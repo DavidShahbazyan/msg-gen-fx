@@ -18,7 +18,7 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="appSettingsMenuItem" mnemonicParsing="false" onAction="#openAppSettings" text="Settings">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                         <MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" onAction="#exitApp" text="%label.menuItem.file.exit">
@@ -36,6 +36,11 @@
                         <MenuItem fx:id="generateMessagesMenuItem" mnemonicParsing="false" onAction="#generateEmptyMessages" text="%label.menuItem.edit.generateEmptyMessages">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="putMessagesMenuItem" mnemonicParsing="false" onAction="#putMessagesToFiles" text="%label.menuItem.edit.putToFiles">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                         <MenuItem fx:id="transferMessagesMenuItem" mnemonicParsing="false" onAction="#transferMessagesToDB" text="%label.menuItem.edit.transferToDB">

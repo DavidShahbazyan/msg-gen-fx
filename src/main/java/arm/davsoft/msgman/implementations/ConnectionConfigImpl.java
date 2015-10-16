@@ -259,7 +259,7 @@ public class ConnectionConfigImpl implements ConnectionConfig {
         } else if (isMySQLServer()) {
             valid = !isHostNameEmpty() && !isPortEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
         }
-        valid = valid && isMessageRangeValid();
+//        valid = valid && isMessageRangeValid();
         return valid;
     }
 }
