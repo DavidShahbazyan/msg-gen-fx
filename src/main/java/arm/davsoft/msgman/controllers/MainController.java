@@ -1,5 +1,6 @@
 package arm.davsoft.msgman.controllers;
 
+import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.components.ButtonTableCell;
 import arm.davsoft.msgman.components.CheckBoxTableCell;
 import arm.davsoft.msgman.domains.FileItem;
@@ -42,6 +43,7 @@ import java.util.*;
  * <b>Time:</b> 2:24 PM <br/>
  */
 public class MainController implements Initializable {
+    private Logger logger = Main.LOGGER; // Logger.getLogger(MainController.class)
     private MessageTransferService messageTransferService;
     private MessageFinder messageFinder;
 
@@ -125,9 +127,9 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Logger.getLogger(MainController.class).info("Main controller instantiation started.");
+        logger.info("Main controller instantiation started.");
         prepareForm();
-        Logger.getLogger(MainController.class).info("Main controller instantiated successfully.");
+        logger.info("Main controller instantiated successfully.");
     }
 
     private void prepareForm() {
@@ -209,7 +211,7 @@ public class MainController implements Initializable {
                         || lbl_emptyMessagesQuantityVisibleProperty.get()
         );
 
-        fileItemsTableViewVisibleProperty.set(!fileItemsTableViewData.isEmpty());
+        fileItemsTableViewVisibleProperty.set(fileItemsTableViewData != null);
     }
 
     private void checkEditability() {
@@ -239,13 +241,18 @@ public class MainController implements Initializable {
     }
 
     private void updateConnectionDetails() {
-        serverTypeProperty.setValue(messageTransferService.getConfig().getDbServerType().getName());
-        serverHostProperty.setValue(messageTransferService.getConfig().getHostName());
-        portNumberProperty.setValue(String.valueOf(messageTransferService.getConfig().getPort()));
-        usernameProperty.setValue(messageTransferService.getConfig().getUserName());
-        databaseProperty.setValue(messageTransferService.getConfig().getDbName());
-        emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
-        messageRangeProperty.setValue(messageTransferService.getConfig().getMessagesRange().toString());
+        if (messageTransferService != null) {
+            serverTypeProperty.setValue(messageTransferService.getConfig().getDbServerType().getName());
+            serverHostProperty.setValue(messageTransferService.getConfig().getHostName());
+            portNumberProperty.setValue(String.valueOf(messageTransferService.getConfig().getPort()));
+            usernameProperty.setValue(messageTransferService.getConfig().getUserName());
+            databaseProperty.setValue(messageTransferService.getConfig().getDbName());
+            messageRangeProperty.setValue(messageTransferService.getConfig().getMessagesRange().toString());
+        }
+
+        if (emptyMessagesList != null) {
+            emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
+        }
 
         if (fileItemsTableViewData != null && fileItemsTableViewData.get() != null) {
             int quantity = 0;
@@ -293,10 +300,11 @@ public class MainController implements Initializable {
             moreActions.setPrefWidth(80);
             moreActions.setMinWidth(moreActions.getPrefWidth());
             moreActions.setMaxWidth(moreActions.getPrefWidth());
+            moreActions.setVisible(false);
 
             fileItemsTableView.setEditable(true);
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class).error("Error occurred in initFilesTable method: ", ex);
+            logger.error("Error occurred in initFilesTable method: ", ex);
             throw ex;
         }
     }
@@ -340,7 +348,7 @@ public class MainController implements Initializable {
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
-                Logger.getLogger(MainController.class).info("Project scan started.");
+                logger.info("Project scan started.");
                 updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanProject"));
                 if (messageFinder != null) {
                     fileItemsTableViewData.clear();
@@ -364,12 +372,29 @@ public class MainController implements Initializable {
                     updateMessage(ResourceManager.getMessage("label.finalizing"));
                     fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
                 }
-                validate();
-                updateConnectionDetails();
-                Logger.getLogger(MainController.class).info("Project scan completed.");
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                validate();
+                updateConnectionDetails();
+                logger.info(ResourceManager.getMessage("label.projectScanSucceeded"));
+            }
         };
+
+//        task.setOnSucceeded(event1 -> {
+//            validate();
+//            updateConnectionDetails();
+//            logger.info(ResourceManager.getMessage("label.projectScanSucceeded"));
+//        });
+
+        task.setOnFailed(event1 -> {
+            validate();
+            updateConnectionDetails();
+            logger.info(ResourceManager.getMessage("label.projectScanFailed"));
+        });
 
         Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
@@ -385,13 +410,13 @@ public class MainController implements Initializable {
                 Task task = new Task() {
                     @Override
                     protected Object call() throws Exception {
-                        Logger.getLogger(MainController.class).info("DB scan started.");
+                        logger.info("DB scan started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanDB"));
                         messageTransferService.generateNewEmptyMessages();
                         initEmptyMessages();
                         Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
                         validate();
-                        Logger.getLogger(MainController.class).info("DB scan completed.");
+                        logger.info("DB scan completed.");
                         return null;
                     }
                 };
@@ -413,12 +438,12 @@ public class MainController implements Initializable {
                 Task task = new Task() {
                     @Override
                     protected Object call() throws Exception {
-                        Logger.getLogger(MainController.class).info("Message generation started.");
+                        logger.info("Message generation started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"));
                         messageTransferService.generateNewEmptyMessages(messageRange);
                         initEmptyMessages();
                         validate();
-                        Logger.getLogger(MainController.class).info("Message generation completed.");
+                        logger.info("Message generation completed.");
                         return null;
                     }
                 };
@@ -437,7 +462,7 @@ public class MainController implements Initializable {
         try {
             putMessagesToFiles(messageFinder.getMarkedFiles(), messageTransferService.loadMessages());
         } catch (IOException e) {
-            Logger.getLogger(MainController.class).error(e);
+            logger.error(e);
         }
     }
 
@@ -447,7 +472,7 @@ public class MainController implements Initializable {
             Task task = new Task() {
                 @Override
                 protected Object call() throws Exception {
-                    Logger.getLogger(MainController.class).info("Message transfer started.");
+                    logger.info("Message transfer started.");
                     updateTitle(ResourceManager.getMessage("label.menuItem.edit.transferToDB"));
                     updateMessage("Preparing messages for transfer...");
                     prepareMessagesForTransfer();
@@ -461,12 +486,10 @@ public class MainController implements Initializable {
                         updateMessage("Messages transferred: " + messageCounter + "/" + totalMessagesToTransfer);
                         updateProgress(++messageCounter, totalMessagesToTransfer);
                     }
-//                    updateMessage("Putting messages into files...");
-//                    putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
                     updateMessage("Getting empty messages...");
                     initEmptyMessages();
                     validate();
-                    Logger.getLogger(MainController.class).info("Message transfer completed.");
+                    logger.info("Message transfer completed.");
                     return null;
                 }
             };
@@ -475,9 +498,13 @@ public class MainController implements Initializable {
 
             task.setOnSucceeded(event1 -> {
                 try {
-                    putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
+                    String confirmTitle = ResourceManager.getMessage("title.dialog.putToFiles");
+                    String confirmContent = ResourceManager.getMessage("label.confirmation.putToFilesAfterTransferringToDB");
+                    if (Dialogs.showConfirmPopup(confirmTitle, null, confirmContent)) {
+                        putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
+                    }
                 } catch (IOException e) {
-                    Logger.getLogger(MainController.class).error(e);
+                    logger.error(e);
                 }
             });
             Thread thread = new Thread(task);
@@ -493,12 +520,12 @@ public class MainController implements Initializable {
                 Task task = new Task() {
                     @Override
                     protected Object call() throws Exception {
-                        Logger.getLogger(MainController.class).info("Message cleaning started.");
+                        logger.info("Message cleaning started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"));
                         messageTransferService.removeUnusedMessages(getUsedMessages());
                         initEmptyMessages();
                         validate();
-                        Logger.getLogger(MainController.class).info("Message cleaning completed.");
+                        logger.info("Message cleaning completed.");
                         return null;
                     }
                 };
@@ -527,7 +554,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void exitApp(ActionEvent event) {
-        Logger.getLogger(MainController.class).info("Application terminated by user.");
+        logger.info("Application terminated by user.");
         Platform.exit();
     }
 
@@ -619,7 +646,7 @@ public class MainController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 try {
-                    Logger.getLogger(MainController.class).info("Message transfer to files started.");
+                    logger.info("Message transfer to files started.");
                     updateTitle("Put messages into files.");
                     updateMessage("Preparing...");
                     int counter = 0;
@@ -629,7 +656,7 @@ public class MainController implements Initializable {
                         updateProgress(++counter, filesList.size());
                     }
                     updateMessage("Finalizing...");
-                    Logger.getLogger(MainController.class).info("Message transfer to files completed.");
+                    logger.info("Message transfer to files completed.");
                 } catch (Exception ex) {
                     Logger.getLogger(getClass()).error("Error occurred in putMessagesToFiles method: ", ex);
                 }
@@ -711,7 +738,7 @@ public class MainController implements Initializable {
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
-                Logger.getLogger(MainController.class).info("Dummy task started.");
+                logger.info("Dummy task started.");
                 updateMessage("Preparing...");
                 Thread.sleep(3000);
                 String s = "";
@@ -724,7 +751,7 @@ public class MainController implements Initializable {
                 }
                 updateMessage("Finalizing...");
                 Thread.sleep(3000);
-                Logger.getLogger(MainController.class).info("Dummy task completed.");
+                logger.info("Dummy task completed.");
                 return null;
             }
         };

@@ -1,4 +1,4 @@
-package arm.davsoft.msgman.dialogs;
+package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.utils.ResourceManager;
 import arm.davsoft.msgman.utils.Utils;
@@ -8,24 +8,28 @@ import javafx.scene.effect.Reflection;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-
-import java.util.Arrays;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
  * <b>Date:</b> 10/2/15 <br/>
  * <b>Time:</b> 4:45 PM <br/>
  */
-public final class AboutAppDialog {
-    private AboutAppDialog() { throw new RuntimeException("Should not have an instance."); }
+public class AboutAppDialog extends CustomDialog {
 
-    public static void show(Window ownerWindow) {
+    private AboutAppDialog(Window ownerWindow) {
+        super(ownerWindow);
+    }
+
+    public static AboutAppDialog create(Window ownerWindow) {
+        AboutAppDialog dialog = new AboutAppDialog(ownerWindow);
+        return dialog.prepare();
+    }
+
+    private AboutAppDialog prepare() {
         String title = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.RELEASE.VERSION");
 
-        Stage stage = new Stage();
         stage.initStyle(StageStyle.UTILITY);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerWindow);
@@ -83,7 +87,12 @@ public final class AboutAppDialog {
 
         stage.setScene(new Scene(p));
         stage.getScene().getStylesheets().addAll(ResourceManager.getUIThemeStyle());
-        stage.show();
-        stage.requestFocus();
+
+        return this;
+    }
+
+    public void show() {
+        super.show();
+        super.requestFocus();
     }
 }

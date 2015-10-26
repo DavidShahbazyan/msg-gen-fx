@@ -1,0 +1,13 @@
+.progress-bar.white {
+    -fx-accent: #FFF;
+    -fx-border-color: -fx-accent;
+}
+
+.progress-bar.dark {
+    -fx-accent: #888;
+    -fx-border-color: -fx-accent;
+}
+
+.bold {
+    -fx-font-weight: bold;
+}

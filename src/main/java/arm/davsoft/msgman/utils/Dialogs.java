@@ -1,36 +1,30 @@
 package arm.davsoft.msgman.utils;
 
-import arm.davsoft.msgman.dialogs.AboutAppDialog;
-import arm.davsoft.msgman.dialogs.ConnectionConfigDialog;
 import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
+import arm.davsoft.msgman.utils.dialogs.AboutAppDialog;
+import arm.davsoft.msgman.utils.dialogs.ConnectionConfigDialog;
+import arm.davsoft.msgman.utils.dialogs.ExceptionDialog;
+import arm.davsoft.msgman.utils.dialogs.SettingsDialog;
 import javafx.application.Platform;
-import javafx.beans.property.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -115,37 +109,7 @@ public final class Dialogs {
     }
 
     public static void showExceptionDialog(String header, String content, Throwable throwable) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(ResourceManager.getMessage("title.dialog.error"));
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-
-        // Create expandable Exception.
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace(pw);
-        String exceptionText = sw.toString();
-
-        Label label = new Label(ResourceManager.getMessage("label.errorStackTraceWas"));
-
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
-
-        // Set expandable Exception into the dialog pane.
-        alert.getDialogPane().setExpandableContent(expContent);
-
-        alert.showAndWait();
+        ExceptionDialog.create(header, content, throwable).showAndWait();
     }
 
     public static void showTaskProgressDialog(Window ownerWindow, Task task, boolean showTaskMessage) {
@@ -263,85 +227,10 @@ public final class Dialogs {
     }
 
     public static void showSettingsDialog(Window ownerWindow) {
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(ownerWindow);
-        dialog.setTitle(ResourceManager.getMessage("title.dialog.settings"));
-
-        IntegerProperty workingCopyIdProperty = new SimpleIntegerProperty(Integer.valueOf(ResourceManager.getSetting("workingCopyId")));
-        StringProperty messagePatternProperty = new SimpleStringProperty(ResourceManager.getSetting("message.pattern"));
-        BooleanProperty exportLogToFileProperty = new SimpleBooleanProperty(Boolean.valueOf(ResourceManager.getSetting("exportLogToFile")));
-
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(5));
-        vBox.setSpacing(5);
-        vBox.setPrefSize(VBox.USE_COMPUTED_SIZE, VBox.USE_COMPUTED_SIZE);
-
-        TilePane tilePane = new TilePane();
-        tilePane.setHgap(10);
-        tilePane.setVgap(5);
-        tilePane.setPrefColumns(2);
-        tilePane.setTileAlignment(Pos.CENTER_LEFT);
-
-        Label lblWorkingCopyId = new Label(ResourceManager.getMessage("label.workingCopyId"));
-        TextField txtWorkingCopyId = new TextField();
-        txtWorkingCopyId.textProperty().bindBidirectional(workingCopyIdProperty, new NumberStringConverter("####"));
-
-        Label lblMessagePattern = new Label(ResourceManager.getMessage("label.messagePattern"));
-        TextField txtMessagePattern = new TextField();
-        txtMessagePattern.textProperty().bindBidirectional(messagePatternProperty);
-
-        Label lblExportLogToFile = new Label(ResourceManager.getMessage("label.exportLogToFile"));
-        CheckBox checkExportLogToFile = new CheckBox();
-        checkExportLogToFile.selectedProperty().bindBidirectional(exportLogToFileProperty);
-
-        tilePane.getChildren().add(lblWorkingCopyId);
-        tilePane.getChildren().add(txtWorkingCopyId);
-
-        tilePane.getChildren().add(lblMessagePattern);
-        tilePane.getChildren().add(txtMessagePattern);
-
-        tilePane.getChildren().add(lblExportLogToFile);
-        tilePane.getChildren().add(checkExportLogToFile);
-
-        Button okButton = new Button(ResourceManager.getMessage("label.button.ok"));
-        okButton.setDefaultButton(true);
-        okButton.setOnAction(event -> {
-            try {
-                if (!Files.exists(Paths.get("./settings.properties"))) {
-                    Files.createFile(Paths.get("./settings.properties"));
-                }
-                PropertiesConfiguration config = new PropertiesConfiguration("./settings.properties");
-                config.setProperty("workingCopyId", "" + workingCopyIdProperty.get());
-                config.setProperty("message.pattern", messagePatternProperty.get());
-                config.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
-                config.save();
-            } catch (Exception ex) {
-                Logger.getLogger(Dialogs.class).error("Error occurred in showSettingsDialog method: ", ex);
-            }
-            dialog.close();
-        });
-
-        Button cancelButton = new Button(ResourceManager.getMessage("label.button.cancel"));
-        cancelButton.setOnAction(event -> {
-            dialog.close();
-            Logger.getLogger(Dialogs.class).info("Terminated by user.");
-        });
-
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(cancelButton, okButton);
-
-        vBox.getChildren().addAll(tilePane, buttonBar);
-
-        Scene dialogScene = new Scene(vBox);
-        dialog.setScene(dialogScene);
-        dialog.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
-        dialog.setResizable(false);
-        dialog.show();
-        dialog.requestFocus();
+        SettingsDialog.create(ownerWindow).show();
     }
 
     public static void showAboutAppDialog(Window ownerWindow) {
-        AboutAppDialog.show(ownerWindow);
+        AboutAppDialog.create(ownerWindow).show();
     }
 }

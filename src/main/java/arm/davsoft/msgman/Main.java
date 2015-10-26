@@ -4,7 +4,6 @@ import arm.davsoft.msgman.enums.ErrorCodes;
 import arm.davsoft.msgman.utils.AppSpecUncaughtExceptionHandler;
 import arm.davsoft.msgman.utils.FXMLFactory;
 import arm.davsoft.msgman.utils.ResourceManager;
-import com.sun.javafx.css.StyleManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -27,7 +26,7 @@ import java.util.Properties;
  * <b>Time:</b> 1:46 AM <br/>
  */
 public class Main extends Application {
-    private static final Logger LOGGER = Logger.getLogger(Main.class);
+    public static final Logger LOGGER = Logger.getLogger(Main.class);
     private static Stage primaryStage;
 
     public static void main(String[] args) {

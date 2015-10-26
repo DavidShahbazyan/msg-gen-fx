@@ -1,4 +1,4 @@
-package arm.davsoft.msgman.dialogs;
+package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.utils.ResourceManager;
