@@ -49,14 +49,15 @@ public class MainController implements Initializable {
     private MessageFinder messageFinder;
 
     private StringProperty
-            projectPathProperty =           new SimpleStringProperty(),
-            serverTypeProperty =            new SimpleStringProperty(),
-            serverHostProperty =            new SimpleStringProperty(),
-            portNumberProperty =            new SimpleStringProperty(),
-            usernameProperty =              new SimpleStringProperty(),
-            databaseProperty =              new SimpleStringProperty(),
-            emptyMessagesQuantityProperty = new SimpleStringProperty(),
-            messageRangeProperty =          new SimpleStringProperty()
+            projectPathProperty =            new SimpleStringProperty(),
+            serverTypeProperty =             new SimpleStringProperty(),
+            serverHostProperty =             new SimpleStringProperty(),
+            portNumberProperty =             new SimpleStringProperty(),
+            usernameProperty =               new SimpleStringProperty(),
+            databaseProperty =               new SimpleStringProperty(),
+            emptyMessagesQuantityProperty =  new SimpleStringProperty(),
+            messageRangeProperty =           new SimpleStringProperty(),
+            totalHardcodedMessagesProperty = new SimpleStringProperty()
             ;
     private ListProperty<FileItem> fileItemsTableViewData = new SimpleListProperty<>();
 
@@ -90,6 +91,7 @@ public class MainController implements Initializable {
             lbl_databaseVisibleProperty =               new SimpleBooleanProperty(false),
             lbl_emptyMessagesQuantityVisibleProperty =  new SimpleBooleanProperty(false),
             lbl_messageRangeVisibleProperty =           new SimpleBooleanProperty(false),
+            lbl_totalHardcodedMessagesVisibleProperty = new SimpleBooleanProperty(false),
 
             fileItemsTableViewVisibleProperty =         new SimpleBooleanProperty(false)
             ;
@@ -108,7 +110,7 @@ public class MainController implements Initializable {
     @FXML
     private TitledPane detailsPanel;
     @FXML
-    private Label lbl_projectPath, lbl_serverType, lbl_serverHost, lbl_portNumber, lbl_username, lbl_database, lbl_emptyMessagesQuantity, lbl_messageRange;
+    private Label lbl_projectPath, lbl_serverType, lbl_serverHost, lbl_portNumber, lbl_username, lbl_database, lbl_emptyMessagesQuantity, lbl_messageRange, lbl_totalHardcodedMessages;
     @FXML
     private TableView<FileItem> fileItemsTableView;
     @FXML
@@ -150,6 +152,7 @@ public class MainController implements Initializable {
         lbl_database.textProperty().bind(databaseProperty);
         lbl_emptyMessagesQuantity.textProperty().bind(emptyMessagesQuantityProperty);
         lbl_messageRange.textProperty().bind(messageRangeProperty);
+        lbl_totalHardcodedMessages.textProperty().bind(totalHardcodedMessagesProperty);
         fileItemsTableView.itemsProperty().bind(fileItemsTableViewData);
 
         // Visibility bindings
@@ -161,6 +164,7 @@ public class MainController implements Initializable {
         lbl_database.visibleProperty().bind(lbl_databaseVisibleProperty);
         lbl_emptyMessagesQuantity.visibleProperty().bind(lbl_emptyMessagesQuantityVisibleProperty);
         lbl_messageRange.visibleProperty().bind(lbl_messageRangeVisibleProperty);
+        lbl_totalHardcodedMessages.visibleProperty().bind(lbl_totalHardcodedMessagesVisibleProperty);
         fileItemsTableView.visibleProperty().bind(fileItemsTableViewVisibleProperty);
 
         // Disability bindings
@@ -203,6 +207,7 @@ public class MainController implements Initializable {
         lbl_emptyMessagesQuantityVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
 //        lbl_messageRangeVisibleProperty.set(currentMessageRange != null && currentMessageRange.isValid());
         lbl_messageRangeVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null && messageTransferService.getConfig().getMessagesRange() != null);
+        lbl_totalHardcodedMessagesVisibleProperty.set(true);
 
         detailsPanelVisibleProperty.set(lbl_projectPathVisibleProperty.get()
                         || lbl_serverTypeVisibleProperty.get()
@@ -261,7 +266,8 @@ public class MainController implements Initializable {
             for (FileItem fileItem : fileItemsTableViewData.get()) {
                 quantity += fileItem.getTotalMessagesQuantity();
             }
-            System.out.println(quantity);
+            totalHardcodedMessagesProperty.set(String.valueOf(quantity));
+            logger.info("Total hardcoded messages: " + quantity);
         }
     }
 
@@ -384,19 +390,15 @@ public class MainController implements Initializable {
                 updateConnectionDetails();
                 logger.info(ResourceManager.getMessage("label.projectScanSucceeded"));
             }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                validate();
+                updateConnectionDetails();
+                logger.info(ResourceManager.getMessage("label.projectScanFailed"));
+            }
         };
-
-//        task.setOnSucceeded(event1 -> {
-//            validate();
-//            updateConnectionDetails();
-//            logger.info(ResourceManager.getMessage("label.projectScanSucceeded"));
-//        });
-
-        task.setOnFailed(event1 -> {
-            validate();
-            updateConnectionDetails();
-            logger.info(ResourceManager.getMessage("label.projectScanFailed"));
-        });
 
         Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
@@ -674,6 +676,12 @@ public class MainController implements Initializable {
                     Logger.getLogger(getClass()).error("Error occurred in putMessagesToFiles method: ", ex);
                 }
                 return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                scanForNewMessagesInProject(new ActionEvent());
             }
         };
 

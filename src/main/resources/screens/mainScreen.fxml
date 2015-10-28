@@ -145,6 +145,12 @@
                                                 <Label fx:id="lbl_messageRange" text="Label" />
                                             </children>
                                         </HBox>
+                                        <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="bold" text="Total hardcoded messages:" />
+                                                <Label fx:id="lbl_totalHardcodedMessages" text="Label" />
+                                            </children>
+                                        </HBox>
                                     </children>
                                 </TilePane>
                             </children>

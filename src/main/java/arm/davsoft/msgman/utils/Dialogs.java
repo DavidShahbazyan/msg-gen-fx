@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
 import org.apache.log4j.Logger;
@@ -116,6 +117,7 @@ public final class Dialogs {
         final Stage dialog = new Stage();
         task.setOnSucceeded(event -> dialog.close());
         task.setOnCancelled(event -> dialog.close());
+        dialog.initStyle(StageStyle.UTILITY);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(ownerWindow);
         dialog.titleProperty().bind(task.titleProperty());
