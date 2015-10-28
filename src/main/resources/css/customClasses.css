@@ -1,3 +1,8 @@
+#rootContainer {
+    -fx-border-color: #000;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
 .progress-bar.white {
     -fx-accent: #FFF;
     -fx-border-color: -fx-accent;
@@ -10,4 +15,58 @@
 
 .bold {
     -fx-font-weight: bold;
+}
+#mainToolBar {
+    -fx-padding: 10px;
+    -fx-background-image: url("/images/icons/system/top-bar.png");
+    -fx-background-size: cover;
+    -fx-background-position: left top;
+    -fx-background-repeat: no-repeat;
+    -fx-pref-height: 15px;
+}
+#mainToolBar > titleText {
+    -fx-text-fill: #FFF;
+}
+#window-close {
+    -fx-font-size: 1px;
+    -fx-background-color: null;
+    -fx-background-image: url("/images/icons/system/window-close.png");
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 6 6 4 6;
+    -fx-pref-width: 12px;
+    -fx-pref-height: 12px;
+}
+#window-min {
+    -fx-font-size: 1px;
+    -fx-background-color: null;
+    -fx-background-image: url("/images/icons/system/window-min.png");
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 6 6 4 6;
+    -fx-pref-width: 12px;
+    -fx-pref-height: 12px;
+}
+#window-max {
+    -fx-font-size: 1px;
+    -fx-background-color: null;
+    -fx-background-image: url("/images/icons/system/window-expand.png");
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 6 6 4 6;
+    -fx-pref-width: 12px;
+    -fx-pref-height: 12px;
+}
+#window-close:hover {
+    -fx-background-image: url("/images/icons/system/window-close-over.png");
+    -fx-background-repeat: no-repeat;
+}
+#window-min:hover {
+    -fx-background-image: url("/images/icons/system/window-min-over.png");
+    -fx-background-repeat: no-repeat;
+}
+#window-max:hover {
+    -fx-background-image: url("/images/icons/system/window-expand-over.png");
+    -fx-background-repeat: no-repeat;
+}
+#window-close:focused, #window-min:focused , #window-max:focused {
+    -fx-effect: null;
+    /*-fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );*/
 }

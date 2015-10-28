@@ -1,6 +1,7 @@
 package arm.davsoft.msgman.controllers;
 
 import arm.davsoft.msgman.Main;
+import arm.davsoft.msgman.components.ApplicationTitleBar;
 import arm.davsoft.msgman.components.ButtonTableCell;
 import arm.davsoft.msgman.components.CheckBoxTableCell;
 import arm.davsoft.msgman.domains.FileItem;
@@ -133,6 +134,7 @@ public class MainController implements Initializable {
     }
 
     private void prepareForm() {
+        rootContainer.getChildren().add(0, new ApplicationTitleBar(Main.getPrimaryStage(), ResourceManager.getParam("APPLICATION.NAME")));
         initFilesTable();
         initPropertyBindings();
         validate();
@@ -475,7 +477,10 @@ public class MainController implements Initializable {
                     logger.info("Message transfer started.");
                     updateTitle(ResourceManager.getMessage("label.menuItem.edit.transferToDB"));
                     updateMessage("Preparing messages for transfer...");
+                    logger.info("Preparing messages for transfer...");
+                    logger.info("DB Name: " + messageTransferService.getConfig().getDbName());
                     prepareMessagesForTransfer();
+                    StringBuilder transferredMessagesList = new StringBuilder();
                     List<Message> messagesToTransfer = getMessagesToTransfer();
                     int totalMessagesToTransfer = messagesToTransfer.size();
                     int messageCounter = 0;
@@ -485,8 +490,14 @@ public class MainController implements Initializable {
                         messageTransferService.transferMessage(message);
                         updateMessage("Messages transferred: " + messageCounter + "/" + totalMessagesToTransfer);
                         updateProgress(++messageCounter, totalMessagesToTransfer);
+                        transferredMessagesList.append(message.getId());
+                        if (messageIterator.hasNext()) {
+                            transferredMessagesList.append(", ");
+                        }
                     }
+                    logger.info("Messages transferred: " + transferredMessagesList.toString());
                     updateMessage("Getting empty messages...");
+                    logger.info("Getting empty messages...");
                     initEmptyMessages();
                     validate();
                     logger.info("Message transfer completed.");
@@ -649,6 +660,7 @@ public class MainController implements Initializable {
                     logger.info("Message transfer to files started.");
                     updateTitle("Put messages into files.");
                     updateMessage("Preparing...");
+                    logger.info("Preparing...");
                     int counter = 0;
                     for (File file : filesList) {
                         updateMessage(file.getName());
@@ -656,6 +668,7 @@ public class MainController implements Initializable {
                         updateProgress(++counter, filesList.size());
                     }
                     updateMessage("Finalizing...");
+                    logger.info("Finalizing...");
                     logger.info("Message transfer to files completed.");
                 } catch (Exception ex) {
                     Logger.getLogger(getClass()).error("Error occurred in putMessagesToFiles method: ", ex);

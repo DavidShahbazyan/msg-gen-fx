@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -91,7 +92,7 @@ public class Main extends Application {
 
 //        primaryStage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         primaryStage.getScene().setFill(Color.web("DDF", 0.75));
-//        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
 //        primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.requestFocus();
