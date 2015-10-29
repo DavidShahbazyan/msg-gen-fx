@@ -302,13 +302,13 @@ public class MainController implements Initializable {
             moreActions.setCellFactory(p -> new ButtonTableCell<FileItem>("More...") {
                 @Override
                 public void doAction(FileItem rowItem) {
-                    refreshFilesTableData();
+                    Dialogs.showMessagesDialog(rowItem);
                 }
             });
             moreActions.setPrefWidth(80);
             moreActions.setMinWidth(moreActions.getPrefWidth());
             moreActions.setMaxWidth(moreActions.getPrefWidth());
-            moreActions.setVisible(false);
+//            moreActions.setVisible(false);
 
             fileItemsTableView.setEditable(true);
         } catch (Exception ex) {
@@ -681,7 +681,9 @@ public class MainController implements Initializable {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                scanForNewMessagesInProject(new ActionEvent());
+                if (Dialogs.showConfirmPopup("Scan project?", null, "Scan project once more?")) {
+                    scanForNewMessagesInProject(new ActionEvent());
+                }
             }
         };
 

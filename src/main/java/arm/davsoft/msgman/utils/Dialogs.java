@@ -1,13 +1,11 @@
 package arm.davsoft.msgman.utils;
 
+import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
-import arm.davsoft.msgman.utils.dialogs.AboutAppDialog;
-import arm.davsoft.msgman.utils.dialogs.ConnectionConfigDialog;
-import arm.davsoft.msgman.utils.dialogs.ExceptionDialog;
-import arm.davsoft.msgman.utils.dialogs.SettingsDialog;
+import arm.davsoft.msgman.utils.dialogs.*;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -226,6 +224,10 @@ public final class Dialogs {
         result.ifPresent(range -> retVal[0] = range);
 
         return retVal[0];
+    }
+
+    public static void showMessagesDialog(FileItem fileItem) {
+        ViewFileMessagesDialog.create(fileItem).show();
     }
 
     public static void showSettingsDialog(Window ownerWindow) {
