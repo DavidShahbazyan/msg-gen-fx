@@ -1,14 +1,15 @@
 package arm.davsoft.msgman.service;
 
+import java.sql.SQLException;
+import java.util.*;
+
+import org.apache.log4j.Logger;
+
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.implementations.ServiceImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.utils.Utils;
-import org.apache.log4j.Logger;
-
-import java.sql.SQLException;
-import java.util.*;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -64,7 +65,7 @@ public class MessageTransferService extends ServiceImpl {
             params.put("@@RangeStart", range.getFrom());
             params.put("@@RangeEnd", range.getTo());
             params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
-            messages = dao.loadMessages(params);
+            messages = dao.loadMessagesExcept(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }
