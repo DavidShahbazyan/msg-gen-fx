@@ -68,6 +68,17 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.1.4</version>
+                <configuration>
+                    <mainClass>arm.davsoft.msgman.Main</mainClass>
+                    <appName>Message Manager</appName>
+                    <vendor>DavSoft [David.Shahbazyan]</vendor>
+                    <preLoader>arm.davsoft.msgman.MainPreloader</preLoader>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
