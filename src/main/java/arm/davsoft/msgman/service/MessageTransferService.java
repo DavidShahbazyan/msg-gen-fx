@@ -1,10 +1,10 @@
 package arm.davsoft.msgman.service;
 
+import arm.davsoft.msgman.domains.Message;
+import arm.davsoft.msgman.implementations.ServiceImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.utils.Utils;
-import arm.davsoft.msgman.domains.Message;
-import arm.davsoft.msgman.implementations.ServiceImpl;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -42,8 +42,28 @@ public class MessageTransferService extends ServiceImpl {
         List<Message> messages = new ArrayList<>();
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("@@From", range.getFrom());
-            params.put("@@To", range.getTo());
+            params.put("@@RangeStart", range.getFrom());
+            params.put("@@RangeEnd", range.getTo());
+            messages = dao.loadMessages(params);
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass()).error(ex);
+        }
+        return messages;
+    }
+
+    @Override
+    public List<Message> loadMessagesExcept(Set<Integer> exceptIds) {
+        return loadMessagesExcept(config.getMessagesRange(), exceptIds);
+    }
+
+    @Override
+    public List<Message> loadMessagesExcept(Range range, Set<Integer> exceptIds) {
+        List<Message> messages = new ArrayList<>();
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("@@RangeStart", range.getFrom());
+            params.put("@@RangeEnd", range.getTo());
+            params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
             messages = dao.loadMessages(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
@@ -61,8 +81,8 @@ public class MessageTransferService extends ServiceImpl {
         List<Message> messages = new ArrayList<>();
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("@@From", range.getFrom());
-            params.put("@@To", range.getTo());
+            params.put("@@RangeStart", range.getFrom());
+            params.put("@@RangeEnd", range.getTo());
             messages = dao.loadEmptyMessages(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
@@ -89,18 +109,36 @@ public class MessageTransferService extends ServiceImpl {
     }
 
     @Override
-    public void removeUnusedMessages(Set<Integer> exceptIds) {
-        removeUnusedMessages(config.getMessagesRange(), exceptIds);
+    public void removeMessages(Set<Integer> messageIds) {
+        removeMessages(config.getMessagesRange(), messageIds);
     }
 
     @Override
-    public void removeUnusedMessages(Range range, Set<Integer> exceptIds) {
+    public void removeMessages(Range range, Set<Integer> messageIds) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("@@RangeStart", range.getFrom());
+            params.put("@@RangeEnd", range.getTo());
+            params.put("@@MessageIds", Utils.joinIntegers(messageIds));
+            dao.removeMessages(params);
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass()).error(ex);
+        }
+    }
+
+    @Override
+    public void removeMessagesExcept(Set<Integer> exceptIds) {
+        removeMessagesExcept(config.getMessagesRange(), exceptIds);
+    }
+
+    @Override
+    public void removeMessagesExcept(Range range, Set<Integer> exceptIds) {
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("@@RangeStart", range.getFrom());
             params.put("@@RangeEnd", range.getTo());
             params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
-            dao.removeUnusedMessages(params);
+            dao.removeMessagesExcept(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }

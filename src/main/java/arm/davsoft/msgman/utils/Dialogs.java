@@ -2,6 +2,7 @@ package arm.davsoft.msgman.utils;
 
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.IntegerRange;
+import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
@@ -226,8 +227,12 @@ public final class Dialogs {
         return retVal[0];
     }
 
-    public static void showMessagesDialog(FileItem fileItem) {
-        ViewFileMessagesDialog.create(fileItem).show();
+    public static void showMessagesDialog(List<Message> messages) {
+        MessagesDialog.create(messages).show();
+    }
+
+    public static void showFileMessagesDialog(FileItem fileItem) {
+        FileMessagesDialog.create(fileItem).show();
     }
 
     public static void showSettingsDialog(Window ownerWindow) {

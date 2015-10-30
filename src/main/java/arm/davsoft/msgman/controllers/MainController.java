@@ -17,6 +17,7 @@ import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
+import arm.davsoft.msgman.utils.Utils;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -302,7 +303,7 @@ public class MainController implements Initializable {
             moreActions.setCellFactory(p -> new ButtonTableCell<FileItem>("More...") {
                 @Override
                 public void doAction(FileItem rowItem) {
-                    Dialogs.showMessagesDialog(rowItem);
+                    Dialogs.showFileMessagesDialog(rowItem);
                 }
             });
             moreActions.setPrefWidth(80);
@@ -379,6 +380,8 @@ public class MainController implements Initializable {
                     }
                     updateMessage(ResourceManager.getMessage("label.finalizing"));
                     fileItemsTableViewData.setValue(FXCollections.observableArrayList(retVal));
+                    logger.info("Instantiating MessagesToTransfer list...");
+                    prepareMessagesForTransfer();
                 }
                 return null;
             }
@@ -412,16 +415,26 @@ public class MainController implements Initializable {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.scanDB"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
             if (checkTheMessageRangeToBeSet()) {
                 Task task = new Task() {
+                    List<Message> messages = null;
                     @Override
                     protected Object call() throws Exception {
                         logger.info("DB scan started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.scanDB"));
-                        messageTransferService.generateNewEmptyMessages();
-                        initEmptyMessages();
-                        Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
+                        messages = messageTransferService.loadMessagesExcept(getUsedMessages());
+//                        initEmptyMessages();
+//                        Thread.sleep(3000); // FIXME: UNCOMMENT the 2 lines above and REMOVE this line after testing!!!
                         validate();
                         logger.info("DB scan completed.");
                         return null;
+                    }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void succeeded() {
+                        super.succeeded();
+                        if (messages != null) {
+                            Dialogs.showMessagesDialog(messages);
+                        }
                     }
                 };
 
@@ -478,12 +491,12 @@ public class MainController implements Initializable {
                 protected Object call() throws Exception {
                     logger.info("Message transfer started.");
                     updateTitle(ResourceManager.getMessage("label.menuItem.edit.transferToDB"));
-                    updateMessage("Preparing messages for transfer...");
-                    logger.info("Preparing messages for transfer...");
+//                    updateMessage("Preparing messages for transfer..."); // TODO: Should be removed after testing.
+//                    logger.info("Preparing messages for transfer..."); // TODO: Should be removed after testing.
                     logger.info("DB Name: " + messageTransferService.getConfig().getDbName());
-                    prepareMessagesForTransfer();
+//                    prepareMessagesForTransfer(); // TODO: Should be removed after testing.
                     StringBuilder transferredMessagesList = new StringBuilder();
-                    List<Message> messagesToTransfer = getMessagesToTransfer();
+//                    List<Message> messagesToTransfer = getMessagesToTransfer(); // TODO: Should be removed after testing.
                     int totalMessagesToTransfer = messagesToTransfer.size();
                     int messageCounter = 0;
                     Iterator<Message> messageIterator = messagesToTransfer.iterator();
@@ -535,7 +548,7 @@ public class MainController implements Initializable {
                     protected Object call() throws Exception {
                         logger.info("Message cleaning started.");
                         updateTitle(ResourceManager.getMessage("label.menuItem.edit.removeFromDB"));
-                        messageTransferService.removeUnusedMessages(getUsedMessages());
+                        messageTransferService.removeMessagesExcept(getUsedMessages());
                         initEmptyMessages();
                         validate();
                         logger.info("Message cleaning completed.");
@@ -642,6 +655,17 @@ public class MainController implements Initializable {
         messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
         updateConnectionDetails();
     }
+
+    @FXML
+    private void exportHardcodedMessageToFile(ActionEvent event) throws IOException {
+        Utils.exportMessagesToFile(messagesToTransfer);
+    }
+
+    @FXML
+    private void exportLoadedMessageToFile(ActionEvent event) {
+//        messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
+//        updateConnectionDetails();
+    }
     /* ------------- /Main Menu Actions ------------- */
 
 
@@ -673,7 +697,7 @@ public class MainController implements Initializable {
                     logger.info("Finalizing...");
                     logger.info("Message transfer to files completed.");
                 } catch (Exception ex) {
-                    Logger.getLogger(getClass()).error("Error occurred in putMessagesToFiles method: ", ex);
+                    logger.error("Error occurred in putMessagesToFiles method: ", ex);
                 }
                 return null;
             }
@@ -697,9 +721,11 @@ public class MainController implements Initializable {
     private Set<Integer> getUsedMessages() {
         Set<Integer> usedMessages = null;
         try {
+            logger.info("Searching for used message ids.");
             usedMessages = messageFinder.findUsedMessages();
+            logger.info("Search completed.");
         } catch (IOException ex) {
-            Logger.getLogger(getClass()).error(ex);
+            logger.error(ex);
         }
         return usedMessages;
     }
@@ -712,20 +738,22 @@ public class MainController implements Initializable {
                 Message message = emptyMessagesIterator.next();
                 if (message.isEmpty()) {
                     message.setText(msgText);
+                    messagesToTransfer.add(message);
+                    emptyMessagesIterator.remove();
                 }
             }
         }
     }
 
-    private List<Message> getMessagesToTransfer() {
-        messagesToTransfer = new ArrayList<>();
-        for (Message message : emptyMessagesList) {
-            if (!message.isEmpty()) {
-                messagesToTransfer.add(message);
-            }
-        }
-        return messagesToTransfer;
-    }
+//    private List<Message> getMessagesToTransfer() {
+//        messagesToTransfer = new ArrayList<>();
+//        for (Message message : emptyMessagesList) {
+//            if (!message.isEmpty()) {
+//                messagesToTransfer.add(message);
+//            }
+//        }
+//        return messagesToTransfer;
+//    }
 
     private void initEmptyMessages() {
         if (checkTheMessageRangeToBeSet()) {

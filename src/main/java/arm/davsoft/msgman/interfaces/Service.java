@@ -17,14 +17,20 @@ public interface Service {
     List<Message> loadMessages();
     List<Message> loadMessages(Range range);
 
+    List<Message> loadMessagesExcept(Set<Integer> exceptIds);
+    List<Message> loadMessagesExcept(Range range, Set<Integer> exceptIds);
+
     List<Message> loadEmptyMessages();
     List<Message> loadEmptyMessages(Range range);
 
     void generateNewEmptyMessages() throws SQLException;
     void generateNewEmptyMessages(Range range) throws SQLException;
 
-    void removeUnusedMessages(Set<Integer> exceptIds);
-    void removeUnusedMessages(Range range, Set<Integer> exceptIds);
+    void removeMessages(Set<Integer> messageIds);
+    void removeMessages(Range range, Set<Integer> messageIds);
+
+    void removeMessagesExcept(Set<Integer> exceptIds);
+    void removeMessagesExcept(Range range, Set<Integer> exceptIds);
 
     void transferMessages(List<Message> messages);
 

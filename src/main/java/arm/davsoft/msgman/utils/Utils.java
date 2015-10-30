@@ -1,5 +1,7 @@
 package arm.davsoft.msgman.utils;
 
+import arm.davsoft.msgman.domains.LineItem;
+import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.FileType;
 
 import java.io.*;
@@ -70,10 +72,21 @@ public class Utils {
         return false;
     }
 
-    public static void savePropertiesToFile(String fileName, Properties properties) throws IOException {
-        File file = new File(fileName);
-        OutputStream out = new FileOutputStream(file);
-        properties.store(out, "This is an optional header comment string");
-        out.close();
+    public static void exportLineItemsToFile(List<LineItem> lineItems) throws IOException {
+        File file = new File("MessagesFromProject_" + new Date().getTime() + ".export");
+        Writer wr = new FileWriter(file);
+        for (LineItem lineItem : lineItems) {
+            wr.write(lineItem.getValue());
+        }
+        wr.close();
+    }
+
+    public static void exportMessagesToFile(List<Message> messages) throws IOException {
+        File file = new File("MessagesFromDB_" + new Date().getTime() + ".export");
+        Writer wr = new FileWriter(file);
+        for (Message message : messages) {
+            wr.write('[' + message.getId() + " , " + message.getText() + ']');
+        }
+        wr.close();
     }
 }

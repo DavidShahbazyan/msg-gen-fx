@@ -4,7 +4,6 @@ import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.LineItem;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -21,22 +20,22 @@ import javafx.stage.Window;
  * <b>Date:</b> 10/28/15 <br/>
  * <b>Time:</b> 11:34 PM <br/>
  */
-public class ViewFileMessagesDialog extends CustomDialog {
+public class FileMessagesDialog extends CustomDialog {
 
-    private ViewFileMessagesDialog(Window ownerWindow) {
+    private FileMessagesDialog(Window ownerWindow) {
         super(ownerWindow);
     }
 
-    public static ViewFileMessagesDialog create(FileItem fileItem) {
+    public static FileMessagesDialog create(FileItem fileItem) {
         return create(fileItem, null);
     }
     
-    public static ViewFileMessagesDialog create(FileItem fileItem, Window ownerWindow) {
-        ViewFileMessagesDialog dialog = new ViewFileMessagesDialog(ownerWindow);
+    public static FileMessagesDialog create(FileItem fileItem, Window ownerWindow) {
+        FileMessagesDialog dialog = new FileMessagesDialog(ownerWindow);
         return dialog.prepare(fileItem);
     }
 
-    private ViewFileMessagesDialog prepare(FileItem fileItem) {
+    private FileMessagesDialog prepare(FileItem fileItem) {
         stage.setTitle("More...");
 
         VBox root = new VBox();

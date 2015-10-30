@@ -16,11 +16,15 @@ public interface Dao {
 
     List<Message> loadMessages(Map<String, Object> params) throws SQLException;
 
+    List<Message> loadMessagesExcept(Map<String, Object> params) throws SQLException;
+
     List<Message> loadEmptyMessages(Map<String, Object> params) throws SQLException;
 
     void generateNewEmptyMessages(Map<String, Object> params) throws SQLException;
 
-    void removeUnusedMessages(Map<String, Object> params) throws SQLException;
+    void removeMessages(Map<String, Object> params) throws SQLException;
+
+    void removeMessagesExcept(Map<String, Object> params) throws SQLException;
 
     void transferMessage(Map<String, Object> params) throws SQLException;
 }

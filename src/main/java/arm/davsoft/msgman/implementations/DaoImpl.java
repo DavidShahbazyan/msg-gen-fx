@@ -1,7 +1,7 @@
 package arm.davsoft.msgman.implementations;
 
-import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.domains.Message;
+import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Dao;
 
 import java.sql.Connection;
@@ -69,6 +69,29 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
+    public List<Message> loadMessagesExcept(Map<String, Object> params) throws SQLException {
+        List<Message> messages = new ArrayList<>();
+        String query = setQueryParams(connectionConfig.getSqlQuery().getLoadMessagesExcept(), params);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionConfig.getDataSource().getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                messages.add(new Message(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } finally {
+            if (connection != null) connection.close();
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return messages;
+    }
+
+    @Override
     public List<Message> loadEmptyMessages(Map<String, Object> params) throws SQLException {
         List<Message> messages = new ArrayList<>();
         String query = setQueryParams(connectionConfig.getSqlQuery().getLoadUnusedMessageIds(), params);
@@ -107,8 +130,23 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public void removeUnusedMessages(Map<String, Object> params) throws SQLException {
-        String query = setQueryParams(connectionConfig.getSqlQuery().getRemoveUnusedMessages(), params);
+    public void removeMessages(Map<String, Object> params) throws SQLException {
+        String query = setQueryParams(connectionConfig.getSqlQuery().getRemoveMessages(), params);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionConfig.getDataSource().getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+        } finally {
+            if (connection != null) connection.close();
+            if (preparedStatement != null) preparedStatement.close();
+        }
+    }
+
+    @Override
+    public void removeMessagesExcept(Map<String, Object> params) throws SQLException {
+        String query = setQueryParams(connectionConfig.getSqlQuery().getRemoveMessagesExcept(), params);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {

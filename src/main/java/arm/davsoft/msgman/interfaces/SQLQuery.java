@@ -6,13 +6,17 @@ package arm.davsoft.msgman.interfaces;
  * <b>Time:</b> 6:23 PM <br/>
  */
 public interface SQLQuery {
-    String getRemoveUnusedMessages();
+    String getRemoveMessagesExcept();
+
+    String getRemoveMessages();
 
     String getLoadUnusedMessageIds();
 
     String getUpdateMessage();
 
     String getLoadMessages();
+
+    String getLoadMessagesExcept();
 
     String getIsMessageExist();
 
