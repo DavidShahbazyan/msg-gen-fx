@@ -39,12 +39,12 @@ public class MainPreloader extends Preloader {
         splash.setFitWidth(500);
         splash.setFitHeight(500);
 
-        ImageView appLogo = new ImageView(ResourceManager.getAppLogo());
+        ImageView appLogo = new ImageView(ResourceManager.getAppLogoDark());
         appLogo.setFitWidth(92);
         appLogo.setFitHeight(92);
         appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
 
-        ImageView davsoftLogo = new ImageView(ResourceManager.getDavsoftLogo());
+        ImageView davsoftLogo = new ImageView(ResourceManager.getDavSoftLogo());
         davsoftLogo.prefWidth(32);
 
         AnchorPane p = new AnchorPane(splash, appLogo, davsoftLogo, applicationName, bar, applicationVersion);
@@ -78,7 +78,7 @@ public class MainPreloader extends Preloader {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         stage.setTitle(ResourceManager.getParam("APPLICATION.NAME"));
-        stage.getIcons().add(ResourceManager.getAppLogo());
+        stage.getIcons().add(ResourceManager.getAppLogoDark());
         stage.setScene(createPreloaderScene());
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getScene().setFill(Color.TRANSPARENT);

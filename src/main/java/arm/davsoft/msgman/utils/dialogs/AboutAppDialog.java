@@ -59,12 +59,12 @@ public class AboutAppDialog extends CustomDialog {
         aboutTheAppTextArea.setMinSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
         aboutTheAppTextArea.setMaxSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
 
-        ImageView appLogo = new ImageView(ResourceManager.getAppLogo());
+        ImageView appLogo = new ImageView(ResourceManager.getAppLogoDark());
         appLogo.setFitWidth(92);
         appLogo.setFitHeight(92);
         appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
 
-        ImageView davsoftLogo = new ImageView(ResourceManager.getDavsoftLogo());
+        ImageView davsoftLogo = new ImageView(ResourceManager.getDavSoftLogo());
         davsoftLogo.prefWidth(32);
 
         AnchorPane p = new AnchorPane(background, appLogo, davsoftLogo, aboutTheAppTextArea);

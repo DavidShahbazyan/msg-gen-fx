@@ -3,6 +3,7 @@ package arm.davsoft.msgman.components;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -29,16 +30,21 @@ public class ApplicationTitleBar extends ToolBar {
 
         setId("mainToolBar");
 
-        Label titleLabel = new Label(title);
-        titleLabel.getStyleClass().add("titleText");
+        ImageView appTitle = new ImageView("/images/appLogo_light.png");
+        appTitle.setFitHeight(20);
+        appTitle.setFitWidth(appTitle.getFitHeight() * 1.320652174);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("titleText");
+        titleLabel.setStyle("-fx-text-fill: #FFF;");
+
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
-        getItems().addAll(spacer, titleLabel, spacer1, this.windowButtons);
+        getItems().addAll(appTitle, spacer, titleLabel, spacer1, this.windowButtons);
         initEvents();
     }
 

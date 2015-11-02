@@ -80,7 +80,7 @@ public class Main extends Application {
 //        Parent root = fxmlLoader.load(this.getClass().getResource("/screens/mainScreen.fxml").openStream());
 
         primaryStage.setTitle(ResourceManager.getParam("APPLICATION.NAME"));
-        primaryStage.getIcons().add(ResourceManager.getAppLogo());
+        primaryStage.getIcons().add(ResourceManager.getAppLogoDark());
         primaryStage.setScene(new Scene(FXMLFactory.getFXMLParent("/screens/mainScreen.fxml"), 800, 600));
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);

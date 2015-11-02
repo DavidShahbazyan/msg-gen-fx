@@ -11,11 +11,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -78,14 +79,26 @@ public class SettingsDialog extends CustomDialog {
         okButton.setDefaultButton(true);
         okButton.setOnAction(event -> {
             try {
-                if (!Files.exists(Paths.get("./settings.properties"))) {
-                    Files.createFile(Paths.get("./settings.properties"));
+//                if (!Files.exists(Paths.get("./settings.properties"))) {
+//                    Files.createFile(Paths.get("./settings.properties"));
+//                }
+//                PropertiesConfiguration config = new PropertiesConfiguration("./settings.properties");
+//                config.setProperty("workingCopyId", "" + workingCopyIdProperty.get());
+//                config.setProperty("message.pattern", messagePatternProperty.get());
+//                config.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
+//                config.save();
+                Properties customProps = ResourceManager.getSettings();
+                customProps.setProperty("workingCopyId", "" + workingCopyIdProperty.get());
+                customProps.setProperty("message.pattern", messagePatternProperty.get());
+                customProps.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
+
+                String path = ResourceManager.CUSTOM_SETTINGS_RESOURCE_FILE;
+                if (!Files.exists(Paths.get(path))) {
+                    Files.createFile(Paths.get(path));
                 }
-                PropertiesConfiguration config = new PropertiesConfiguration("./settings.properties");
-                config.setProperty("workingCopyId", "" + workingCopyIdProperty.get());
-                config.setProperty("message.pattern", messagePatternProperty.get());
-                config.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
-                config.save();
+                FileOutputStream fos = new FileOutputStream(path);
+                customProps.storeToXML(fos, "User defined settings");
+                fos.close();
             } catch (Exception ex) {
                 Logger.getLogger(getClass()).error("Error occurred in showSettingsDialog method: ", ex);
             }

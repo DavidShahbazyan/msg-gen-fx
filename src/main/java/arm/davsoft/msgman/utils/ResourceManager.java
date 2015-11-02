@@ -1,15 +1,16 @@
 package arm.davsoft.msgman.utils;
 
 import javafx.scene.image.Image;
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -21,15 +22,18 @@ public final class ResourceManager {
     private static final String DELIMITER = " ";
     private static final String MESSAGES_RESOURCE_FILE = "properties/messages.properties";
     private static final String PARAMS_RESOURCE_FILE = "properties/params.properties";
-    private static final String DEFAULT_SETTINGS_RESOURCE_FILE = "properties/settings.properties";
-    private static final String CUSTOM_SETTINGS_RESOURCE_FILE = "./settings.properties";
+    private static final String DEFAULT_SETTINGS_RESOURCE_FILE = "/properties/settings.properties";
+    public static final String CUSTOM_SETTINGS_RESOURCE_FILE = "./.settings";
 
 //    private static final ResourceBundle messagesResource = ResourceBundle.getBundle(MESSAGES_RESOURCE_FILE);
 //    private static final ResourceBundle paramsResource = ResourceBundle.getBundle(PARAMS_RESOURCE_FILE);
 //    private static final ResourceBundle settingsResource = ResourceBundle.getBundle(SETTINGS_RESOURCE_FILE);
     private static PropertiesConfiguration messagesResourceConfig = null;
     private static PropertiesConfiguration paramsResourceConfig = null;
-    private static PropertiesConfiguration settingsResourceConfig = null;
+//    private static PropertiesConfiguration settingsResourceConfig = null;
+
+    private static Properties defaultAppProps = null;
+    private static Properties customAppProps = null;
 
     static {
         try {
@@ -38,13 +42,25 @@ public final class ResourceManager {
 
             paramsResourceConfig = new PropertiesConfiguration(PARAMS_RESOURCE_FILE);
 
-            String settingsResourceFile = DEFAULT_SETTINGS_RESOURCE_FILE;
-            if (Files.exists(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE)) && !Files.isDirectory(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE))) {
-                settingsResourceFile = CUSTOM_SETTINGS_RESOURCE_FILE;
+//            String settingsResourceFile = DEFAULT_SETTINGS_RESOURCE_FILE;
+//            if (Files.exists(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE)) && !Files.isDirectory(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE))) {
+//                settingsResourceFile = CUSTOM_SETTINGS_RESOURCE_FILE;
+//            }
+//            settingsResourceConfig = new PropertiesConfiguration(settingsResourceFile);
+//            settingsResourceConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+
+            defaultAppProps = new Properties();
+            InputStream dIS = ResourceManager.class.getResourceAsStream(DEFAULT_SETTINGS_RESOURCE_FILE);
+            defaultAppProps.load(dIS);
+            dIS.close();
+
+            customAppProps = new Properties(defaultAppProps);
+            if (Files.exists(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE))) {
+                InputStream cIS = new FileInputStream(CUSTOM_SETTINGS_RESOURCE_FILE);
+                customAppProps.loadFromXML(cIS);
+                cIS.close();
             }
-            settingsResourceConfig = new PropertiesConfiguration(settingsResourceFile);
-            settingsResourceConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
-        } catch (ConfigurationException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(ResourceManager.class).error(ex);
         }
     }
@@ -71,9 +87,12 @@ public final class ResourceManager {
     }
 
     public static String getParam(String paramName) { return paramsResourceConfig.getString(paramName); }
-    public static String getSetting(String settingName) { return settingsResourceConfig.getString(settingName); }
+//    public static String getSetting(String settingName) { return settingsResourceConfig.getString(settingName); }
+    public static String getSetting(String settingName) { return customAppProps.getProperty(settingName); }
+    public static Properties getSettings() { return customAppProps; }
     public static String getUIThemeStyle() { return "css/" + getSetting("uiTheme") + ".css"; }
-    public static Image getAppLogo() { return new Image("images/appLogo.png"); }
-    public static Image getDavsoftLogo() { return new Image("images/davsoftLogo.png"); }
+    public static Image getAppLogoDark() { return new Image("images/appLogo_dark.png"); }
+    public static Image getAppLogoLight() { return new Image("images/appLogo_light.png"); }
+    public static Image getDavSoftLogo() { return new Image("images/davsoftLogo.png"); }
     public static URL getScene(String sceneName) { return ResourceManager.class.getResource("/screens/" + sceneName); }
 }

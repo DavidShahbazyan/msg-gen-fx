@@ -24,16 +24,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.25"
-     inkscape:cx="257.61808"
-     inkscape:cy="482.81988"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="434.18031"
+     inkscape:cy="612.37028"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1366"
-     inkscape:window-height="716"
+     inkscape:window-height="691"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1" />
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -53,6 +53,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#0000ff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3619"
+       width="681.65094"
+       height="366.28131"
+       x="19.79899"
+       y="350.91223" />
     <path
        style="fill:#c80000;fill-opacity:1;stroke:none"
        d="m -661.77489,122.24911 0,28.65625 107.0313,100.3125 0.3124,-29.4375 -39.4687,-37.21875 0,-0.21875 -67.875,-62.09375 z m 153,0 -59.5625,54.5 15.3125,14.90625 22.25,-20.59375 0,135.125 22,0 0,-123.90625 0,-42.0625 0,-17.96875 z m -198.0313,18 0.031,166 22,0 0,-116.875 68.9375,65.46875 15.4688,-14.1875 -61.4376,-58.375 0,-0.0625 -45,-41.96875 z m 243,0.0312 -21.9374,20.5 -0.031,145.4375 15,0.0312 6.9687,0 0,-165.96875 z m -198,103.625 0.031,62.34375 21.9063,0 -0.25,-41.15625 -21.6876,-21.1875 z"
@@ -610,5 +617,22 @@
          id="tspan3068"
          x="-632"
          y="-215.63782">RESOURCE: https://dribbble.com/michaelspitz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="53.600941"
+       y="487.67465"
+       id="text3613"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/david/Dropbox/Projects/Java/MessageManager/files/images/AppTitle.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3615"
+         x="53.600941"
+         y="487.67465"
+         style="font-size:64px"><tspan
+   style="font-size:64px;font-weight:bold;fill:#ffffff"
+   id="tspan3617">MESSAGE</tspan>Manager</tspan></text>
   </g>
 </svg>
