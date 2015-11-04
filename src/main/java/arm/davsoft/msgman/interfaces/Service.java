@@ -12,6 +12,8 @@ import java.util.Set;
  * <b>Time:</b> 6:26 AM <br/>
  */
 public interface Service {
+    void backupMessagesTable() throws SQLException;
+
     List<String> loadSchemaNames();
 
     List<Message> loadMessages();

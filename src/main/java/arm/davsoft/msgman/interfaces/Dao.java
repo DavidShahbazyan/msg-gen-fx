@@ -12,6 +12,8 @@ import java.util.Map;
  * <b>Time:</b> 6:05 PM <br/>
  */
 public interface Dao {
+    void backupMessagesTable() throws SQLException;
+
     List<String> loadSchemaNames() throws SQLException;
 
     List<Message> loadMessages(Map<String, Object> params) throws SQLException;

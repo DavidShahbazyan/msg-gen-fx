@@ -12,6 +12,7 @@ public final class IDM_7_MSSQLQueryImpl implements SQLQuery {
     private static final IDM_7_MSSQLQueryImpl INSTANCE = new IDM_7_MSSQLQueryImpl();
     private static final String workingCopyId = ResourceManager.getSetting("workingCopyId");
 
+    private static final String BACKUP_MESSAGES_TABLE = "SELECT * INTO dbo.DE_Messages" + tableSuffix + " FROM DE_Messages";
     private static final String REMOVE_MESSAGES = "UPDATE DE_Messages SET MessageText = MessageID, IsGlobal = 0, WorkingCopyID = " + workingCopyId + " WHERE MessageID IN (@@MessageIds) AND MessageID >= @@RangeStart and MessageID <= @@RangeEnd";
     private static final String REMOVE_MESSAGES_EXCEPT = "UPDATE DE_Messages SET MessageText = MessageID, IsGlobal = 0, WorkingCopyID = " + workingCopyId + " WHERE MessageID NOT IN (@@MessageIds) AND MessageID >= @@RangeStart and MessageID <= @@RangeEnd";
     //    private static final String REMOVE_UNUSED_MESSAGES = "UPDATE DE_Messages SET MessageText = MessageID, IsGlobal = 0, WorkingCopyID = " + workingCopyId + " WHERE MessageID NOT IN (@@MessageIds) AND MessageID >= @@RangeStart and MessageID <= @@RangeEnd";
@@ -29,6 +30,8 @@ public final class IDM_7_MSSQLQueryImpl implements SQLQuery {
     public static IDM_7_MSSQLQueryImpl getInstance() {
         return INSTANCE;
     }
+
+    @Override public String getBackupMessagesTable() { return BACKUP_MESSAGES_TABLE; }
 
     @Override public String getRemoveMessages() { return REMOVE_MESSAGES; }
 

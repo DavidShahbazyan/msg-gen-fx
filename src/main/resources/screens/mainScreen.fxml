@@ -177,14 +177,14 @@
         </VBox>
         <ButtonBar prefHeight="40.0" prefWidth="200.0">
             <buttons>
-                <Button fx:id="scanProjectButton" mnemonicParsing="false" onAction="#scanForNewMessagesInProject" text="%label.menuItem.edit.scanProject">
-                    <tooltip>
-                        <Tooltip text="%label.menuItem.edit.scanProject" />
-                    </tooltip>
-                </Button>
                 <Button fx:id="cleanMessageRangeButton" mnemonicParsing="false" onAction="#removeUnusedMessagesFromDB" text="%label.menuItem.edit.removeFromDB">
                     <tooltip>
                         <Tooltip text="%label.menuItem.edit.removeFromDB" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="scanProjectButton" mnemonicParsing="false" onAction="#scanForNewMessagesInProject" text="%label.menuItem.edit.scanProject">
+                    <tooltip>
+                        <Tooltip text="%label.menuItem.edit.scanProject" />
                     </tooltip>
                 </Button>
                 <Button fx:id="transferMessagesButton" mnemonicParsing="false" onAction="#transferMessagesToDB" text="%label.menuItem.edit.transferToDB">

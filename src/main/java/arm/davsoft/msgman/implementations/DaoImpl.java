@@ -41,6 +41,21 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
+    public void backupMessagesTable() throws SQLException {
+        String query = connectionConfig.getSqlQuery().getBackupMessagesTable();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionConfig.getDataSource().getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+        } finally {
+            if (connection != null) connection.close();
+            if (preparedStatement != null) preparedStatement.close();
+        }
+    }
+
+    @Override
     public List<String> loadSchemaNames() throws SQLException {
         return null;
     }

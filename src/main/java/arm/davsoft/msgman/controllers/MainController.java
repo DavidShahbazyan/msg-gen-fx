@@ -220,6 +220,9 @@ public class MainController implements Initializable {
         );
 
         fileItemsTableViewVisibleProperty.set(fileItemsTableViewData != null);
+
+        cleanMessageRangeMenuItem.setVisible(false);
+        cleanMessageRangeButton.setVisible(false);
     }
 
     private void checkEditability() {
@@ -412,7 +415,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void scanForNewMessagesInDB(ActionEvent event) {
-        if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.scanDB"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
+        if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.scanDB"), null, ResourceManager.getMessage("label.confirmation.scanDbForNewMessages"))) {
             if (checkTheMessageRangeToBeSet()) {
                 Task task = new Task() {
                     List<Message> messages = null;
