@@ -221,8 +221,8 @@ public class MainController implements Initializable {
 
         fileItemsTableViewVisibleProperty.set(fileItemsTableViewData != null);
 
-        cleanMessageRangeMenuItem.setVisible(false);
-        cleanMessageRangeButton.setVisible(false);
+        cleanMessageRangeMenuItem.setVisible(false); // TODO: DB cleanup is disabled temporally.
+        cleanMessageRangeButton.setVisible(false); // TODO: DB cleanup is disabled temporally.
     }
 
     private void checkEditability() {
@@ -306,7 +306,7 @@ public class MainController implements Initializable {
             moreActions.setCellFactory(p -> new ButtonTableCell<FileItem>("More...") {
                 @Override
                 public void doAction(FileItem rowItem) {
-                    Dialogs.showFileMessagesDialog(rowItem);
+                    Dialogs.showFileMessagesDialog(Collections.singletonList(rowItem));
                 }
             });
             moreActions.setPrefWidth(80);
@@ -496,6 +496,12 @@ public class MainController implements Initializable {
                     updateTitle(ResourceManager.getMessage("label.menuItem.edit.transferToDB"));
 //                    updateMessage("Preparing messages for transfer..."); // TODO: Should be removed after testing.
 //                    logger.info("Preparing messages for transfer..."); // TODO: Should be removed after testing.
+
+                    updateMessage("Backup messages table...");
+                    logger.info("Backup messages table started.");
+                    messageTransferService.backupMessagesTable();
+                    logger.info("Backup messages table completed.");
+
                     logger.info("DB Name: " + messageTransferService.getConfig().getDbName());
 //                    prepareMessagesForTransfer(); // TODO: Should be removed after testing.
                     StringBuilder transferredMessagesList = new StringBuilder();
@@ -568,18 +574,27 @@ public class MainController implements Initializable {
         }
     }
 
-/*
     @FXML
-    private void minimizeApp(ActionEvent event) {
-        Main.getPrimaryStage().setIconified(true);
-    }
+    private void backupMessagesTable(ActionEvent event) {
+        if (Dialogs.showConfirmPopup(ResourceManager.getMessage("title.dialog.confirm"), null, ResourceManager.getMessage("label.confirmation.backupMessagesTable"))) {
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    logger.info("Backup messages table started.");
+                    updateTitle("Backup messages table...");
+                    messageTransferService.backupMessagesTable();
+                    logger.info("Backup messages table completed.");
+                    return null;
+                }
+            };
 
-    @FXML
-    private void maximizeRestoreApp(ActionEvent event) {
-        Main.getPrimaryStage().setMaximized(!Main.getPrimaryStage().isMaximized());
-        Main.getPrimaryStage().centerOnScreen();
+            Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
+        }
     }
-*/
 
     @FXML
     private void exitApp(ActionEvent event) {
@@ -657,6 +672,10 @@ public class MainController implements Initializable {
     private void specifyNewMessageRange(ActionEvent event) {
         messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
         updateConnectionDetails();
+    }
+
+    @FXML private void showHardcodedMessages() {
+        Dialogs.showFileMessagesDialog(fileItemsTableViewData.getValue());
     }
 
     @FXML

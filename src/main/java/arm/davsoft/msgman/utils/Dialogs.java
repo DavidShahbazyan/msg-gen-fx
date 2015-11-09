@@ -231,8 +231,8 @@ public final class Dialogs {
         MessagesDialog.create(messages).show();
     }
 
-    public static void showFileMessagesDialog(FileItem fileItem) {
-        FileMessagesDialog.create(fileItem).show();
+    public static void showFileMessagesDialog(List<FileItem> fileItems) {
+        FileMessagesDialog.create(fileItems).show();
     }
 
     public static void showSettingsDialog(Window ownerWindow) {

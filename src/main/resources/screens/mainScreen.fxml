@@ -148,7 +148,7 @@
                                         <HBox spacing="5.0" TilePane.alignment="CENTER_LEFT">
                                             <children>
                                                 <Label styleClass="bold" text="Total hardcoded messages:" />
-                                                <Label fx:id="lbl_totalHardcodedMessages" text="Label" />
+                                                <Label fx:id="lbl_totalHardcodedMessages" onMouseClicked="#showHardcodedMessages" text="Label" />
                                             </children>
                                         </HBox>
                                     </children>

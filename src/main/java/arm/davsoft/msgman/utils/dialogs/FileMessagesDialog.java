@@ -2,6 +2,7 @@ package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.LineItem;
+import arm.davsoft.msgman.utils.Dialogs;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,9 +12,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -21,28 +27,36 @@ import javafx.stage.Window;
  * <b>Time:</b> 11:34 PM <br/>
  */
 public class FileMessagesDialog extends CustomDialog {
+    private List<FileItem> fileItems;
 
     private FileMessagesDialog(Window ownerWindow) {
         super(ownerWindow);
     }
 
-    public static FileMessagesDialog create(FileItem fileItem) {
-        return create(fileItem, null);
-    }
-    
-    public static FileMessagesDialog create(FileItem fileItem, Window ownerWindow) {
-        FileMessagesDialog dialog = new FileMessagesDialog(ownerWindow);
-        return dialog.prepare(fileItem);
+    public static FileMessagesDialog create(List<FileItem> fileItems) {
+        return create(fileItems, null);
     }
 
-    private FileMessagesDialog prepare(FileItem fileItem) {
+    public static FileMessagesDialog create(List<FileItem> fileItems, Window ownerWindow) {
+        FileMessagesDialog dialog = new FileMessagesDialog(ownerWindow);
+        dialog.fileItems = fileItems;
+        return dialog.prepare();
+    }
+
+    private FileMessagesDialog prepare() {
         stage.setTitle("More...");
 
         VBox root = new VBox();
         root.setSpacing(5);
         root.setPadding(new Insets(5));
 
-        TableView<LineItem> messagesTable = new TableView<>(FXCollections.observableArrayList(fileItem.getLineItems()));
+        List<LineItem> tableData = new ArrayList<>();
+
+        for (FileItem item : fileItems) {
+            tableData.addAll(item.getLineItems());
+        }
+
+        TableView<LineItem> messagesTable = new TableView<>(FXCollections.observableArrayList(tableData));
         messagesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         messagesTable.setEditable(true);
         VBox.setVgrow(messagesTable, Priority.ALWAYS);
@@ -53,16 +67,35 @@ public class FileMessagesDialog extends CustomDialog {
 
         messagesTable.getColumns().addAll(valueColl);
 
-        Button okButton = new Button("OK");
-        okButton.setOnAction(event -> stage.close());
+        Button btnOK = new Button("OK");
+        btnOK.setOnAction(event -> stage.close());
+
+        Button btnCopy = new Button("Copy");
+        btnCopy.setOnAction(event -> copyDataToClipboard());
 
         ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().add(okButton);
+        buttonBar.getButtons().addAll(btnCopy, btnOK);
         VBox.setVgrow(buttonBar, Priority.NEVER);
 
         root.getChildren().addAll(messagesTable, buttonBar);
         stage.setScene(new Scene(root));
         return this;
+    }
+
+    private void copyDataToClipboard() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        StringBuilder sb = new StringBuilder("Some text");
+
+        for (FileItem item : fileItems) {
+            for (LineItem lineItem : item.getLineItems()) {
+                sb.append(lineItem.getValue()).append('\n');
+            }
+        }
+
+        content.putString(sb.toString());
+        clipboard.setContent(content);
+        Dialogs.showInfoPopup("Done!", null, "The data is now in your clipboard.");
     }
 
     @Override
