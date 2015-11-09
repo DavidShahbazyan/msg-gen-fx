@@ -73,8 +73,12 @@ public class MessageTransferService extends ServiceImpl {
             Map<String, Object> params = new HashMap<>();
             params.put("@@RangeStart", range.getFrom());
             params.put("@@RangeEnd", range.getTo());
-            params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
-            messages = dao.loadMessagesExcept(params);
+            if (exceptIds != null && !exceptIds.isEmpty()) {
+                params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
+                messages = dao.loadMessagesExcept(params);
+            } else {
+                messages = dao.loadMessages(params);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }

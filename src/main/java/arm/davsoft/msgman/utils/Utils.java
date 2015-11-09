@@ -1,6 +1,6 @@
 package arm.davsoft.msgman.utils;
 
-import arm.davsoft.msgman.domains.LineItem;
+import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.FileType;
 
@@ -27,10 +27,14 @@ public class Utils {
 
     public static String joinIntegers(Collection<Integer> items) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Integer item : items) {
-            stringBuilder.append(item).append(",");
+        Iterator<Integer> integerIterator = items.iterator();
+        while (integerIterator.hasNext()) {
+            Integer item = integerIterator.next();
+            stringBuilder.append(item);
+            if (integerIterator.hasNext()) {
+                stringBuilder.append(',');
+            }
         }
-        stringBuilder.setLength(stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
 
@@ -72,21 +76,43 @@ public class Utils {
         return false;
     }
 
-    public static void exportLineItemsToFile(List<LineItem> lineItems) throws IOException {
-        File file = new File("MessagesFromProject_" + new Date().getTime() + ".export");
-        Writer wr = new FileWriter(file);
-        for (LineItem lineItem : lineItems) {
-            wr.write(lineItem.getValue());
+    public static void writeStringToFile(String fileName, String fileContent) {
+        Writer wr = null;
+        try {
+            wr = new FileWriter(new File(fileName));
+            wr.write(fileContent);
+            wr.close();
+        } catch (IOException ex) {
+            Main.LOGGER.error("Error occurred in writeStringToFile method: ", ex);
+        } finally {
+            if (wr != null) {
+                try {
+                    wr.close();
+                } catch (IOException ex) {
+                    Main.LOGGER.error("Error occurred in writeStringToFile method: ", ex);
+                }
+            }
         }
-        wr.close();
+
     }
 
+//    public static void exportLineItemsToFile(List<LineItem> lineItems) throws IOException {
+//        File file = new File("MessagesFromProject_" + new Date().getTime() + ".export");
+//        Writer wr = new FileWriter(file);
+//        for (LineItem lineItem : lineItems) {
+//            wr.write(lineItem.getValue());
+//        }
+//        wr.close();
+//    }
+
     public static void exportMessagesToFile(List<Message> messages) throws IOException {
-        File file = new File("MessagesFromDB_" + new Date().getTime() + ".export");
-        Writer wr = new FileWriter(file);
+        String fileName = "MessagesFromDB_" + new Date().getTime() + ".export";
+        StringBuilder fileContent = new StringBuilder();
         for (Message message : messages) {
-            wr.write('[' + message.getId() + " , " + message.getText() + ']');
+            fileContent.append('[')
+                    .append(message.getId()).append(" , ")
+                    .append(message.getText()).append(']');
         }
-        wr.close();
+        writeStringToFile(fileName, fileContent.toString());
     }
 }

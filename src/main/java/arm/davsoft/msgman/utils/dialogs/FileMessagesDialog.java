@@ -85,17 +85,19 @@ public class FileMessagesDialog extends CustomDialog {
     private void copyDataToClipboard() {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
-        StringBuilder sb = new StringBuilder("Some text");
+        content.putString(getMessagesAsString());
+        clipboard.setContent(content);
+        Dialogs.showInfoPopup("Done!", null, "The data is now in your clipboard.");
+    }
 
+    private String getMessagesAsString() {
+        StringBuilder sb = new StringBuilder();
         for (FileItem item : fileItems) {
             for (LineItem lineItem : item.getLineItems()) {
                 sb.append(lineItem.getValue()).append('\n');
             }
         }
-
-        content.putString(sb.toString());
-        clipboard.setContent(content);
-        Dialogs.showInfoPopup("Done!", null, "The data is now in your clipboard.");
+        return sb.toString();
     }
 
     @Override

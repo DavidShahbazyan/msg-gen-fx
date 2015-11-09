@@ -17,7 +17,6 @@ import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
-import arm.davsoft.msgman.utils.Utils;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -674,20 +673,11 @@ public class MainController implements Initializable {
         updateConnectionDetails();
     }
 
-    @FXML private void showHardcodedMessages() {
+    @FXML
+    private void showHardcodedMessages() {
         Dialogs.showFileMessagesDialog(fileItemsTableViewData.getValue());
     }
 
-    @FXML
-    private void exportHardcodedMessageToFile(ActionEvent event) throws IOException {
-        Utils.exportMessagesToFile(messagesToTransfer);
-    }
-
-    @FXML
-    private void exportLoadedMessageToFile(ActionEvent event) {
-//        messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
-//        updateConnectionDetails();
-    }
     /* ------------- /Main Menu Actions ------------- */
 
 
@@ -741,10 +731,12 @@ public class MainController implements Initializable {
     }
     
     private Set<Integer> getUsedMessages() {
-        Set<Integer> usedMessages = null;
+        Set<Integer> usedMessages = new HashSet<>(0);
         try {
             logger.info("Searching for used message ids.");
-            usedMessages = messageFinder.findUsedMessages();
+            if (messageFinder != null) {
+                usedMessages = messageFinder.findUsedMessages();
+            }
             logger.info("Search completed.");
         } catch (IOException ex) {
             logger.error(ex);

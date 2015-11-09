@@ -40,6 +40,14 @@
     -fx-background-insets:  0, 1;
 }
 
+.dialog-pane > .button-bar > .container > .details-button.more {
+    -fx-graphic: url("/images/icons/system/dialog-more-details.png");
+}
+
+.dialog-pane > .button-bar > .container > .details-button.less {
+    -fx-graphic: url("/images/icons/system/dialog-fewer-details.png");
+}
+
 .alert.confirmation.dialog-pane,
 .text-input-dialog.dialog-pane,
 .choice-dialog.dialog-pane {

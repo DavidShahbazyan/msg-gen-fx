@@ -1,6 +1,7 @@
 package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.domains.Message;
+import arm.davsoft.msgman.utils.Dialogs;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
@@ -22,7 +25,7 @@ import java.util.List;
  * <b>Time:</b> 3:07 PM <br/>
  */
 public class MessagesDialog extends CustomDialog {
-    
+    private List<Message> messages;
     private MessagesDialog(Window ownerWindow) {
         super(ownerWindow);
     }
@@ -33,10 +36,11 @@ public class MessagesDialog extends CustomDialog {
     
     public static MessagesDialog create(List<Message> messages, Window ownerWindow) {
         MessagesDialog dialog = new MessagesDialog(ownerWindow);
-        return dialog.prepare(messages);
+        dialog.messages = messages;
+        return dialog.prepare();
     }
 
-    private MessagesDialog prepare(List<Message> messages) {
+    private MessagesDialog prepare() {
         stage.setTitle("More...");
 
         VBox root = new VBox();
@@ -58,16 +62,35 @@ public class MessagesDialog extends CustomDialog {
 
         messagesTable.getColumns().addAll(idColl, valueColl);
 
-        Button okButton = new Button("OK");
-        okButton.setOnAction(event -> stage.close());
+        Button btnOK = new Button("OK");
+        btnOK.setOnAction(event -> stage.close());
+
+        Button btnCopy = new Button("Copy");
+        btnCopy.setOnAction(event -> copyDataToClipboard());
 
         ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().add(okButton);
+        buttonBar.getButtons().addAll(btnCopy, btnOK);
         VBox.setVgrow(buttonBar, Priority.NEVER);
 
         root.getChildren().addAll(messagesTable, buttonBar);
         stage.setScene(new Scene(root));
         return this;
+    }
+
+    private void copyDataToClipboard() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(getMessagesAsString());
+        clipboard.setContent(content);
+        Dialogs.showInfoPopup("Done!", null, "The data is now in your clipboard.");
+    }
+
+    private String getMessagesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Message message : messages) {
+            sb.append(message.getId()).append('\t').append(message.getText()).append('\n');
+        }
+        return sb.toString();
     }
 
     @Override
