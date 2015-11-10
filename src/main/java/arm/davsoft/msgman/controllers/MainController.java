@@ -1,5 +1,27 @@
 package arm.davsoft.msgman.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+
+import javafx.application.Platform;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
+import org.apache.log4j.Logger;
+
 import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.components.ApplicationTitleBar;
 import arm.davsoft.msgman.components.ButtonTableCell;
@@ -17,26 +39,6 @@ import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
-import javafx.application.Platform;
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -502,7 +504,7 @@ public class MainController implements Initializable {
                     logger.info("Backup messages table completed.");
 
                     logger.info("DB Name: " + messageTransferService.getConfig().getDbName());
-//                    prepareMessagesForTransfer(); // TODO: Should be removed after testing.
+                    prepareMessagesForTransfer(); // TODO: Should be removed after testing.
                     StringBuilder transferredMessagesList = new StringBuilder();
 //                    List<Message> messagesToTransfer = getMessagesToTransfer(); // TODO: Should be removed after testing.
                     int totalMessagesToTransfer = messagesToTransfer.size();
