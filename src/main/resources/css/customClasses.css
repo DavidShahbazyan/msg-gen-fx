@@ -24,7 +24,7 @@
     -fx-background-repeat: no-repeat;
     -fx-pref-height: 15px;
 }
-#mainToolBar > titleText {
+#mainToolBar .label.titleText {
     -fx-text-fill: #FFF;
 }
 #window-close {
@@ -69,4 +69,11 @@
 #window-close:focused, #window-min:focused , #window-max:focused {
     -fx-effect: null;
     /*-fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );*/
+}
+.tool-bar.settingsToolBar {
+    -fx-background-color: #EFEFF0;
+}
+.myTree .tree-cell {
+    -fx-background-color: #EFEFF0;
+    -fx-border-color: transparent;
 }

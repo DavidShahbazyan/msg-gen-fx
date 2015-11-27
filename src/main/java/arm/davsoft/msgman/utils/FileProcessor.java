@@ -36,7 +36,7 @@ public class FileProcessor {
             while (messageIterator.hasNext()) {
                 Message message = messageIterator.next();
                 if (v.equals(message.getText())) {
-                    String replacement = String.format(ResourceManager.getSetting("message.pattern"), message.getId().toString());
+                    String replacement = String.format(ResourceManager.getSetting("messagePattern"), message.getId().toString());
                     value = value.replace(v, replacement);
                     messageIterator.remove();
                     break;

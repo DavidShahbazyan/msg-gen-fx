@@ -39,7 +39,6 @@ public class ApplicationTitleBar extends ToolBar {
 
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("titleText");
-        titleLabel.setStyle("-fx-text-fill: #FFF;");
 
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);

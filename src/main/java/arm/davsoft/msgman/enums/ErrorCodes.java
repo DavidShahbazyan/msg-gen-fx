@@ -6,16 +6,22 @@ package arm.davsoft.msgman.enums;
  * <b>Time:</b> 7:00 PM <br/>
  */
 public enum ErrorCodes {
-    LOG4J_PROP_MISSING("Error: 111."),
+    LOG4J_PROP_MISSING("4041", "Log4j property file not found."),
+    UNCAUGHT_EXCEPTION("5001", "Uncaught exception occurred."),
     ;
 
-    private String errorMessage;
+    private String code;
+    private String description;
 
-    ErrorCodes(String errorMessage) {
-        this.errorMessage = errorMessage;
+    ErrorCodes(String code, String description) {
+        this.code = code;
+        this.description = description;
     }
 
-    public String getErrorMessage() {
-        return this.errorMessage;
+    public String getCode() {
+        return this.code;
+    }
+    public String getDescription() {
+        return this.description;
     }
 }

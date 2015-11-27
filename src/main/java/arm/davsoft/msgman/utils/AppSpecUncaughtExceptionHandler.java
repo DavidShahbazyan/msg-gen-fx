@@ -1,5 +1,7 @@
 package arm.davsoft.msgman.utils;
 
+import arm.davsoft.msgman.Main;
+import arm.davsoft.msgman.enums.ErrorCodes;
 import org.apache.log4j.Logger;
 
 /**
@@ -19,7 +21,9 @@ public class AppSpecUncaughtExceptionHandler implements Thread.UncaughtException
      */
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        Dialogs.showExceptionDialog(null, t.getName(), e);
-        Logger.getLogger(AppSpecUncaughtExceptionHandler.class).error(e);
+        String content = "Error: " + ErrorCodes.UNCAUGHT_EXCEPTION.getCode();
+        Dialogs.showErrorDialog(null, content);
+//        Logger.getLogger(AppSpecUncaughtExceptionHandler.class).error("", e);
+        Main.LOGGER.error("Silent exception occurred:", e);
     }
 }

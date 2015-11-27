@@ -45,8 +45,8 @@ import arm.davsoft.msgman.utils.ResourceManager;
  * <b>Date:</b> 7/18/15 <br/>
  * <b>Time:</b> 2:24 PM <br/>
  */
-public class MainController implements Initializable {
-    private Logger logger = Main.LOGGER; // Logger.getLogger(MainController.class)
+public class MainScreenController implements Initializable {
+    private Logger logger = Main.LOGGER; // Logger.getLogger(MainScreenController.class)
     private MessageTransferService messageTransferService;
     private MessageFinder messageFinder;
 

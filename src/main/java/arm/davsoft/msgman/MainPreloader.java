@@ -27,49 +27,22 @@ public class MainPreloader extends Preloader {
         bar = new ProgressBar();
         bar.setPrefHeight(3);
         bar.getStyleClass().add("white");
+//        bar.setStyle("-fx-background-color: rgba(255, 255, 255, 0.2)");
 
-        applicationName = new Label(ResourceManager.getParam("APPLICATION.NAME"));
-        applicationName.getStyleClass().add("splash-screen-app-name");
+        ImageView splash = new ImageView("/images/splashScreen.png");
+        splash.setFitHeight(250);
+        splash.setFitWidth(splash.getFitHeight() * 2.097112861);
 
-        applicationVersion = new Label(ResourceManager.getParam("APPLICATION.RELEASE.VERSION"));
-        applicationVersion.getStyleClass().add("splash-screen-app-ver");
-
-//        ImageView splash = new ImageView("/images/splashScreen.png");
-        ImageView splash = new ImageView("/images/background.jpg");
-        splash.setFitWidth(500);
-        splash.setFitHeight(500);
-
-        ImageView appLogo = new ImageView(ResourceManager.getAppLogoDark());
-        appLogo.setFitWidth(92);
-        appLogo.setFitHeight(92);
-        appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
-
-        ImageView davsoftLogo = new ImageView(ResourceManager.getDavSoftLogo());
-        davsoftLogo.prefWidth(32);
-
-        AnchorPane p = new AnchorPane(splash, appLogo, davsoftLogo, applicationName, bar, applicationVersion);
+        AnchorPane p = new AnchorPane(splash, bar);
 
         AnchorPane.setTopAnchor(splash, (double) 0);
         AnchorPane.setRightAnchor(splash, (double) 0);
         AnchorPane.setBottomAnchor(splash, (double) 0);
         AnchorPane.setLeftAnchor(splash, (double) 0);
 
-        AnchorPane.setTopAnchor(appLogo, (double) 20);
-        AnchorPane.setLeftAnchor(appLogo, (double) 20);
-
-        AnchorPane.setBottomAnchor(davsoftLogo, (double) 20);
-        AnchorPane.setLeftAnchor(davsoftLogo, (double) 20);
-
-        AnchorPane.setRightAnchor(applicationName, (double) 150);
-        AnchorPane.setTopAnchor(applicationName, (double) 200);
-        AnchorPane.setLeftAnchor(applicationName, (double) 150);
-
-        AnchorPane.setRightAnchor(bar, (double) 150);
-        AnchorPane.setTopAnchor(bar, (double) 220);
-        AnchorPane.setLeftAnchor(bar, (double) 150);
-
-        AnchorPane.setRightAnchor(applicationVersion, (double) 20);
-        AnchorPane.setBottomAnchor(applicationVersion, (double) 15);
+        AnchorPane.setRightAnchor(bar, (double) 100);
+        AnchorPane.setBottomAnchor(bar, (double) 100);
+        AnchorPane.setLeftAnchor(bar, (double) 100);
 
         p.setStyle("-fx-background-color: transparent;");
         return new Scene(p);

@@ -18,7 +18,8 @@
     -fx-border-style: solid;
     -fx-border-color: -fx-accent;
     -fx-border-radius: 5px;
-    -fx-padding: 2px;
+    -fx-padding: 1px;
+    -fx-pref-height: 5px;
     -fx-background-radius: 5px;
     -fx-background-color: transparent;
     -fx-background-insets: 0, 1;

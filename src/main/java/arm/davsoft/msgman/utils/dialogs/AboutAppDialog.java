@@ -2,6 +2,7 @@ package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.utils.ResourceManager;
 import arm.davsoft.msgman.utils.Utils;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Reflection;
@@ -86,7 +87,8 @@ public class AboutAppDialog extends CustomDialog {
         p.setStyle("-fx-background-color: transparent;");
 
         stage.setScene(new Scene(p));
-        stage.getScene().getStylesheets().addAll(ResourceManager.getUIThemeStyle());
+        stage.getScene().getStylesheets().addAll(Application.getUserAgentStylesheet());
+//        stage.getScene().getStylesheets().addAll(ResourceManager.getUIThemeStyle());
 
         return this;
     }

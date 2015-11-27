@@ -48,6 +48,10 @@ public final class Dialogs {
         return dialog.getConfig();
     }
 
+    public static void showInfoPopup(String title, String content) {
+        showInfoPopup(title, null, content);
+    }
+
     public static void showInfoPopup(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

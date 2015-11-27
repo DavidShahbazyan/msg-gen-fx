@@ -57,7 +57,7 @@ public class Main extends Application {
         Properties props = new Properties();
         InputStream input = getClass().getResourceAsStream("/properties/log4j.properties");
         if (input == null) {
-            throw new FileNotFoundException(ErrorCodes.LOG4J_PROP_MISSING.getErrorMessage());
+            throw new FileNotFoundException(ErrorCodes.LOG4J_PROP_MISSING.getCode());
         }
         props.load(input);
         if (Boolean.valueOf(ResourceManager.getSetting("exportLogToFile"))) {
@@ -81,7 +81,7 @@ public class Main extends Application {
 
         primaryStage.setTitle(ResourceManager.getParam("APPLICATION.NAME"));
         primaryStage.getIcons().add(ResourceManager.getAppLogoDark());
-        primaryStage.setScene(new Scene(FXMLFactory.getFXMLParent("/screens/mainScreen.fxml"), 800, 600));
+        primaryStage.setScene(new Scene(FXMLFactory.getFXMLParent("mainScreen.fxml"), 800, 600));
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);
         primaryStage.setOnCloseRequest(event -> {
