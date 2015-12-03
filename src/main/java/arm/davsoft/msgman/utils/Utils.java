@@ -22,10 +22,14 @@ public class Utils {
 
     public static <T extends Object> String concatStrings(Collection<T> strings, String delimiter) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (T o : strings) {
-            stringBuilder.append(o).append(delimiter);
+        Iterator<T> iterator = strings.iterator();
+        while (iterator.hasNext()) {
+            T item = iterator.next();
+            stringBuilder.append(item);
+            if (iterator.hasNext()) {
+                stringBuilder.append(delimiter);
+            }
         }
-        stringBuilder.setLength(stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
 
