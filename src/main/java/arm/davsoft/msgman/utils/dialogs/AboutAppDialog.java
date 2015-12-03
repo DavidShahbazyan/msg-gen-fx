@@ -93,8 +93,4 @@ public class AboutAppDialog extends CustomDialog {
         return this;
     }
 
-    public void show() {
-        super.show();
-        super.requestFocus();
-    }
 }

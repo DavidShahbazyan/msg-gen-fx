@@ -93,9 +93,4 @@ public class MessagesDialog extends CustomDialog {
         return sb.toString();
     }
 
-    @Override
-    public void show() {
-        super.show();
-        super.requestFocus();
-    }
 }

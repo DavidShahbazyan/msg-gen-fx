@@ -1,27 +1,5 @@
 package arm.davsoft.msgman.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
-import javafx.application.Platform;
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-
-import org.apache.log4j.Logger;
-
 import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.components.ApplicationTitleBar;
 import arm.davsoft.msgman.components.ButtonTableCell;
@@ -39,6 +17,26 @@ import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
+import javafx.application.Platform;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -75,13 +73,14 @@ public class MainScreenController implements Initializable {
             scanProjectMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
             scanDbMenuItemDisabledProperty =            new SimpleBooleanProperty(false),
             generateMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
-            putMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
+            putMessagesMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
             transferMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
             cleanMessageRangeMenuItemDisabledProperty = new SimpleBooleanProperty(false),
             connectMSSQLMenuItemDisabledProperty =      new SimpleBooleanProperty(false),
             connectOracleMenuItemDisabledProperty =     new SimpleBooleanProperty(false),
             connectMySQLMenuItemDisabledProperty =      new SimpleBooleanProperty(false),
             configConnectionMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
+            availableTagsListMenuItemDisabledProperty = new SimpleBooleanProperty(false),
             aboutAppMenuItemDisabledProperty =          new SimpleBooleanProperty(false),
 
             detailsPanelVisibleProperty =               new SimpleBooleanProperty(false),
@@ -104,7 +103,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
-            connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, aboutAppMenuItem;
+            connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem;
     @FXML
     private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
     @FXML
@@ -183,6 +182,7 @@ public class MainScreenController implements Initializable {
         connectOracleMenuItem.disableProperty().bind(connectOracleMenuItemDisabledProperty);
         connectMySQLMenuItem.disableProperty().bind(connectMySQLMenuItemDisabledProperty);
         configConnectionMenuItem.disableProperty().bind(configConnectionMenuItemDisabledProperty);
+        availableTagsListMenuItem.disableProperty().bind(availableTagsListMenuItemDisabledProperty);
         aboutAppMenuItem.disableProperty().bind(aboutAppMenuItemDisabledProperty);
         scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
         transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
@@ -248,8 +248,6 @@ public class MainScreenController implements Initializable {
         connectMySQLMenuItemDisabledProperty.set(false);
 
         configConnectionMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null);
-
-        aboutAppMenuItemDisabledProperty.set(false);
     }
 
     private void updateConnectionDetails() {
@@ -658,6 +656,11 @@ public class MainScreenController implements Initializable {
             updateConnectionDetails();
         }
         validate();
+    }
+
+    @FXML
+    private void availableTagsList(ActionEvent event) {
+        Dialogs.showAvailableTagsDialog(rootContainer.getScene().getWindow());
     }
 
     @FXML

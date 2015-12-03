@@ -232,18 +232,22 @@ public final class Dialogs {
     }
 
     public static void showMessagesDialog(List<Message> messages) {
-        MessagesDialog.create(messages).show();
+        MessagesDialog.create(messages).show(true);
     }
 
     public static void showFileMessagesDialog(List<FileItem> fileItems) {
-        FileMessagesDialog.create(fileItems).show();
+        FileMessagesDialog.create(fileItems).show(true);
     }
 
     public static void showSettingsDialog(Window ownerWindow) {
-        SettingsDialog.create(ownerWindow).show();
+        SettingsDialog.create(ownerWindow).show(true);
+    }
+
+    public static void showAvailableTagsDialog(Window ownerWindow) {
+        AvailableTagsDialog.create(ownerWindow).show(true);
     }
 
     public static void showAboutAppDialog(Window ownerWindow) {
-        AboutAppDialog.create(ownerWindow).show();
+        AboutAppDialog.create(ownerWindow).show(true);
     }
 }

@@ -16,9 +16,13 @@ import java.util.regex.Pattern;
  */
 public class Utils {
 
-    public static String concatStrings(Collection<Object> strings, String delimiter) {
+    public static String concatStrings(Collection<String> strings) {
+        return concatStrings(strings, ", ");
+    }
+
+    public static <T extends Object> String concatStrings(Collection<T> strings, String delimiter) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Object o : strings) {
+        for (T o : strings) {
             stringBuilder.append(o).append(delimiter);
         }
         stringBuilder.setLength(stringBuilder.length() - 1);

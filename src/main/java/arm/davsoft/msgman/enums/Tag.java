@@ -14,47 +14,52 @@ public enum Tag {
 
 //    ALL_SUPPORTED_ATTRIBUTES("", Arrays.asList("alt", "name", "value", "label", "title", "header", "footer", "message", "itemLabel", "headerText", "footerText", "emptyMessage", "requiredMessage")),
 
-    A                       ("a",                    Arrays.asList("title")),
-    IMG                     ("img",                  Arrays.asList("alt", "title")),
-    SPAN                    ("span",                 Arrays.asList("title")),
+    A                       (1, "a",                     Arrays.asList("title")),
+    IMG                     (2, "img",                   Arrays.asList("alt", "title")),
+    SPAN                    (3, "span",                  Arrays.asList("title")),
 
-    H_OUTPUT_LABEL          ("h:outputLabel",        Arrays.asList("value")),
-    H_OUTPUT_TEXT           ("h:outputText",         Arrays.asList("value", "title")),
-    H_INPUT_TEXT            ("h:inputText",          Arrays.asList("alt", "title", "label", "requiredMessage", "validatorMessage")),
-    P_INPUT_TEXT            ("p:inputText",          Arrays.asList("alt", "title", "label", "requiredMessage", "validatorMessage")),
-    H_INPUT_TEXT_AREA       ("h:inputTextarea",      Arrays.asList("title", "label", "requiredMessage", "validatorMessage")),
-    P_INPUT_TEXT_AREA       ("p:inputTextarea",      Arrays.asList("title", "label", "requiredMessage", "validatorMessage")),
-    P_SELECT_ONE_MENU       ("p:selectOneMenu",      Arrays.asList("requiredMessage")),
-    P_CALENDAR              ("p:calendar",           Arrays.asList("requiredMessage")),
-    H_COLUMN                ("h:column",             Arrays.asList("headerText", "footerText")),
-    P_COLUMN                ("p:column",             Arrays.asList("headerText", "footerText")),
-    F_SELECT_ITEM           ("f:selectItem",         Arrays.asList("itemLabel")),
-    F_SELECT_ITEMS          ("f:selectItems",        Arrays.asList("itemLabel")),
-    P_DIALOG                ("p:dialog",             Arrays.asList("header", "footer")),
-    P_CONFIRM_DIALOG        ("p:confirmDialog",      Arrays.asList("header", "message")),
-    DE_SUB_SECTION          ("de:subSection",        Arrays.asList("name", "title")),
-    H_DATA_TABLE            ("h:dataTable",          Arrays.asList("emptyMessage")),
-    P_DATA_TABLE            ("p:dataTable",          Arrays.asList("emptyMessage")),
-    H_COMMAND_BUTTON        ("h:commandButton",      Arrays.asList("value")),
-    P_COMMAND_BUTTON        ("p:commandButton",      Arrays.asList("value")),
-    H_COMMAND_LINK          ("h:commandLink",        Arrays.asList("value")),
-    P_COMMAND_LINK          ("p:commandLink",        Arrays.asList("value")),
-    H_GRAPHIC_IMAGE         ("h:graphicImage",       Arrays.asList("alt", "title")),
-    P_GRAPHIC_IMAGE         ("p:graphicImage",       Arrays.asList("alt", "title")),
-    F_ATTRIBUTE             ("f:attribute",          Arrays.asList("value")),
-    P_MENU_BUTTON           ("p:menuButton",         Arrays.asList("value")),
-    UI_PARAM                ("ui:param",             Arrays.asList("value")),
-    SIS_MULTILINGUAL_TEXT   ("sis:multilingualText", Arrays.asList("requiredMessage", "validatorMessage")),
+    H_OUTPUT_LABEL          (4, "h:outputLabel",         Arrays.asList("value")),
+    H_OUTPUT_TEXT           (5, "h:outputText",          Arrays.asList("value", "title")),
+    H_INPUT_TEXT            (6, "h:inputText",           Arrays.asList("alt", "title", "label", "requiredMessage", "validatorMessage")),
+    P_INPUT_TEXT            (7, "p:inputText",           Arrays.asList("alt", "title", "label", "requiredMessage", "validatorMessage")),
+    H_INPUT_TEXT_AREA       (8, "h:inputTextarea",       Arrays.asList("title", "label", "requiredMessage", "validatorMessage")),
+    P_INPUT_TEXT_AREA       (9, "p:inputTextarea",       Arrays.asList("title", "label", "requiredMessage", "validatorMessage")),
+    P_SELECT_ONE_MENU       (10, "p:selectOneMenu",      Arrays.asList("requiredMessage")),
+    P_CALENDAR              (11, "p:calendar",           Arrays.asList("requiredMessage")),
+    H_COLUMN                (12, "h:column",             Arrays.asList("headerText", "footerText")),
+    P_COLUMN                (13, "p:column",             Arrays.asList("headerText", "footerText")),
+    F_SELECT_ITEM           (14, "f:selectItem",         Arrays.asList("itemLabel")),
+    F_SELECT_ITEMS          (15, "f:selectItems",        Arrays.asList("itemLabel")),
+    P_DIALOG                (16, "p:dialog",             Arrays.asList("header", "footer")),
+    P_CONFIRM_DIALOG        (17, "p:confirmDialog",      Arrays.asList("header", "message")),
+    DE_SUB_SECTION          (18, "de:subSection",        Arrays.asList("name", "title")),
+    H_DATA_TABLE            (19, "h:dataTable",          Arrays.asList("emptyMessage")),
+    P_DATA_TABLE            (20, "p:dataTable",          Arrays.asList("emptyMessage")),
+    H_COMMAND_BUTTON        (21, "h:commandButton",      Arrays.asList("value")),
+    P_COMMAND_BUTTON        (22, "p:commandButton",      Arrays.asList("value")),
+    H_COMMAND_LINK          (23, "h:commandLink",        Arrays.asList("value")),
+    P_COMMAND_LINK          (24, "p:commandLink",        Arrays.asList("value")),
+    H_GRAPHIC_IMAGE         (25, "h:graphicImage",       Arrays.asList("alt", "title")),
+    P_GRAPHIC_IMAGE         (26, "p:graphicImage",       Arrays.asList("alt", "title")),
+    F_ATTRIBUTE             (27, "f:attribute",          Arrays.asList("value")),
+    P_MENU_BUTTON           (28, "p:menuButton",         Arrays.asList("value")),
+    UI_PARAM                (29, "ui:param",             Arrays.asList("value")),
+    SIS_MULTILINGUAL_TEXT   (30, "sis:multilingualText", Arrays.asList("requiredMessage", "validatorMessage")),
     ;
 
+    private Integer id;
     private String name;
     private List<String> attributesList;
 
-    Tag(String name, List<String> attributesList) {
+    Tag(Integer id, String name, List<String> attributesList) {
+        this.id = id;
         this.name = name;
         this.attributesList = attributesList;
     }
 
+    public Integer getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }

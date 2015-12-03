@@ -4,25 +4,12 @@ import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.utils.FXMLFactory;
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Application;
-import javafx.beans.property.*;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTreeCell;
-import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Window;
-import javafx.util.converter.NumberStringConverter;
-import org.apache.log4j.Logger;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Properties;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -57,8 +44,4 @@ public class SettingsDialog extends CustomDialog {
         return null;
     }
 
-    public void show() {
-        super.show();
-        super.requestFocus();
-    }
 }

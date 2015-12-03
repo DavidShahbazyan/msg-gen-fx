@@ -100,9 +100,4 @@ public class FileMessagesDialog extends CustomDialog {
         return sb.toString();
     }
 
-    @Override
-    public void show() {
-        super.show();
-        super.requestFocus();
-    }
 }

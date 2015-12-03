@@ -21,6 +21,7 @@
                                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" onAction="#exitApp" text="%label.menuItem.file.exit">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -80,6 +81,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="%label.menuItem.help">
                     <items>
+                        <MenuItem fx:id="availableTagsListMenuItem" mnemonicParsing="false" onAction="#availableTagsList" text="%label.menuItem.help.availableTagsList" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="aboutAppMenuItem" mnemonicParsing="false" onAction="#aboutApp" text="%label.menuItem.help.about" >
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />

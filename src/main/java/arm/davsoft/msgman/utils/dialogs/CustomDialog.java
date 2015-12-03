@@ -19,12 +19,17 @@ public abstract class CustomDialog {
     public void show() {
         stage.show();
     }
-
     public void showAndWait() {
         stage.showAndWait();
     }
-
     public void requestFocus() {
         stage.requestFocus();
+    }
+
+    public void show(boolean requestFocus) {
+        show();
+        if (requestFocus) {
+            requestFocus();
+        }
     }
 }
