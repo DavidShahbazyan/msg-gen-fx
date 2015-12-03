@@ -20,14 +20,16 @@ public class Utils {
         return concatStrings(strings, ", ");
     }
 
-    public static <T extends Object> String concatStrings(Collection<T> strings, String delimiter) {
+    public static <T> String concatStrings(Collection<T> strings, String delimiter) {
         StringBuilder stringBuilder = new StringBuilder();
-        Iterator<T> iterator = strings.iterator();
-        while (iterator.hasNext()) {
-            T item = iterator.next();
-            stringBuilder.append(item);
-            if (iterator.hasNext()) {
-                stringBuilder.append(delimiter);
+        if (strings != null) {
+            Iterator<T> iterator = strings.iterator();
+            while (iterator.hasNext()) {
+                T item = iterator.next();
+                stringBuilder.append(item);
+                if (iterator.hasNext()) {
+                    stringBuilder.append(delimiter);
+                }
             }
         }
         return stringBuilder.toString();
@@ -61,7 +63,7 @@ public class Utils {
     public static Set<Integer> findMessagesInFile(BufferedReader bufferedReader) throws IOException {
         Set<Integer> messages = new HashSet<>();
         try {
-            String line = null;
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 Matcher matcher = Pattern.compile(ResourceManager.getParam("REGEXP.PATTERN.MESSAGE")).matcher(line);
                 while (matcher.find()) {
