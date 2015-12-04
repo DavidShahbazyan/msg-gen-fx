@@ -5,7 +5,6 @@ import arm.davsoft.msgman.utils.Utils;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.Reflection;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -37,7 +36,7 @@ public class AboutAppDialog extends CustomDialog {
         stage.setResizable(false);
         stage.setTitle(ResourceManager.getMessage("title.dialog.about") + " " + title);
 
-        ImageView background = new ImageView("/images/background.jpg");
+        ImageView background = new ImageView("/images/background.png");
         background.setFitWidth(500);
         background.setFitHeight(500);
 
@@ -60,25 +59,11 @@ public class AboutAppDialog extends CustomDialog {
         aboutTheAppTextArea.setMinSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
         aboutTheAppTextArea.setMaxSize(aboutTheAppTextArea.getPrefWidth(), aboutTheAppTextArea.getPrefHeight());
 
-        ImageView appLogo = new ImageView(ResourceManager.getAppLogoDark());
-        appLogo.setFitWidth(92);
-        appLogo.setFitHeight(92);
-        appLogo.setEffect(new Reflection(0, 1, 0.3, 0));
-
-        ImageView davsoftLogo = new ImageView(ResourceManager.getDavSoftLogo());
-        davsoftLogo.prefWidth(32);
-
-        AnchorPane p = new AnchorPane(background, appLogo, davsoftLogo, aboutTheAppTextArea);
+        AnchorPane p = new AnchorPane(background, aboutTheAppTextArea);
         AnchorPane.setTopAnchor(background, (double) 0);
         AnchorPane.setRightAnchor(background, (double) 0);
         AnchorPane.setBottomAnchor(background, (double) 0);
         AnchorPane.setLeftAnchor(background, (double) 0);
-
-        AnchorPane.setTopAnchor(appLogo, (double) 20);
-        AnchorPane.setLeftAnchor(appLogo, (double) 20);
-
-        AnchorPane.setBottomAnchor(davsoftLogo, (double) 20);
-        AnchorPane.setLeftAnchor(davsoftLogo, (double) 20);
 
         AnchorPane.setTopAnchor(aboutTheAppTextArea, (double) 200);
         AnchorPane.setRightAnchor(aboutTheAppTextArea, (double) 50);
@@ -88,7 +73,6 @@ public class AboutAppDialog extends CustomDialog {
 
         stage.setScene(new Scene(p));
         stage.getScene().getStylesheets().addAll(Application.getUserAgentStylesheet());
-//        stage.getScene().getStylesheets().addAll(ResourceManager.getUIThemeStyle());
 
         return this;
     }
