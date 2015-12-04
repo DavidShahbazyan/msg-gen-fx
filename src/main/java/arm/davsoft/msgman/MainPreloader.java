@@ -2,13 +2,14 @@ package arm.davsoft.msgman;
 
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Preloader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.effect.Reflection;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -57,6 +58,10 @@ public class MainPreloader extends Preloader {
         stage.getScene().setFill(Color.TRANSPARENT);
         stage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
         stage.show();
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
+        stage.requestFocus();
     }
 
     @Override
