@@ -27,4 +27,10 @@ public class MainTest {
             fail();
         }
     }
+
+    @Test
+    public void main() {
+        boolean b = false;
+        System.out.println(String.valueOf(Boolean.class.isInstance(b)));
+    }
 }

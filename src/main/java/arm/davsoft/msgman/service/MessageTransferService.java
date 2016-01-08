@@ -148,10 +148,7 @@ public class MessageTransferService extends ServiceImpl {
     @Override
     public void removeMessagesExcept(Range range, Set<Integer> exceptIds) {
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
-            params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
+            List<Object> params = Arrays.asList(Utils.joinIntegers(exceptIds), range.getFrom(), range.getTo());
             dao.removeMessagesExcept(params);
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
@@ -169,9 +166,7 @@ public class MessageTransferService extends ServiceImpl {
     public boolean transferMessage(Message message) {
         boolean success;
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@MessageId", message.getId());
-            params.put("@@Text", message.getText());
+            List<Object> params = Arrays.asList(message.getText(), message.getId());
             dao.transferMessage(params);
             success = true;
         } catch (SQLException ex) {

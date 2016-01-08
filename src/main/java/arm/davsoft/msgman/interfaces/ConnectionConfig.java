@@ -26,6 +26,7 @@ public interface ConnectionConfig extends Cloneable {
     SQLQuery getSqlQuery();
 
     DataSource getDataSource();
+    void updateDataSource();
 
     String getJdbcUrl();
 

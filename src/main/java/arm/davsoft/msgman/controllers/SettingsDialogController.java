@@ -194,9 +194,9 @@ public class SettingsDialogController implements Initializable {
         Label lblMessagePatterns = new Label(ResourceManager.getMessage("label.messagePatterns"));
         lblMessagePatterns.getStyleClass().add("bold");
 
-        Label lblMsgMarkerPattern = new Label(ResourceManager.getMessage("label.find"));
-        TextField txtMsgMarkerPattern = new TextField();
-        txtMsgMarkerPattern.textProperty().bindBidirectional(messageMarkerProperty);
+//        Label lblMsgMarkerPattern = new Label(ResourceManager.getMessage("label.find"));
+//        TextField txtMsgMarkerPattern = new TextField();
+//        txtMsgMarkerPattern.textProperty().bindBidirectional(messageMarkerProperty);
 
         Label lblFindMsgPattern = new Label(ResourceManager.getMessage("label.replace"));
         TextField txtFindMsgPattern = new TextField();
@@ -212,8 +212,8 @@ public class SettingsDialogController implements Initializable {
 
         gridPane.add(lblMessagePatterns, 0, 1, 2, 1);
 
-        gridPane.add(lblMsgMarkerPattern, 0, 2);
-        gridPane.add(txtMsgMarkerPattern, 1, 2);
+//        gridPane.add(lblMsgMarkerPattern, 0, 2);
+//        gridPane.add(txtMsgMarkerPattern, 1, 2);
 
         gridPane.add(lblFindMsgPattern, 0, 3);
         gridPane.add(txtFindMsgPattern, 1, 3);

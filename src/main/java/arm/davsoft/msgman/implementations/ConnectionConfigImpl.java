@@ -7,6 +7,7 @@ import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.interfaces.SQLQuery;
 import arm.davsoft.msgman.utils.DataSourceFactory;
 import arm.davsoft.msgman.utils.SQLQueryFactory;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -21,6 +22,8 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     private final IDMVersion idmVersion;
     private final DBServerType dbServerType;
     private final SQLQuery sqlQuery;
+
+    private DataSource dataSource;
 
     private boolean isNew;
     private SimpleStringProperty connectionName = new SimpleStringProperty();
@@ -83,7 +86,18 @@ public class ConnectionConfigImpl implements ConnectionConfig {
 
     @Override
     public DataSource getDataSource() {
-        return DataSourceFactory.getInstance().createDataSource(this);
+        // Double check for data source not to be null
+        if (this.dataSource == null) {
+            this.dataSource = DataSourceFactory.getInstance().createDataSource(this);
+        }
+        return dataSource;
+    }
+
+    @Override
+    public void updateDataSource() {
+        ((ComboPooledDataSource) dataSource).setJdbcUrl(getJdbcUrl());
+        ((ComboPooledDataSource) dataSource).setUser(getUserName());
+        ((ComboPooledDataSource) dataSource).setPassword(getUserName());
     }
 
     @Override

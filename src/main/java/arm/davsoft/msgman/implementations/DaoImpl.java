@@ -4,6 +4,7 @@ import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Dao;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.Map;
  */
 public abstract class DaoImpl implements Dao {
     protected ConnectionConfig connectionConfig;
+    protected DataSource dataSource;
 
     public DaoImpl(ConnectionConfig connectionConfig) {
         this.connectionConfig = connectionConfig;
@@ -38,6 +40,22 @@ public abstract class DaoImpl implements Dao {
             }
         }
         return newQuery;
+    }
+
+    public void prepareForExecution(PreparedStatement ps, List<Object> params) throws SQLException {
+        for (int i = 0 ; i < params.size(); i++) {
+            Object param = params.get(i);
+            int psIndex = i + 1;
+            if (Integer.class.isInstance(param)) {
+                ps.setInt(psIndex, (Integer) param);
+            } else if (String.class.isInstance(param)) {
+                ps.setString(psIndex, (String) param);
+            } else if (Boolean.class.isInstance(param)) {
+                ps.setBoolean(psIndex, (Boolean) param);
+            } else if (Float.class.isInstance(param)) {
+                ps.setFloat(psIndex, (Float) param);
+            }
+        }
     }
 
     @Override
@@ -160,13 +178,13 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public void removeMessagesExcept(Map<String, Object> params) throws SQLException {
-        String query = setQueryParams(connectionConfig.getSqlQuery().getRemoveMessagesExcept(), params);
+    public void removeMessagesExcept(List<Object> params) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getRemoveMessagesExcept());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.execute();
         } finally {
             if (connection != null) connection.close();
@@ -174,14 +192,13 @@ public abstract class DaoImpl implements Dao {
         }
     }
 
-    @Override
-    public void transferMessage(Map<String, Object> params) throws SQLException {
-        String query = setQueryParams(connectionConfig.getSqlQuery().getUpdateMessage(), params);
+    public void transferMessage(List<Object> params) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getUpdateMessage());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.execute();
         } finally {
             if (connection != null) connection.close();

@@ -26,7 +26,11 @@ public interface Dao {
 
     void removeMessages(Map<String, Object> params) throws SQLException;
 
-    void removeMessagesExcept(Map<String, Object> params) throws SQLException;
+//    void removeMessagesExcept(Map<String, Object> params) throws SQLException;
 
-    void transferMessage(Map<String, Object> params) throws SQLException;
+    void removeMessagesExcept(List<Object> params) throws SQLException;
+
+//    void transferMessage(Map<String, Object> params) throws SQLException;
+
+    void transferMessage(List<Object> params) throws SQLException;
 }

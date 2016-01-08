@@ -610,7 +610,8 @@ public class MainScreenController implements Initializable {
         }
         if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
-            config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            messageTransferService.getConfig().setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            messageTransferService.getConfig().updateDataSource();
             initEmptyMessages();
             updateConnectionDetails();
         }
@@ -641,7 +642,8 @@ public class MainScreenController implements Initializable {
         }
         if (config != null && config.isValid()) {
             messageTransferService = new MessageTransferService(config);
-            config.setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            messageTransferService.getConfig().setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
+            messageTransferService.getConfig().updateDataSource();
             initEmptyMessages();
             updateConnectionDetails();
         }
