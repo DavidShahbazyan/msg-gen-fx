@@ -51,10 +51,7 @@ public class MessageTransferService extends ServiceImpl {
     public List<Message> loadMessages(Range range) {
         List<Message> messages = new ArrayList<>();
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
-            messages = dao.loadMessages(params);
+            messages = dao.loadMessages(Arrays.asList(range.getFrom(), range.getTo()));
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }
@@ -70,14 +67,10 @@ public class MessageTransferService extends ServiceImpl {
     public List<Message> loadMessagesExcept(Range range, Set<Integer> exceptIds) {
         List<Message> messages = new ArrayList<>();
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
             if (exceptIds != null && !exceptIds.isEmpty()) {
-                params.put("@@MessageIds", Utils.joinIntegers(exceptIds));
-                messages = dao.loadMessagesExcept(params);
+                messages = dao.loadMessagesExcept(Arrays.asList(range.getFrom(), range.getTo(), Utils.joinIntegers(exceptIds)));
             } else {
-                messages = dao.loadMessages(params);
+                messages = loadMessages();
             }
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
@@ -94,10 +87,7 @@ public class MessageTransferService extends ServiceImpl {
     public List<Message> loadEmptyMessages(Range range) {
         List<Message> messages = new ArrayList<>();
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
-            messages = dao.loadEmptyMessages(params);
+            messages = dao.loadEmptyMessages(Arrays.asList(range.getFrom(), range.getTo()));
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }
@@ -112,10 +102,7 @@ public class MessageTransferService extends ServiceImpl {
     @Override
     public void generateNewEmptyMessages(Range range) throws SQLException {
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
-            dao.generateNewEmptyMessages(params);
+            dao.generateNewEmptyMessages(Arrays.asList(range.getFrom(), range.getTo()));
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
             throw ex;
@@ -130,11 +117,7 @@ public class MessageTransferService extends ServiceImpl {
     @Override
     public void removeMessages(Range range, Set<Integer> messageIds) {
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("@@RangeStart", range.getFrom());
-            params.put("@@RangeEnd", range.getTo());
-            params.put("@@MessageIds", Utils.joinIntegers(messageIds));
-            dao.removeMessages(params);
+            dao.removeMessages(Arrays.asList(Utils.joinIntegers(messageIds), range.getFrom(), range.getTo()));
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }
@@ -148,8 +131,7 @@ public class MessageTransferService extends ServiceImpl {
     @Override
     public void removeMessagesExcept(Range range, Set<Integer> exceptIds) {
         try {
-            List<Object> params = Arrays.asList(Utils.joinIntegers(exceptIds), range.getFrom(), range.getTo());
-            dao.removeMessagesExcept(params);
+            dao.removeMessagesExcept(Arrays.asList(Utils.joinIntegers(exceptIds), range.getFrom(), range.getTo()));
         } catch (SQLException ex) {
             Logger.getLogger(getClass()).error(ex);
         }
@@ -166,8 +148,7 @@ public class MessageTransferService extends ServiceImpl {
     public boolean transferMessage(Message message) {
         boolean success;
         try {
-            List<Object> params = Arrays.asList(message.getText(), message.getId());
-            dao.transferMessage(params);
+            dao.transferMessage(Arrays.asList(message.getText(), message.getId()));
             success = true;
         } catch (SQLException ex) {
             success = false;

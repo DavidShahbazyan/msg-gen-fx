@@ -79,15 +79,15 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public List<Message> loadMessages(Map<String, Object> params) throws SQLException {
+    public List<Message> loadMessages(List<Object> params) throws SQLException {
         List<Message> messages = new ArrayList<>();
-        String query = setQueryParams(connectionConfig.getSqlQuery().getLoadMessages(), params);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getLoadMessages());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.executeQuery();
             resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {
@@ -102,15 +102,15 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public List<Message> loadMessagesExcept(Map<String, Object> params) throws SQLException {
+    public List<Message> loadMessagesExcept(List<Object> params) throws SQLException {
         List<Message> messages = new ArrayList<>();
-        String query = setQueryParams(connectionConfig.getSqlQuery().getLoadMessagesExcept(), params);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getLoadMessagesExcept());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.executeQuery();
             resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {
@@ -125,15 +125,15 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public List<Message> loadEmptyMessages(Map<String, Object> params) throws SQLException {
+    public List<Message> loadEmptyMessages(List<Object> params) throws SQLException {
         List<Message> messages = new ArrayList<>();
-        String query = setQueryParams(connectionConfig.getSqlQuery().getLoadUnusedMessageIds(), params);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getLoadUnusedMessageIds());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.executeQuery();
             resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {
@@ -148,13 +148,13 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public void generateNewEmptyMessages(Map<String, Object> params) throws SQLException {
-        String query = setQueryParams(connectionConfig.getSqlQuery().getCreateEmptyMessages(), params);
+    public void generateNewEmptyMessages(List<Object> params) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getCreateEmptyMessages());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.execute();
         } finally {
             if (connection != null) connection.close();
@@ -163,13 +163,13 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
-    public void removeMessages(Map<String, Object> params) throws SQLException {
-        String query = setQueryParams(connectionConfig.getSqlQuery().getRemoveMessages(), params);
+    public void removeMessages(List<Object> params) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionConfig.getDataSource().getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getRemoveMessages());
+            prepareForExecution(preparedStatement, params);
             preparedStatement.execute();
         } finally {
             if (connection != null) connection.close();
