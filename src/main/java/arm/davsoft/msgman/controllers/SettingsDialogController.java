@@ -5,6 +5,7 @@ import arm.davsoft.msgman.enums.Tag;
 import arm.davsoft.msgman.enums.Theme;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.ResourceManager;
+import arm.davsoft.msgman.utils.Utils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.util.converter.NumberStringConverter;
@@ -112,12 +114,22 @@ public class SettingsDialogController implements Initializable {
             customProps.setProperty("messageMarker", messageMarkerProperty.get());
             customProps.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
             customProps.setProperty("uiTheme", "" + uiThemeProperty.get().getId());
+            StringBuilder sb = new StringBuilder();
+            for (Tag tag : Tag.values()) {
+                if (tag.getIsSelected()) {
+                    if (!sb.toString().isEmpty()) {
+                        sb.append(',');
+                    }
+                    sb.append(tag.name());
+                }
+            }
+            customProps.setProperty("supportedTags", sb.toString());
             String path = ResourceManager.CUSTOM_SETTINGS_RESOURCE_FILE;
             if (!Files.exists(Paths.get(path))) {
                 Files.createFile(Paths.get(path));
             }
             FileOutputStream fos = new FileOutputStream(path);
-            customProps.storeToXML(fos, "User defined settings");
+            customProps.store(fos, "User defined settings - DO NOT CHANGE ANYTHING HERE!");
             fos.close();
             Dialogs.showInfoPopup(ResourceManager.getMessage("title.dialog.settings"), ResourceManager.getMessage("label.settingsRestartApp"));
         } catch (Exception ex) {
@@ -140,7 +152,6 @@ public class SettingsDialogController implements Initializable {
 
         ComboBox<Theme> themeComboBox = new ComboBox<>(FXCollections.observableArrayList(Theme.values()).sorted((o1, o2) -> o1.getName().compareTo(o2.getName())));
         themeComboBox.valueProperty().bindBidirectional(uiThemeProperty);
-//        themeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> this.uiTheme = newValue);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -150,16 +161,19 @@ public class SettingsDialogController implements Initializable {
         gridPane.add(new Label(ResourceManager.getMessage("label.theme")), 0, 0);
         gridPane.add(themeComboBox, 1, 0);
 
-        TreeView<String> tagTreeView = new TreeView<>(new TreeItem<>());
+        TreeView<String> tagTreeView = new TreeView<>(new CheckBoxTreeItem<>("All"));
         tagTreeView.setShowRoot(false);
         tagTreeView.setFocusTraversable(false);
         tagTreeView.setPrefHeight(300);
         tagTreeView.setMinHeight(tagTreeView.getPrefHeight());
         tagTreeView.setMaxHeight(tagTreeView.getPrefHeight());
+        tagTreeView.setCellFactory(CheckBoxTreeCell.forTreeView());
+        List<Tag> supportedTags = Utils.getSupportedTags();
         for (Tag tag : Tag.values()) {
-            TreeItem<String> tagTreeItem = new TreeItem<>(tag.getName());
-            for (String attribute : tag.getAttributesList()) {
-                tagTreeItem.getChildren().add(new TreeItem<>(attribute));
+            CheckBoxTreeItem<String> tagTreeItem = new CheckBoxTreeItem<>(tag.getName());
+            tagTreeItem.selectedProperty().bindBidirectional(tag.isSelectedProperty());
+            if (supportedTags.contains(tag)) {
+                tagTreeItem.setSelected(true);
             }
             tagTreeView.getRoot().getChildren().add(tagTreeItem);
         }

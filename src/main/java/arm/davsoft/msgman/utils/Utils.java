@@ -3,6 +3,7 @@ package arm.davsoft.msgman.utils;
 import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.FileType;
+import arm.davsoft.msgman.enums.Tag;
 
 import java.io.*;
 import java.util.*;
@@ -124,5 +125,25 @@ public class Utils {
                     .append(message.getText()).append(']');
         }
         writeStringToFile(fileName, fileContent.toString());
+    }
+
+    public static List<Tag> getSupportedTags() {
+        List<Tag> retVal = new ArrayList<>();
+        String supportedTagsStr = ResourceManager.getSetting("supportedTags");
+        if (supportedTagsStr != null && !supportedTagsStr.isEmpty()) {
+            String[] supportedTagsArray;
+            if (supportedTagsStr.contains(",")) {
+                supportedTagsArray = supportedTagsStr.split(",");
+            } else {
+                supportedTagsArray = new String[1];
+                supportedTagsArray[0] = supportedTagsStr;
+            }
+            for (String tagName : supportedTagsArray) {
+                retVal.add(Enum.valueOf(Tag.class, tagName));
+            }
+        } else {
+            retVal = Arrays.asList(Tag.values());
+        }
+        return retVal;
     }
 }

@@ -526,21 +526,24 @@ public class MainScreenController implements Initializable {
                     logger.info("Message transfer completed.");
                     return null;
                 }
+
+                @Override
+                protected void succeeded() {
+                    super.succeeded();
+                    try {
+                        String confirmTitle = ResourceManager.getMessage("title.dialog.putToFiles");
+                        String confirmContent = ResourceManager.getMessage("label.confirmation.putToFilesAfterTransferringToDB");
+                        if (Dialogs.showConfirmPopup(confirmTitle, null, confirmContent)) {
+                            putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
+                        }
+                    } catch (IOException e) {
+                        logger.error(e);
+                    }
+                }
             };
 
             Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
-            task.setOnSucceeded(event1 -> {
-                try {
-                    String confirmTitle = ResourceManager.getMessage("title.dialog.putToFiles");
-                    String confirmContent = ResourceManager.getMessage("label.confirmation.putToFilesAfterTransferringToDB");
-                    if (Dialogs.showConfirmPopup(confirmTitle, null, confirmContent)) {
-                        putMessagesToFiles(messageFinder.getMarkedFiles(), messagesToTransfer);
-                    }
-                } catch (IOException e) {
-                    logger.error(e);
-                }
-            });
             Thread thread = new Thread(task);
             thread.setDaemon(true);
             thread.start();

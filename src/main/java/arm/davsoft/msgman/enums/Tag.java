@@ -1,5 +1,9 @@
 package arm.davsoft.msgman.enums;
 
+import arm.davsoft.msgman.interfaces.Selectable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +14,7 @@ import java.util.List;
  * <b>Date:</b> 6/5/15 <br/>
  * <b>Time:</b> 10:25 PM <br/>
  */
-public enum Tag {
+public enum Tag implements Selectable {
 
 //    ALL_SUPPORTED_ATTRIBUTES("", Arrays.asList("alt", "name", "value", "label", "title", "header", "footer", "message", "itemLabel", "headerText", "footerText", "emptyMessage", "requiredMessage")),
 
@@ -50,11 +54,28 @@ public enum Tag {
     private Integer id;
     private String name;
     private List<String> attributesList;
+    private BooleanProperty isSelectedProperty;
 
     Tag(Integer id, String name, List<String> attributesList) {
         this.id = id;
         this.name = name;
         this.attributesList = attributesList;
+        isSelectedProperty = new SimpleBooleanProperty(false);
+    }
+
+    @Override
+    public BooleanProperty isSelectedProperty() {
+        return isSelectedProperty;
+    }
+
+    @Override
+    public boolean getIsSelected() {
+        return isSelectedProperty.getValue();
+    }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        isSelectedProperty.setValue(isSelected);
     }
 
     public Integer getId() {

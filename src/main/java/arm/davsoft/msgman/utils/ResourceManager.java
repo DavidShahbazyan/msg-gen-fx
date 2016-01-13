@@ -58,7 +58,7 @@ public final class ResourceManager {
             customAppProps = new Properties(defaultAppProps);
             if (Files.exists(Paths.get(CUSTOM_SETTINGS_RESOURCE_FILE))) {
                 InputStream cIS = new FileInputStream(CUSTOM_SETTINGS_RESOURCE_FILE);
-                customAppProps.loadFromXML(cIS);
+                customAppProps.load(cIS);
                 cIS.close();
             }
         } catch (Exception ex) {

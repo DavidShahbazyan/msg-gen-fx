@@ -29,7 +29,7 @@ public class MessagesHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String rawName, Attributes attributes) throws SAXException {
-        for (Tag tag : Tag.values()) {
+        for (Tag tag : Utils.getSupportedTags()) {
             if (rawName.equalsIgnoreCase(tag.getName())) {
                 for (String attribute : tag.getAttributesList()) {
                     processValue(attributes.getValue(attribute));

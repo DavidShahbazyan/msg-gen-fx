@@ -1,5 +1,6 @@
 import arm.davsoft.msgman.enums.DBServerType;
 import arm.davsoft.msgman.enums.IDMVersion;
+import arm.davsoft.msgman.enums.Tag;
 import arm.davsoft.msgman.implementations.ConnectionConfigImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.service.MessageTransferService;
@@ -31,6 +32,7 @@ public class MainTest {
     @Test
     public void main() {
         boolean b = false;
+        Tag tag = Enum.valueOf(Tag.class, "aaa");
         System.out.println(String.valueOf(Boolean.class.isInstance(b)));
     }
 }

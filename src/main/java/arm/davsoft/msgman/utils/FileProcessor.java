@@ -70,7 +70,7 @@ public class FileProcessor {
             if (currentNode != null) {
                 if (currentNode instanceof Element) {
                     Element element = (Element) currentNode;
-                    for (Tag tag : Tag.values()) {
+                    for (Tag tag : Utils.getSupportedTags()) {
                         if (tag.getName().equals(element.getNodeName())) {
                             processElement(element, messages, tag.getAttributesList());
                         }

@@ -1,10 +1,12 @@
 package arm.davsoft.msgman.utils;
 
+import arm.davsoft.msgman.enums.Tag;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.fail;
 
@@ -69,5 +71,11 @@ public class UtilsTest {
     @Test
     public void testExportMessagesToFile() throws Exception {
 
+    }
+
+    @Test
+    public void testGetSupportedTags() throws Exception {
+        List<Tag> supportedTags = Utils.getSupportedTags();
+        System.out.println(supportedTags.size());
     }
 }
