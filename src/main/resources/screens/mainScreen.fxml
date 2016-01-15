@@ -33,8 +33,8 @@
                     <items>
                         <MenuItem fx:id="scanProjectMenuItem" mnemonicParsing="false" onAction="#scanForNewMessagesInProject" text="%label.menuItem.edit.scanProject" />
                         <MenuItem fx:id="scanDbMenuItem" mnemonicParsing="false" onAction="#scanForNewMessagesInDB" text="%label.menuItem.edit.scanDB" />
-                        <!--<SeparatorMenuItem mnemonicParsing="false" />-->
-                        <!--<MenuItem fx:id="showHrdcddMsgsInPrjMenuItem" mnemonicParsing="false" onAction="#showHardcodedMessages" text="List All Hardcoded Messages in Project" />-->
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="showHrdcddMsgsInPrjMenuItem" mnemonicParsing="false" onAction="#showHardcodedMessages" text="%label.menuItem.edit.showAllHardcodedMessages" />
                         <!--<SeparatorMenuItem mnemonicParsing="false" />-->
                         <!--<MenuItem fx:id="retrieveEmptyMsgsFromDbMenuItem" mnemonicParsing="false" text="Retrieve All Empty Message IDs in DB" />-->
                         <!--<MenuItem fx:id="retrieveMsgIdsFromPrjMenuItem" mnemonicParsing="false" text="Retrieve All Message IDs in Project" />-->

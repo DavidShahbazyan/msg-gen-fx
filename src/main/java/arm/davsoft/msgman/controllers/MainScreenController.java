@@ -67,34 +67,35 @@ public class MainScreenController implements Initializable {
 //    private Range currentMessageRange;
 
     private BooleanProperty
-            browseProjectMenuItemDisabledProperty =     new SimpleBooleanProperty(false),
-            appSettingsMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
-            exitAppMenuItemDisabledProperty =           new SimpleBooleanProperty(false),
-            scanProjectMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
-            scanDbMenuItemDisabledProperty =            new SimpleBooleanProperty(false),
-            generateMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
-            putMessagesMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
-            transferMessagesMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
-            cleanMessageRangeMenuItemDisabledProperty = new SimpleBooleanProperty(false),
-            connectMSSQLMenuItemDisabledProperty =      new SimpleBooleanProperty(false),
-            connectOracleMenuItemDisabledProperty =     new SimpleBooleanProperty(false),
-            connectMySQLMenuItemDisabledProperty =      new SimpleBooleanProperty(false),
-            configConnectionMenuItemDisabledProperty =  new SimpleBooleanProperty(false),
-            availableTagsListMenuItemDisabledProperty = new SimpleBooleanProperty(false),
-            aboutAppMenuItemDisabledProperty =          new SimpleBooleanProperty(false),
+            browseProjectMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
+            appSettingsMenuItemDisabledProperty =         new SimpleBooleanProperty(false),
+            exitAppMenuItemDisabledProperty =             new SimpleBooleanProperty(false),
+            scanProjectMenuItemDisabledProperty =         new SimpleBooleanProperty(false),
+            scanDbMenuItemDisabledProperty =              new SimpleBooleanProperty(false),
+            generateMessagesMenuItemDisabledProperty =    new SimpleBooleanProperty(false),
+            putMessagesMenuItemDisabledProperty =         new SimpleBooleanProperty(false),
+            transferMessagesMenuItemDisabledProperty =    new SimpleBooleanProperty(false),
+            cleanMessageRangeMenuItemDisabledProperty =   new SimpleBooleanProperty(false),
+            connectMSSQLMenuItemDisabledProperty =        new SimpleBooleanProperty(false),
+            connectOracleMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
+            connectMySQLMenuItemDisabledProperty =        new SimpleBooleanProperty(false),
+            configConnectionMenuItemDisabledProperty =    new SimpleBooleanProperty(false),
+            availableTagsListMenuItemDisabledProperty =   new SimpleBooleanProperty(false),
+            aboutAppMenuItemDisabledProperty =            new SimpleBooleanProperty(false),
+            showHrdcddMsgsInPrjMenuItemDisabledProperty = new SimpleBooleanProperty(false),
 
-            detailsPanelVisibleProperty =               new SimpleBooleanProperty(false),
-            lbl_projectPathVisibleProperty =            new SimpleBooleanProperty(false),
-            lbl_serverTypeVisibleProperty =             new SimpleBooleanProperty(false),
-            lbl_serverHostVisibleProperty =             new SimpleBooleanProperty(false),
-            lbl_portNumberVisibleProperty =             new SimpleBooleanProperty(false),
-            lbl_usernameVisibleProperty =               new SimpleBooleanProperty(false),
-            lbl_databaseVisibleProperty =               new SimpleBooleanProperty(false),
-            lbl_emptyMessagesQuantityVisibleProperty =  new SimpleBooleanProperty(false),
-            lbl_messageRangeVisibleProperty =           new SimpleBooleanProperty(false),
-            lbl_totalHardcodedMessagesVisibleProperty = new SimpleBooleanProperty(false),
+            detailsPanelVisibleProperty =                 new SimpleBooleanProperty(false),
+            lbl_projectPathVisibleProperty =              new SimpleBooleanProperty(false),
+            lbl_serverTypeVisibleProperty =               new SimpleBooleanProperty(false),
+            lbl_serverHostVisibleProperty =               new SimpleBooleanProperty(false),
+            lbl_portNumberVisibleProperty =               new SimpleBooleanProperty(false),
+            lbl_usernameVisibleProperty =                 new SimpleBooleanProperty(false),
+            lbl_databaseVisibleProperty =                 new SimpleBooleanProperty(false),
+            lbl_emptyMessagesQuantityVisibleProperty =    new SimpleBooleanProperty(false),
+            lbl_messageRangeVisibleProperty =             new SimpleBooleanProperty(false),
+            lbl_totalHardcodedMessagesVisibleProperty =   new SimpleBooleanProperty(false),
 
-            fileItemsTableViewVisibleProperty =         new SimpleBooleanProperty(false)
+            fileItemsTableViewVisibleProperty =           new SimpleBooleanProperty(false)
             ;
 
 
@@ -103,7 +104,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
-            connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem;
+            connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
     @FXML
     private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
     @FXML
@@ -184,6 +185,7 @@ public class MainScreenController implements Initializable {
         configConnectionMenuItem.disableProperty().bind(configConnectionMenuItemDisabledProperty);
         availableTagsListMenuItem.disableProperty().bind(availableTagsListMenuItemDisabledProperty);
         aboutAppMenuItem.disableProperty().bind(aboutAppMenuItemDisabledProperty);
+        showHrdcddMsgsInPrjMenuItem.disableProperty().bind(showHrdcddMsgsInPrjMenuItemDisabledProperty);
         scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
         transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
         cleanMessageRangeButton.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
@@ -232,22 +234,23 @@ public class MainScreenController implements Initializable {
          * DISABLED = true
          */
 
-        browseProjectMenuItemDisabledProperty.set(false);
-        appSettingsMenuItemDisabledProperty.set(false);
-        exitAppMenuItemDisabledProperty.set(false);
+        browseProjectMenuItemDisabledProperty.setValue(false);
+        appSettingsMenuItemDisabledProperty.setValue(false);
+        exitAppMenuItemDisabledProperty.setValue(false);
 
-        scanProjectMenuItemDisabledProperty.set(messageFinder == null);
-        scanDbMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
-        generateMessagesMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
-        putMessagesMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
-        transferMessagesMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
-        cleanMessageRangeMenuItemDisabledProperty.set(messageFinder == null || messageTransferService == null);
+        scanProjectMenuItemDisabledProperty.setValue(messageFinder == null);
+        scanDbMenuItemDisabledProperty.setValue(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
+        generateMessagesMenuItemDisabledProperty.setValue(messageTransferService == null || messageTransferService.getConfig() == null || messageTransferService.getConfig().getDbName() == null || messageTransferService.getConfig().getDbName().equals(""));
+        putMessagesMenuItemDisabledProperty.setValue(messageFinder == null || messageTransferService == null);
+        transferMessagesMenuItemDisabledProperty.setValue(messageFinder == null || messageTransferService == null);
+        cleanMessageRangeMenuItemDisabledProperty.setValue(messageFinder == null || messageTransferService == null);
+        showHrdcddMsgsInPrjMenuItemDisabledProperty.setValue(fileItemsTableViewData == null || fileItemsTableViewData.isEmpty());
 
-        connectMSSQLMenuItemDisabledProperty.set(false);
-        connectOracleMenuItemDisabledProperty.set(false);
-        connectMySQLMenuItemDisabledProperty.set(false);
+        connectMSSQLMenuItemDisabledProperty.setValue(false);
+        connectOracleMenuItemDisabledProperty.setValue(false);
+        connectMySQLMenuItemDisabledProperty.setValue(false);
 
-        configConnectionMenuItemDisabledProperty.set(messageTransferService == null || messageTransferService.getConfig() == null);
+        configConnectionMenuItemDisabledProperty.setValue(messageTransferService == null || messageTransferService.getConfig() == null);
     }
 
     private void updateConnectionDetails() {
