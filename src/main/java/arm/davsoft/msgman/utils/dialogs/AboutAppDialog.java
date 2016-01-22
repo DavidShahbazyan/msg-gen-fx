@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
@@ -30,7 +31,7 @@ public class AboutAppDialog extends CustomDialog {
     private AboutAppDialog prepare() {
         String title = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.RELEASE.VERSION");
 
-        stage.initStyle(StageStyle.UTILITY);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerWindow);
         stage.setResizable(false);
@@ -73,6 +74,12 @@ public class AboutAppDialog extends CustomDialog {
 
         stage.setScene(new Scene(p));
         stage.getScene().getStylesheets().addAll(Application.getUserAgentStylesheet());
+
+        stage.getScene().setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ESCAPE)) {
+                stage.close();
+            }
+        });
 
         return this;
     }
