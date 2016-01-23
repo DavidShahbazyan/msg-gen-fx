@@ -74,4 +74,8 @@ public class ApplicationTitleBar extends ToolBar {
             }
         });
     }
+
+    public WindowButtons getWindowButtons() {
+        return windowButtons;
+    }
 }

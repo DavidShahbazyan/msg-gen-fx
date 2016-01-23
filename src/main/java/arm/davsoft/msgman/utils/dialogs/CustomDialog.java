@@ -1,7 +1,13 @@
 package arm.davsoft.msgman.utils.dialogs;
 
+import arm.davsoft.msgman.utils.FXMLFactory;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import java.io.IOException;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -31,5 +37,22 @@ public abstract class CustomDialog {
         if (requestFocus) {
             requestFocus();
         }
+    }
+
+    protected void initSceneFromFxml(String fxmlLayoutFile) throws IOException {
+        Parent root = FXMLFactory.getFXMLParent(fxmlLayoutFile);
+        setScene(new Scene(root));
+    }
+    protected void initModality(Modality modality) {
+        stage.initModality(modality);
+    }
+    protected void initOwner(Window ownerWindow) {
+        stage.initOwner(ownerWindow);
+    }
+    protected void setTitle(String title) {
+        stage.setTitle(title);
+    }
+    protected void setScene(Scene scene) {
+        stage.setScene(scene);
     }
 }

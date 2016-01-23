@@ -29,12 +29,10 @@ public class SettingsDialog extends CustomDialog {
 
     private SettingsDialog prepare() {
         try {
-            Parent root = FXMLFactory.getFXMLParent("settingsScreen.fxml");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(ownerWindow);
-            stage.setTitle(ResourceManager.getMessage("title.dialog.settings"));
-            stage.setScene(new Scene(root));
-//            stage.getScene().getStylesheets().add(ResourceManager.getUIThemeStyle());
+            initSceneFromFxml("settingsScreen.fxml");
+            initModality(Modality.APPLICATION_MODAL);
+            initOwner(ownerWindow);
+            setTitle(ResourceManager.getMessage("title.dialog.settings"));
             stage.getScene().getStylesheets().add(Application.getUserAgentStylesheet());
             stage.setResizable(false);
             return this;
