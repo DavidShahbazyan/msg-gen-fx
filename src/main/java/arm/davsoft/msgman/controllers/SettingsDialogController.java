@@ -161,7 +161,7 @@ public class SettingsDialogController implements Initializable {
         gridPane.add(new Label(ResourceManager.getMessage("label.theme")), 0, 0);
         gridPane.add(themeComboBox, 1, 0);
 
-        TreeView<String> tagTreeView = new TreeView<>(new CheckBoxTreeItem<>("All"));
+        TreeView<String> tagTreeView = new TreeView<>(new CheckBoxTreeItem<>(ResourceManager.getMessage("label.supportedTags")));
         tagTreeView.setShowRoot(false);
         tagTreeView.setFocusTraversable(false);
         tagTreeView.setPrefHeight(300);
