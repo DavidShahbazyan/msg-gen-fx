@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
+<?import arm.davsoft.msgman.components.StatusBar?>
 <VBox fx:id="rootContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="arm.davsoft.msgman.controllers.MainScreenController">
     <children>
         <MenuBar maxWidth="1.7976931348623157E308" VBox.vgrow="NEVER">
@@ -184,6 +185,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </VBox>
+<!--
         <ButtonBar prefHeight="40.0" prefWidth="200.0">
             <buttons>
                 <Button fx:id="cleanMessageRangeButton" mnemonicParsing="false" onAction="#removeUnusedMessagesFromDB" text="%label.menuItem.edit.removeFromDB">
@@ -206,7 +208,9 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </ButtonBar>
-        <!--
+-->
+        <StatusBar fx:id="statusBar"/>
+<!--
         <AnchorPane VBox.vgrow="NEVER">
             <children>
                 <Label text="(C) 2015 Synergy International Systems" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -216,6 +220,6 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </AnchorPane>
-        -->
+-->
     </children>
 </VBox>

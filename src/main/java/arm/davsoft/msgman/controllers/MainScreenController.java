@@ -4,6 +4,7 @@ import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.components.ApplicationTitleBar;
 import arm.davsoft.msgman.components.ButtonTableCell;
 import arm.davsoft.msgman.components.CheckBoxTableCell;
+import arm.davsoft.msgman.components.StatusBar;
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.DBServerType;
@@ -18,6 +19,7 @@ import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -105,8 +107,8 @@ public class MainScreenController implements Initializable {
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
             connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
-    @FXML
-    private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
+//    @FXML
+//    private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
     @FXML
     private CheckMenuItem toggleFullScreenModeMenuItem;
     @FXML
@@ -119,7 +121,8 @@ public class MainScreenController implements Initializable {
     private TableColumn<FileItem, Boolean> checkboxColumn, moreActions;
     @FXML
     private TableColumn<FileItem, String> filePathColumn, selMessages, totMessages;// messageQuantity;
-
+    @FXML
+    private StatusBar statusBar;
 
 
     /**
@@ -186,9 +189,10 @@ public class MainScreenController implements Initializable {
         availableTagsListMenuItem.disableProperty().bind(availableTagsListMenuItemDisabledProperty);
         aboutAppMenuItem.disableProperty().bind(aboutAppMenuItemDisabledProperty);
         showHrdcddMsgsInPrjMenuItem.disableProperty().bind(showHrdcddMsgsInPrjMenuItemDisabledProperty);
-        scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
-        transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
-        cleanMessageRangeButton.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
+//        scanProjectButton.disableProperty().bind(scanProjectMenuItemDisabledProperty);
+//        transferMessagesButton.disableProperty().bind(transferMessagesMenuItemDisabledProperty);
+//        cleanMessageRangeButton.disableProperty().bind(cleanMessageRangeMenuItemDisabledProperty);
+        fileItemsTableView.disableProperty().bind(Bindings.isEmpty(fileItemsTableViewData));
     }
 
     private void validate() {
@@ -225,7 +229,7 @@ public class MainScreenController implements Initializable {
         fileItemsTableViewVisibleProperty.set(fileItemsTableViewData != null);
 
         cleanMessageRangeMenuItem.setVisible(false); // TODO: DB cleanup is disabled temporally.
-        cleanMessageRangeButton.setVisible(false); // TODO: DB cleanup is disabled temporally.
+//        cleanMessageRangeButton.setVisible(false); // TODO: DB cleanup is disabled temporally.
     }
 
     private void checkEditability() {
@@ -317,6 +321,7 @@ public class MainScreenController implements Initializable {
 //            moreActions.setVisible(false);
 
             fileItemsTableView.setEditable(true);
+            fileItemsTableView.setFocusTraversable(false);
         } catch (Exception ex) {
             logger.error("Error occurred in initFilesTable method: ", ex);
             throw ex;
@@ -397,6 +402,7 @@ public class MainScreenController implements Initializable {
                 validate();
                 updateConnectionDetails();
                 logger.info(ResourceManager.getMessage("label.projectScanSucceeded"));
+                statusBar.reset();
             }
 
             @Override
@@ -405,10 +411,12 @@ public class MainScreenController implements Initializable {
                 validate();
                 updateConnectionDetails();
                 logger.info(ResourceManager.getMessage("label.projectScanFailed"));
+                statusBar.reset();
             }
         };
 
-        Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
+        statusBar.setTask(task);
+//        Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);
