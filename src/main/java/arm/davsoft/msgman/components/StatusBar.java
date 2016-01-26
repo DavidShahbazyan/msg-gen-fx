@@ -1,0 +1,82 @@
+package arm.davsoft.msgman.components;
+
+import arm.davsoft.msgman.skin.StatusBarSkin;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.scene.Node;
+import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
+
+/**
+ * <b>Author:</b> David Shahbazyan <br/>
+ * <b>Date:</b> 1/24/16 <br/>
+ * <b>Time:</b> 4:34 PM <br/>
+ */
+public class StatusBar extends Control {
+    private final StringProperty text = new SimpleStringProperty(this, "text", "Ready.");
+    private final ObjectProperty<Node> graphic = new SimpleObjectProperty<>(this, "graphic");
+    private final DoubleProperty progress = new SimpleDoubleProperty(this, "progress");
+    private final ObservableList<Node> leftItems = FXCollections.observableArrayList();
+    private final ObservableList<Node> rightItems = FXCollections.observableArrayList();
+
+    public StatusBar() {
+        getStyleClass().add("status-bar");
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new StatusBarSkin(this);
+    }
+
+    public String getText() {
+        return text.get();
+    }
+    public StringProperty textProperty() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text.set(text);
+    }
+
+    public final ObjectProperty<Node> graphicProperty() {
+        return graphic;
+    }
+    public final Node getGraphic() {
+        return graphicProperty().get();
+    }
+    public final void setGraphic(Node node) {
+        graphicProperty().set(node);
+    }
+
+    public double getProgress() {
+        return progress.get();
+    }
+    public DoubleProperty progressProperty() {
+        return progress;
+    }
+    public void setProgress(double progress) {
+        this.progress.set(progress);
+    }
+
+    public ObservableList<Node> getLeftItems() {
+        return leftItems;
+    }
+
+    public ObservableList<Node> getRightItems() {
+        return rightItems;
+    }
+
+    public void setTask(Task task) {
+        this.textProperty().bind(task.messageProperty());
+        this.progressProperty().bind(task.progressProperty());
+    }
+
+    public void reset() {
+        this.textProperty().unbind();
+        this.progressProperty().unbind();
+        this.textProperty().setValue("Ready.");
+        this.progressProperty().setValue(null);
+    }
+}
