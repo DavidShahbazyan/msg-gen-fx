@@ -1,6 +1,7 @@
 package arm.davsoft.msgman.controllers;
 
 import arm.davsoft.msgman.Main;
+import arm.davsoft.msgman.components.CheckBoxToggleSwitch;
 import arm.davsoft.msgman.enums.Tag;
 import arm.davsoft.msgman.enums.Theme;
 import arm.davsoft.msgman.utils.Dialogs;
@@ -248,8 +249,9 @@ public class SettingsDialogController implements Initializable {
         };
         ((VBox) tab.getContent()).setPadding(new Insets(5));
 
-        CheckBox checkExportLogToFile = new CheckBox();
+        CheckBox checkExportLogToFile = new CheckBoxToggleSwitch();
         checkExportLogToFile.selectedProperty().bindBidirectional(exportLogToFileProperty);
+        checkExportLogToFile.setFocusTraversable(false);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
