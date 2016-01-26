@@ -32,7 +32,7 @@ public class MainTest {
     @Test
     public void main() {
         boolean b = false;
-        Tag tag = Enum.valueOf(Tag.class, "aaa");
+        Tag tag = Enum.valueOf(Tag.class, "A");
         System.out.println(String.valueOf(Boolean.class.isInstance(b)));
     }
 }
