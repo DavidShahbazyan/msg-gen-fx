@@ -34,8 +34,9 @@ public class Main extends Application {
         Thread.currentThread().setUncaughtExceptionHandler(new AppSpecUncaughtExceptionHandler());
         try {
             launch(args);
+            LOGGER.info("---------------------- Ending the Application ----------------------");
         } catch (Exception ex) {
-            Logger.getLogger(Main.class).error(ex.getMessage(), ex);
+            LOGGER.error(ex.getMessage(), ex);
         }
     }
 
@@ -45,15 +46,16 @@ public class Main extends Application {
             setUserAgentStylesheet(ResourceManager.getUIThemeStyle());
             Thread.sleep(3000);
             initLogger();
-            Logger.getLogger(Main.class).info("Application init completed!");
+//            LOGGER.info("Application init completed!");
+            LOGGER.info("--------------------- Starting the Application ---------------------");
         } catch (Exception ex) {
-            Logger.getLogger(Main.class).error("Error occurred in main init method: ", ex);
+            LOGGER.error("Error occurred in main init method: ", ex);
             Platform.exit();
         }
     }
 
     private void initLogger() throws IOException {
-        String loggingFileName = "logs/" + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "/messageGenerator.log";
+        String loggingFileName = "logs/messageManager-" + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + ".log";
         Properties props = new Properties();
         InputStream input = getClass().getResourceAsStream("/properties/log4j.properties");
         if (input == null) {
@@ -65,7 +67,7 @@ public class Main extends Application {
         }
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(props);
-        LOGGER.info("Logging has been successfully initialized.");
+//        LOGGER.info("Logging has been successfully initialized.");
     }
 
     @Override
@@ -85,7 +87,7 @@ public class Main extends Application {
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);
         primaryStage.setOnCloseRequest(event -> {
-            Logger.getLogger(Main.class).info("Application terminated by user.");
+            LOGGER.info("Application terminated by user.");
             Platform.exit();
         });
         primaryStage.setFullScreenExitHint("");
