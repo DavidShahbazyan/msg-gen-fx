@@ -41,28 +41,28 @@
 }
 
 .dialog-pane > .button-bar > .container > .details-button.more {
-    -fx-graphic: url("/images/icons/system/dialog-more-details.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-more-details.png");
 }
 
 .dialog-pane > .button-bar > .container > .details-button.less {
-    -fx-graphic: url("/images/icons/system/dialog-fewer-details.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-fewer-details.png");
 }
 
 .alert.confirmation.dialog-pane,
 .text-input-dialog.dialog-pane,
 .choice-dialog.dialog-pane {
-    -fx-graphic: url("/images/icons/system/dialog-confirm.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-confirm.png");
 }
 
 .alert.information.dialog-pane {
-    -fx-graphic: url("/images/icons/system/dialog-information.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-information.png");
 }
 
 .alert.error.dialog-pane {
-    -fx-graphic: url("/images/icons/system/dialog-error.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-error.png");
 }
 
 .alert.warning.dialog-pane {
-    -fx-graphic: url("/images/icons/system/dialog-warning.png");
+    -fx-graphic: url("/images/icons/dialog/dialog-warning.png");
 }
 

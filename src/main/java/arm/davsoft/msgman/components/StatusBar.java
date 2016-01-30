@@ -21,6 +21,8 @@ public class StatusBar extends Control {
     private final ObservableList<Node> leftItems = FXCollections.observableArrayList();
     private final ObservableList<Node> rightItems = FXCollections.observableArrayList();
 
+    private Task currentTask;
+
     public StatusBar() {
         getStyleClass().add("status-bar");
     }
@@ -69,11 +71,20 @@ public class StatusBar extends Control {
     }
 
     public void setTask(Task task) {
+        this.currentTask = task;
         this.textProperty().bind(task.messageProperty());
         this.progressProperty().bind(task.progressProperty());
     }
 
+    public void cancelTask() {
+        if (this.currentTask != null && this.currentTask.isRunning()) {
+            this.currentTask.cancel();
+        }
+        reset();
+    }
+
     public void reset() {
+        this.currentTask = null;
         this.textProperty().unbind();
         this.progressProperty().unbind();
         this.textProperty().setValue("Ready.");
