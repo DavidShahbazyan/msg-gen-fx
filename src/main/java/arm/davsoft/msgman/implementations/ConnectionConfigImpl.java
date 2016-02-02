@@ -3,13 +3,11 @@ package arm.davsoft.msgman.implementations;
 import arm.davsoft.msgman.enums.DBServerType;
 import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
-import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.interfaces.SQLQuery;
 import arm.davsoft.msgman.utils.DataSourceFactory;
 import arm.davsoft.msgman.utils.SQLQueryFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 
 import javax.sql.DataSource;
 
@@ -19,70 +17,51 @@ import javax.sql.DataSource;
  * <b>Time:</b> 1:19 PM <br/>
  */
 public class ConnectionConfigImpl implements ConnectionConfig {
-    private final IDMVersion idmVersion;
     private final DBServerType dbServerType;
-    private final SQLQuery sqlQuery;
+    private ObjectProperty<IDMVersion> idmVersion = new SimpleObjectProperty<>(IDMVersion.IDM6);
+    private SQLQuery sqlQuery;
 
     private DataSource dataSource;
 
     private boolean isNew;
-    private SimpleStringProperty connectionName = new SimpleStringProperty();
-    private SimpleStringProperty hostName = new SimpleStringProperty();
-    private SimpleIntegerProperty port = new SimpleIntegerProperty();
-    private SimpleStringProperty dbName = new SimpleStringProperty();
-    private SimpleStringProperty SID = new SimpleStringProperty();
-    private SimpleStringProperty userName = new SimpleStringProperty();
-    private SimpleStringProperty password = new SimpleStringProperty();
-    private Range messagesRange;
+    private StringProperty connectionName = new SimpleStringProperty();
+    private StringProperty hostName = new SimpleStringProperty();
+    private IntegerProperty port = new SimpleIntegerProperty();
+    private StringProperty dbName = new SimpleStringProperty();
+    private StringProperty SID = new SimpleStringProperty();
+    private StringProperty userName = new SimpleStringProperty();
+    private StringProperty password = new SimpleStringProperty();
+    private BooleanProperty isValid = new SimpleBooleanProperty();
 
-    public ConnectionConfigImpl(IDMVersion idmVersion, DBServerType dbServerType) {
+    public ConnectionConfigImpl(DBServerType dbServerType) {
         this.isNew = true;
-        this.idmVersion = idmVersion;
         this.dbServerType = dbServerType;
-        this.sqlQuery = SQLQueryFactory.getSqlQuery(idmVersion, dbServerType);
+        initConnectionConfig();
+    }
+
+    @Override public void initConnectionConfig() {
+        this.sqlQuery = SQLQueryFactory.getSqlQuery(idmVersion.get(), dbServerType);
         this.port = new SimpleIntegerProperty(dbServerType.getDefaultPortNumber());
     }
 
+    @Override public boolean isMSSQLServer() { return DBServerType.MSSQLServer.equals(this.dbServerType); }
+    @Override public boolean isMySQLServer() { return DBServerType.MySQLServer.equals(this.dbServerType); }
+    @Override public boolean isORAServer() { return DBServerType.ORAServer.equals(this.dbServerType); }
 
-    @Override
-    public boolean isMSSQLServer() {
-        return DBServerType.MSSQLServer.equals(this.dbServerType);
+    @Override public boolean isIDM6Project() { return IDMVersion.IDM6.equals(this.idmVersion.get()); }
+    @Override public boolean isIDM7Project() { return IDMVersion.IDM7.equals(this.idmVersion.get()); }
+
+    @Override public ObjectProperty<IDMVersion> getIdmVersionProperty() { return idmVersion; }
+    @Override public IDMVersion getIdmVersion() {
+        return idmVersion.get();
+    }
+    @Override public void setIdmVersion(IDMVersion idmVersion) {
+        this.idmVersion.set(idmVersion);
     }
 
-    @Override
-    public boolean isMySQLServer() {
-        return DBServerType.MySQLServer.equals(this.dbServerType);
-    }
+    @Override public DBServerType getDbServerType() { return dbServerType; }
 
-    @Override
-    public boolean isORAServer() {
-        return DBServerType.ORAServer.equals(this.dbServerType);
-    }
-
-    @Override
-    public boolean isIDM6Project() {
-        return IDMVersion.IDM6.equals(this.idmVersion);
-    }
-
-    @Override
-    public boolean isIDM7Project() {
-        return IDMVersion.IDM7.equals(this.idmVersion);
-    }
-
-    @Override
-    public IDMVersion getIdmVersion() {
-        return idmVersion;
-    }
-
-    @Override
-    public DBServerType getDbServerType() {
-        return dbServerType;
-    }
-
-    @Override
-    public SQLQuery getSqlQuery() {
-        return sqlQuery;
-    }
+    @Override public SQLQuery getSqlQuery() { return sqlQuery; }
 
     @Override
     public DataSource getDataSource() {
@@ -95,9 +74,9 @@ public class ConnectionConfigImpl implements ConnectionConfig {
 
     @Override
     public void updateDataSource() {
-        ((ComboPooledDataSource) dataSource).setJdbcUrl(getJdbcUrl());
-        ((ComboPooledDataSource) dataSource).setUser(getUserName());
-        ((ComboPooledDataSource) dataSource).setPassword(getUserName());
+        ((ComboPooledDataSource) getDataSource()).setJdbcUrl(getJdbcUrl());
+        ((ComboPooledDataSource) getDataSource()).setUser(getUserName());
+        ((ComboPooledDataSource) getDataSource()).setPassword(getUserName());
     }
 
     @Override
@@ -115,7 +94,8 @@ public class ConnectionConfigImpl implements ConnectionConfig {
 
     @Override
     public ConnectionConfig clone() {
-        ConnectionConfigImpl config = new ConnectionConfigImpl(idmVersion, dbServerType);
+        ConnectionConfigImpl config = new ConnectionConfigImpl(dbServerType);
+        config.setIdmVersion(idmVersion.get());
         config.setConnectionName(connectionName.get());
         config.setHostName(hostName.get());
         config.setPort(port.get());
@@ -123,157 +103,70 @@ public class ConnectionConfigImpl implements ConnectionConfig {
         config.setSID(SID.get());
         config.setUserName(userName.get());
         config.setPassword(password.get());
+        config.setIsValid(isValid.get());
         return config;
     }
 
-    @Override
-    public SimpleStringProperty getConnectionNameProperty() {
-        return connectionName;
-    }
-    @Override
-    public String getConnectionName() {
-        return connectionName.get();
-    }
-    @Override
-    public void setConnectionName(String connectionName) {
-        this.connectionName.set(connectionName);
-    }
+    @Override public StringProperty getConnectionNameProperty() { return connectionName; }
+    @Override public String getConnectionName() { return connectionName.get(); }
+    @Override public void setConnectionName(String connectionName) { this.connectionName.set(connectionName); }
 
-    @Override
-    public boolean isNew() {
-        return isNew;
-    }
-    @Override
-    public void setIsNew(boolean isNew) {
-        this.isNew = isNew;
-    }
+    @Override public boolean isNew() { return isNew; }
+    @Override public void setIsNew(boolean isNew) { this.isNew = isNew; }
 
-    @Override
-    public SimpleStringProperty getHostNameProperty() {
-        return hostName;
-    }
-    @Override
-    public String getHostName() {
-        return hostName.get();
-    }
-    @Override
-    public void setHostName(String hostName) {
-        this.hostName.set(hostName);
-    }
-    @Override
-    public boolean isHostNameEmpty() {
+    @Override public StringProperty getHostNameProperty() { return hostName; }
+    @Override public String getHostName() { return hostName.get(); }
+    @Override public void setHostName(String hostName) { this.hostName.set(hostName); }
+    @Override public boolean isHostNameEmpty() {
         return this.hostName == null || this.hostName.get() == null || this.hostName.get().trim().equals("");
     }
 
-    @Override
-    public SimpleIntegerProperty getPortProperty() {
-        return port;
-    }
-    @Override
-    public Integer getPort() {
-        return port.get();
-    }
-    @Override
-    public void setPort(Integer port) {
-        this.port.set(port);
-    }
-    @Override
-    public boolean isPortEmpty() {
-        return this.port == null;
-    }
+    @Override public IntegerProperty getPortProperty() { return port; }
+    @Override public Integer getPort() { return port.get(); }
+    @Override public void setPort(Integer port) { this.port.set(port); }
+    @Override public boolean isPortEmpty() { return this.port == null; }
 
-    @Override
-    public SimpleStringProperty getDbNameProperty() {
-        return dbName;
-    }
-    @Override
-    public String getDbName() {
-        return dbName.get();
-    }
-    @Override
-    public void setDbName(String dbName) {
-        this.dbName.set(dbName);
-    }
-    @Override
-    public boolean isDbNameEmpty() {
+    @Override public StringProperty getDbNameProperty() { return dbName; }
+    @Override public String getDbName() { return dbName.get(); }
+    @Override public void setDbName(String dbName) { this.dbName.set(dbName); }
+    @Override public boolean isDbNameEmpty() {
         return this.dbName == null || this.dbName.get() == null || this.dbName.get().trim().equals("");
     }
 
-    @Override
-    public SimpleStringProperty getSIDProperty() {
-        return SID;
-    }
-    @Override
-    public String getSID() {
-        return SID.get();
-    }
-    @Override
-    public void setSID(String SID) {
-        this.SID.set(SID);
-    }
-    @Override
-    public boolean isSIDEmpty() {
+    @Override public StringProperty getSIDProperty() { return SID; }
+    @Override public String getSID() { return SID.get(); }
+    @Override public void setSID(String SID) { this.SID.set(SID); }
+    @Override public boolean isSIDEmpty() {
         return this.SID == null || this.SID.get() == null || this.SID.get().trim().equals("");
     }
 
-    @Override
-    public SimpleStringProperty getUserNameProperty() {
-        return userName;
-    }
-    @Override
-    public String getUserName() {
-        return userName.get();
-    }
-    @Override
-    public void setUserName(String userName) {
-        this.userName.set(userName);
-    }
-    @Override
-    public boolean isUserNameEmpty() {
-        return this.userName == null || this.userName.get() == null && this.userName.get().trim().equals("");
+    @Override public StringProperty getUserNameProperty() { return userName; }
+    @Override public String getUserName() { return userName.get(); }
+    @Override public void setUserName(String userName) { this.userName.set(userName); }
+    @Override public boolean isUserNameEmpty() {
+        return this.userName == null || this.userName.get() == null || this.userName.get().trim().equals("");
     }
 
-    @Override
-    public SimpleStringProperty getPasswordProperty() {
-        return password;
-    }
-    @Override
-    public String getPassword() {
-        return password.get();
-    }
-    @Override
-    public void setPassword(String password) {
-        this.password.set(password);
-    }
-    @Override
-    public boolean isPasswordEmpty() {
+    @Override public StringProperty getPasswordProperty() { return password; }
+    @Override public String getPassword() { return password.get(); }
+    @Override public void setPassword(String password) { this.password.set(password); }
+    @Override public boolean isPasswordEmpty() {
         return this.password == null || this.password.get() == null || this.password.get().trim().equals("");
     }
 
-    @Override
-    public Range getMessagesRange() {
-        return messagesRange;
-    }
-    @Override
-    public void setMessagesRange(Range range) {
-        this.messagesRange = range;
-    }
-    @Override
-    public boolean isMessageRangeValid() {
-        return this.messagesRange != null && this.messagesRange.isValid();
-    }
-
-    @Override
-    public boolean isValid() {
+    @Override public boolean getIsValid() { return isValid.get(); }
+    @Override public BooleanProperty isValidProperty() { return isValid; }
+    @Override public void setIsValid(boolean isValid) { this.isValid.set(isValid); }
+    @Override public void validate() {
         boolean valid = false;
         if (isMSSQLServer()) {
-            valid = !isHostNameEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
+            valid = !isHostNameEmpty() && !isDbNameEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
         } else if (isORAServer()) {
             valid = !isHostNameEmpty() && !isPortEmpty() && !isSIDEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
         } else if (isMySQLServer()) {
-            valid = !isHostNameEmpty() && !isPortEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
+            valid = !isHostNameEmpty() && !isPortEmpty() && !isDbNameEmpty() && !isUserNameEmpty() && !isPasswordEmpty();
         }
-//        valid = valid && isMessageRangeValid();
-        return valid;
+        isValid.set(valid);
     }
+
 }

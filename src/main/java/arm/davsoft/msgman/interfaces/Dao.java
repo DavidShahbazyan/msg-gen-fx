@@ -4,7 +4,6 @@ import arm.davsoft.msgman.domains.Message;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -16,31 +15,17 @@ public interface Dao {
 
     List<String> loadSchemaNames() throws SQLException;
 
-//    List<Message> loadMessages(Map<String, Object> params) throws SQLException;
-
     List<Message> loadMessages(List<Object> params) throws SQLException;
-
-//    List<Message> loadMessagesExcept(Map<String, Object> params) throws SQLException;
 
     List<Message> loadMessagesExcept(List<Object> params) throws SQLException;
 
-//    List<Message> loadEmptyMessages(Map<String, Object> params) throws SQLException;
-
     List<Message> loadEmptyMessages(List<Object> params) throws SQLException;
-
-//    void generateNewEmptyMessages(Map<String, Object> params) throws SQLException;
 
     void generateNewEmptyMessages(List<Object> params) throws SQLException;
 
-//    void removeMessages(Map<String, Object> params) throws SQLException;
-
     void removeMessages(List<Object> params) throws SQLException;
 
-//    void removeMessagesExcept(Map<String, Object> params) throws SQLException;
-
     void removeMessagesExcept(List<Object> params) throws SQLException;
-
-//    void transferMessage(Map<String, Object> params) throws SQLException;
 
     void transferMessage(List<Object> params) throws SQLException;
 }

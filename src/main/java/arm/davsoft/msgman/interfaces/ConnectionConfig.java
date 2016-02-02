@@ -2,8 +2,10 @@ package arm.davsoft.msgman.interfaces;
 
 import arm.davsoft.msgman.enums.DBServerType;
 import arm.davsoft.msgman.enums.IDMVersion;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 
 import javax.sql.DataSource;
 
@@ -13,13 +15,17 @@ import javax.sql.DataSource;
  * <b>Time:</b> 1:19 PM <br/>
  */
 public interface ConnectionConfig extends Cloneable {
+    void initConnectionConfig();
+
     boolean isMSSQLServer();
     boolean isMySQLServer();
     boolean isORAServer();
     boolean isIDM6Project();
     boolean isIDM7Project();
 
+    ObjectProperty<IDMVersion> getIdmVersionProperty();
     IDMVersion getIdmVersion();
+    void setIdmVersion(IDMVersion idmVersion);
 
     DBServerType getDbServerType();
 
@@ -32,46 +38,46 @@ public interface ConnectionConfig extends Cloneable {
 
     ConnectionConfig clone();
 
-    SimpleStringProperty getConnectionNameProperty();
+    StringProperty getConnectionNameProperty();
     String getConnectionName();
     void setConnectionName(String connectionName);
 
     boolean isNew();
     void setIsNew(boolean isNew);
 
-    SimpleStringProperty getHostNameProperty();
+    StringProperty getHostNameProperty();
     String getHostName();
     void setHostName(String hostName);
     boolean isHostNameEmpty();
 
-    SimpleIntegerProperty getPortProperty();
+    IntegerProperty getPortProperty();
     Integer getPort();
     void setPort(Integer port);
     boolean isPortEmpty();
 
-    SimpleStringProperty getDbNameProperty();
+    StringProperty getDbNameProperty();
     String getDbName();
     void setDbName(String dbName);
     boolean isDbNameEmpty();
 
-    SimpleStringProperty getSIDProperty();
+    StringProperty getSIDProperty();
     String getSID();
     void setSID(String SID);
     boolean isSIDEmpty();
 
-    SimpleStringProperty getUserNameProperty();
+    StringProperty getUserNameProperty();
     String getUserName();
     void setUserName(String userName);
     boolean isUserNameEmpty();
 
-    SimpleStringProperty getPasswordProperty();
+    StringProperty getPasswordProperty();
     String getPassword();
     void setPassword(String password);
     boolean isPasswordEmpty();
 
-    Range getMessagesRange();
-    void setMessagesRange(Range range);
-    boolean isMessageRangeValid();
+    boolean getIsValid();
+    BooleanProperty isValidProperty();
+    void setIsValid(boolean isValid);
+    void validate();
 
-    boolean isValid();
 }

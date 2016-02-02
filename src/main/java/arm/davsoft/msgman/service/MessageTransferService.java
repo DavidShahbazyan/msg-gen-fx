@@ -8,7 +8,10 @@ import arm.davsoft.msgman.utils.Utils;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -44,7 +47,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public List<Message> loadMessages() {
-        return loadMessages(config.getMessagesRange());
+        return loadMessages(messageRange);
     }
 
     @Override
@@ -60,7 +63,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public List<Message> loadMessagesExcept(Set<Integer> exceptIds) {
-        return loadMessagesExcept(config.getMessagesRange(), exceptIds);
+        return loadMessagesExcept(messageRange, exceptIds);
     }
 
     @Override
@@ -80,7 +83,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public List<Message> loadEmptyMessages() {
-        return loadEmptyMessages(config.getMessagesRange());
+        return loadEmptyMessages(messageRange);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public void generateNewEmptyMessages() throws SQLException {
-        generateNewEmptyMessages(config.getMessagesRange());
+        generateNewEmptyMessages(messageRange);
     }
     
     @Override
@@ -111,7 +114,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public void removeMessages(Set<Integer> messageIds) {
-        removeMessages(config.getMessagesRange(), messageIds);
+        removeMessages(messageRange, messageIds);
     }
 
     @Override
@@ -125,7 +128,7 @@ public class MessageTransferService extends ServiceImpl {
 
     @Override
     public void removeMessagesExcept(Set<Integer> exceptIds) {
-        removeMessagesExcept(config.getMessagesRange(), exceptIds);
+        removeMessagesExcept(messageRange, exceptIds);
     }
 
     @Override

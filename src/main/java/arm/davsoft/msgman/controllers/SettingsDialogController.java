@@ -18,7 +18,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.util.converter.NumberStringConverter;
 import org.apache.log4j.Logger;
@@ -42,6 +41,8 @@ public class SettingsDialogController implements Initializable {
 
     private Properties customProps = ResourceManager.getSettings();
     private IntegerProperty workingCopyIdProperty;
+    private IntegerProperty messageRangeFromProperty;
+    private IntegerProperty messageRangeToProperty;
     private StringProperty messagePatternProperty;
     private StringProperty messageMarkerProperty;
     private BooleanProperty exportLogToFileProperty;
@@ -66,6 +67,8 @@ public class SettingsDialogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.workingCopyIdProperty = new SimpleIntegerProperty(Integer.valueOf(customProps.getProperty("workingCopyId")));
+        this.messageRangeFromProperty = new SimpleIntegerProperty(Integer.valueOf(customProps.getProperty("messageRangeFrom")));
+        this.messageRangeToProperty = new SimpleIntegerProperty(Integer.valueOf(customProps.getProperty("messageRangeTo")));
         this.messagePatternProperty = new SimpleStringProperty(customProps.getProperty("messagePattern"));
         this.messageMarkerProperty = new SimpleStringProperty(customProps.getProperty("messageMarker"));
         this.exportLogToFileProperty = new SimpleBooleanProperty(Boolean.valueOf(customProps.getProperty("exportLogToFile")));
@@ -115,6 +118,8 @@ public class SettingsDialogController implements Initializable {
             customProps.setProperty("messageMarker", messageMarkerProperty.get());
             customProps.setProperty("exportLogToFile", "" + exportLogToFileProperty.get());
             customProps.setProperty("uiTheme", "" + uiThemeProperty.get().getId());
+            customProps.setProperty("messageRangeFrom", "" + messageRangeFromProperty.get());
+            customProps.setProperty("messageRangeTo", "" + messageRangeToProperty.get());
             StringBuilder sb = new StringBuilder();
             for (Tag tag : Tag.values()) {
                 if (tag.getIsSelected()) {
@@ -162,6 +167,10 @@ public class SettingsDialogController implements Initializable {
         gridPane.add(new Label(ResourceManager.getMessage("label.theme")), 0, 0);
         gridPane.add(themeComboBox, 1, 0);
 
+        Label lbl_logInfo = new Label(ResourceManager.getMessage("label.changesWillTakeEffectAfterAppRestart"));
+        lbl_logInfo.getStyleClass().add("warning");
+        gridPane.add(lbl_logInfo, 0, 1, 2, 1);
+
         TreeView<String> tagTreeView = new TreeView<>(new CheckBoxTreeItem<>(ResourceManager.getMessage("label.supportedTags")));
         tagTreeView.setShowRoot(false);
         tagTreeView.setFocusTraversable(false);
@@ -179,12 +188,15 @@ public class SettingsDialogController implements Initializable {
             tagTreeView.getRoot().getChildren().add(tagTreeItem);
         }
 
-        gridPane.add(new Label(ResourceManager.getMessage("label.supportedTags")), 0, 1);
-        gridPane.add(tagTreeView, 1, 1);
+        Label lbl_supportedTags = new Label(ResourceManager.getMessage("label.supportedTags"));
+        gridPane.add(lbl_supportedTags, 0, 2);
+        gridPane.add(tagTreeView, 1, 2);
 
-        for (Node node : gridPane.getChildren()) {
-            GridPane.setValignment(node, VPos.TOP);
-        }
+        GridPane.setValignment(lbl_supportedTags, VPos.TOP);
+
+//        for (Node node : gridPane.getChildren()) {
+//            GridPane.setValignment(node, VPos.TOP);
+//        }
 
         Region separator = new Region();
         VBox.setVgrow(separator, Priority.ALWAYS);
@@ -213,6 +225,17 @@ public class SettingsDialogController implements Initializable {
 //        TextField txtMsgMarkerPattern = new TextField();
 //        txtMsgMarkerPattern.textProperty().bindBidirectional(messageMarkerProperty);
 
+        Label lblMessageRange = new Label(ResourceManager.getMessage("label.messageRange"));
+        lblMessageRange.getStyleClass().add("bold");
+
+        Label lblMessageRangeFrom = new Label(ResourceManager.getMessage("label.from"));
+        TextField txtMessageRangeFrom = new TextField();
+        txtMessageRangeFrom.textProperty().bindBidirectional(messageRangeFromProperty, new NumberStringConverter("######"));
+
+        Label lblMessageRangeTo = new Label(ResourceManager.getMessage("label.to"));
+        TextField txtMessageRangeTo = new TextField();
+        txtMessageRangeTo.textProperty().bindBidirectional(messageRangeToProperty, new NumberStringConverter("######"));
+
         Label lblFindMsgPattern = new Label(ResourceManager.getMessage("label.replace"));
         TextField txtFindMsgPattern = new TextField();
         txtFindMsgPattern.textProperty().bindBidirectional(messagePatternProperty);
@@ -232,6 +255,10 @@ public class SettingsDialogController implements Initializable {
 
         gridPane.add(lblFindMsgPattern, 0, 3);
         gridPane.add(txtFindMsgPattern, 1, 3);
+
+        gridPane.add(lblMessageRange, 0, 4, 2, 1);
+        gridPane.addRow(5, lblMessageRangeFrom, txtMessageRangeFrom);
+        gridPane.addRow(6, lblMessageRangeTo, txtMessageRangeTo);
 
         Region separator = new Region();
         VBox.setVgrow(separator, Priority.ALWAYS);
@@ -260,6 +287,10 @@ public class SettingsDialogController implements Initializable {
 
         gridPane.add(new Label(ResourceManager.getMessage("label.exportLogToFile")), 0, 0);
         gridPane.add(checkExportLogToFile, 1, 0);
+
+        Label lbl_logInfo = new Label(ResourceManager.getMessage("label.changesWillTakeEffectAfterAppRestart"));
+        lbl_logInfo.getStyleClass().add("warning");
+        gridPane.add(lbl_logInfo, 0, 1, 2, 1);
 
         Region separator = new Region();
         VBox.setVgrow(separator, Priority.ALWAYS);

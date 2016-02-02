@@ -2,8 +2,10 @@ package arm.davsoft.msgman.implementations;
 
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Dao;
+import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.interfaces.Service;
 import arm.davsoft.msgman.utils.DaoFactory;
+import arm.davsoft.msgman.utils.ResourceManager;
 
 import java.util.List;
 
@@ -15,10 +17,12 @@ import java.util.List;
 public abstract class ServiceImpl implements Service {
     protected final ConnectionConfig config;
     protected final Dao dao;
+    protected final Range messageRange;
 
     public ServiceImpl(ConnectionConfig config) {
         this.config = config;
         this.dao = DaoFactory.getDao(config.getDbServerType(), config);
+        this.messageRange = ResourceManager.getProjectMessageRange();
     }
 
     public ConnectionConfig getConfig() {
@@ -27,6 +31,10 @@ public abstract class ServiceImpl implements Service {
 
     public Dao getDao() {
         return dao;
+    }
+
+    public Range getMessageRange() {
+        return messageRange;
     }
 
     public List<String> loadSchemaNames() {

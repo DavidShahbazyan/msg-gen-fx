@@ -1,12 +1,13 @@
 import arm.davsoft.msgman.enums.DBServerType;
-import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.enums.Tag;
 import arm.davsoft.msgman.implementations.ConnectionConfigImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.service.MessageTransferService;
-import java.util.List;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.util.List;
+
+import static org.junit.Assert.fail;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -17,7 +18,8 @@ public class MainTest {
 
     @Test
     public void dbConnectionTest() throws Exception {
-        ConnectionConfig config = new ConnectionConfigImpl(IDMVersion.IDM6, DBServerType.MySQLServer);
+        ConnectionConfig config = new ConnectionConfigImpl(DBServerType.MySQLServer);
+        config.initConnectionConfig();
         config.setHostName("127.0.0.1");
         config.setUserName("root");
         config.setPassword("root");

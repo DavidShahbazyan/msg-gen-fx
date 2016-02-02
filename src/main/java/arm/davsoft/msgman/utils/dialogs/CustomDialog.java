@@ -31,6 +31,9 @@ public abstract class CustomDialog {
     public void requestFocus() {
         stage.requestFocus();
     }
+    public void close() {
+        stage.close();
+    }
 
     public void show(boolean requestFocus) {
         show();

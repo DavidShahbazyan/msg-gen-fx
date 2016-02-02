@@ -1,6 +1,8 @@
 package arm.davsoft.msgman.utils;
 
+import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.enums.Theme;
+import arm.davsoft.msgman.interfaces.Range;
 import javafx.scene.image.Image;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
@@ -96,4 +98,6 @@ public final class ResourceManager {
     public static Image getAppLogoLight() { return new Image("images/appLogo_light.png"); }
     public static Image getDavSoftLogo() { return new Image("images/davsoftLogo.png"); }
     public static URL getScene(String sceneName) { return ResourceManager.class.getResource("/screens/" + sceneName); }
+    public static Range getProjectMessageRange() { return new IntegerRange(Integer.parseInt(getSetting("messageRangeFrom")), Integer.parseInt(getSetting("messageRangeTo"))); }
+
 }

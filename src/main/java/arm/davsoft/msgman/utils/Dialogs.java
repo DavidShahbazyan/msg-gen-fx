@@ -3,6 +3,7 @@ package arm.davsoft.msgman.utils;
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.domains.Message;
+import arm.davsoft.msgman.enums.DBServerType;
 import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.Range;
@@ -43,8 +44,17 @@ public final class Dialogs {
 
     public static File getUserHomeDir() { return new File(System.getProperty("user.home")); }
 
-    public static ConnectionConfig showConnectionPopup(Window ownerWindow, ConnectionConfig config) {
-        ConnectionConfigDialog dialog = new ConnectionConfigDialog(config, ownerWindow);
+    public static ConnectionConfig showNewConnectionPopup(DBServerType serverType, Window ownerWindow) {
+        ConnectionConfigDialog dialog = ConnectionConfigDialog.create(serverType, ownerWindow);
+        dialog.showAndWait();
+        dialog.requestFocus();
+        return dialog.getConfig();
+    }
+
+    public static ConnectionConfig showEditConnectionPopup(ConnectionConfig config, Window ownerWindow) {
+        ConnectionConfigDialog dialog = ConnectionConfigDialog.edit(config, ownerWindow);
+        dialog.showAndWait();
+        dialog.requestFocus();
         return dialog.getConfig();
     }
 
@@ -84,12 +94,12 @@ public final class Dialogs {
         return showChoicePopup(title, header, content, Arrays.asList(IDMVersion.values()));
     }
 
-    public static <T> T showSchemaNamesPopup(List<T> choiceList) {
-        String title = ResourceManager.getMessage("title.dialog.schemaName");
-        String header = ResourceManager.getMessage("label.pleaseChooseSchemaName");
-        String content = ResourceManager.getMessage("label.schemaName");
-        return showChoicePopup(title, header, content, choiceList);
-    }
+//    public static <T> T showSchemaNamesPopup(List<T> choiceList) {
+//        String title = ResourceManager.getMessage("title.dialog.schemaName");
+//        String header = ResourceManager.getMessage("label.pleaseChooseSchemaName");
+//        String content = ResourceManager.getMessage("label.schemaName");
+//        return showChoicePopup(title, header, content, choiceList);
+//    }
 
     public static <T> T showChoicePopup(String title, String header, String content, List<T> choiceList) {
         T retVal = null;

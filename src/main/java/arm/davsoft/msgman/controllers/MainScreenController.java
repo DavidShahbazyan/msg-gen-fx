@@ -8,8 +8,6 @@ import arm.davsoft.msgman.components.StatusBar;
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.DBServerType;
-import arm.davsoft.msgman.enums.IDMVersion;
-import arm.davsoft.msgman.implementations.ConnectionConfigImpl;
 import arm.davsoft.msgman.implementations.MessageFinderImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.MessageFinder;
@@ -214,7 +212,7 @@ public class MainScreenController implements Initializable {
         lbl_databaseVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
         lbl_emptyMessagesQuantityVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null);
 //        lbl_messageRangeVisibleProperty.set(currentMessageRange != null && currentMessageRange.isValid());
-        lbl_messageRangeVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null && messageTransferService.getConfig().getMessagesRange() != null);
+        lbl_messageRangeVisibleProperty.set(messageTransferService != null && messageTransferService.getConfig() != null && messageTransferService.getMessageRange() != null);
         lbl_totalHardcodedMessagesVisibleProperty.set(true);
 
         detailsPanelVisibleProperty.set(lbl_projectPathVisibleProperty.get()
@@ -264,7 +262,7 @@ public class MainScreenController implements Initializable {
             portNumberProperty.setValue(String.valueOf(messageTransferService.getConfig().getPort()));
             usernameProperty.setValue(messageTransferService.getConfig().getUserName());
             databaseProperty.setValue(messageTransferService.getConfig().getDbName());
-            messageRangeProperty.setValue(messageTransferService.getConfig().getMessagesRange().toString());
+            messageRangeProperty.setValue(messageTransferService.getMessageRange().toString());
         }
 
         if (emptyMessagesList != null) {
@@ -617,47 +615,23 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void connectToMSSQL(ActionEvent event) {
-        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
-        ConnectionConfig config = null;
-        if (idmVersion != null) {
-            config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.MSSQLServer));
-        }
-        if (config != null && config.isValid()) {
-            messageTransferService = new MessageTransferService(config);
-            messageTransferService.getConfig().setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
-            messageTransferService.getConfig().updateDataSource();
-            initEmptyMessages();
-            updateConnectionDetails();
-        }
-        validate();
+        createNewConnection(DBServerType.MSSQLServer);
     }
 
     @FXML
     private void connectToOracle(ActionEvent event) {
-        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
-        ConnectionConfig config = null;
-        if (idmVersion != null) {
-            config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.ORAServer));
-        }
-        if (config != null && config.isValid()) {
-            messageTransferService = new MessageTransferService(config);
-            initEmptyMessages();
-            updateConnectionDetails();
-        }
-        validate();
+        createNewConnection(DBServerType.ORAServer);
     }
 
     @FXML
     private void connectToMySQL(ActionEvent event) {
-        IDMVersion idmVersion = Dialogs.showIDMVersionPopup();
-        ConnectionConfig config = null;
-        if (idmVersion != null) {
-            config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), new ConnectionConfigImpl(idmVersion, DBServerType.MySQLServer));
-        }
-        if (config != null && config.isValid()) {
+        createNewConnection(DBServerType.MySQLServer);
+    }
+
+    private void createNewConnection(DBServerType serverType) {
+        ConnectionConfig config = Dialogs.showNewConnectionPopup(serverType, rootContainer.getScene().getWindow());
+        if (config != null && config.getIsValid()) {
             messageTransferService = new MessageTransferService(config);
-            messageTransferService.getConfig().setDbName(Dialogs.showSchemaNamesPopup(messageTransferService.loadSchemaNames()));
-            messageTransferService.getConfig().updateDataSource();
             initEmptyMessages();
             updateConnectionDetails();
         }
@@ -666,9 +640,10 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void configureConnection(ActionEvent event) {
-        ConnectionConfig config = Dialogs.showConnectionPopup(rootContainer.getScene().getWindow(), messageTransferService.getConfig());
-        if (config != null) {
+        ConnectionConfig config = Dialogs.showEditConnectionPopup(messageTransferService.getConfig(), rootContainer.getScene().getWindow());
+        if (config != null && config.getIsValid()) {
             messageTransferService = new MessageTransferService(config);
+            initEmptyMessages();
             updateConnectionDetails();
         }
         validate();
@@ -681,16 +656,12 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void aboutApp(ActionEvent event) {
-//        String title = "About App";
-//        String header = ResourceManager.getParam("APPLICATION.NAME") + " " + ResourceManager.getParam("APPLICATION.VERSION");
-//        String content = ResourceManager.getMessage("label.aboutTheApp");
-//        Dialogs.showInfoPopup(title, header, content);
         Dialogs.showAboutAppDialog(rootContainer.getScene().getWindow());
     }
 
     @FXML
     private void specifyNewMessageRange(ActionEvent event) {
-        messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
+//        messageTransferService.getConfig().setMessagesRange(Dialogs.showRangeDialog("Message Range", "Please define message range."));
         updateConnectionDetails();
     }
 
@@ -791,17 +762,19 @@ public class MainScreenController implements Initializable {
 //    }
 
     private void initEmptyMessages() {
-        if (checkTheMessageRangeToBeSet()) {
+        if (!checkTheMessageRangeToBeSet()) {
+            Dialogs.showWarningPopup(ResourceManager.getMessage("title.dialog.warning"), null, ResourceManager.getMessage("label.warning.invalidOrUndefinedMessageRange"));
+        } else {
             emptyMessagesList = messageTransferService.loadEmptyMessages();
         }
         updateConnectionDetails();
     }
 
     private boolean checkTheMessageRangeToBeSet() {
-        if (messageTransferService.getConfig().getMessagesRange() == null) {
+        if (messageTransferService.getMessageRange() == null) {
             specifyNewMessageRange(new ActionEvent());
         }
-        return messageTransferService.getConfig().isMessageRangeValid();
+        return messageTransferService.getMessageRange().isValid();
     }
     /* ------------- /Other methods ------------- */
 
