@@ -7,10 +7,10 @@
     <groupId>arm.davsoft</groupId>
     <artifactId>msgman</artifactId>
     <name>Message Manager</name>
-    <version>2.0.8</version>
+    <version>2.0.9</version>
 
     <properties>
-        <releaseDate>Jan-27-2016</releaseDate>
+        <releaseDate>Feb-03-2016</releaseDate>
     </properties>
 
     <developers>
