@@ -6,7 +6,6 @@ import arm.davsoft.msgman.enums.IDMVersion;
 import arm.davsoft.msgman.implementations.ConnectionConfigImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.utils.ResourceManager;
-import com.sun.istack.internal.NotNull;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -51,7 +50,7 @@ public class ConnectionConfigDialog extends CustomDialog {
         return dialog.prepare();
     }
 
-    public static ConnectionConfigDialog edit(@NotNull ConnectionConfig config, Window ownerWindow) {
+    public static ConnectionConfigDialog edit(ConnectionConfig config, Window ownerWindow) {
         Objects.requireNonNull(config, "Connection configuration can not be null.");
         ConnectionConfigDialog dialog = new ConnectionConfigDialog(ownerWindow);
         dialog._config = config;
