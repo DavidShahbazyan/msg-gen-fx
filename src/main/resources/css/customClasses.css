@@ -160,10 +160,10 @@
     -fx-border-color: rgba(255, 200, 0, 0.5);
     -fx-border-style: solid;
     -fx-border-width: 1px;
-    -fx-padding: 0 0 0 16px;
+    -fx-padding: 3px 3px 3px 20px;
     -fx-font-size: 12px;
     -fx-background-color: rgba(255, 180, 0, 0.2);
     -fx-background-image: url("/images/icons/general/balloonWarning.png");
     -fx-background-repeat: no-repeat;
-    -fx-background-position: 2px center;
+    -fx-background-position: 3px center;
 }

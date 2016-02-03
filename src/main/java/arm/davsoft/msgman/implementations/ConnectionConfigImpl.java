@@ -124,7 +124,7 @@ public class ConnectionConfigImpl implements ConnectionConfig {
     @Override public IntegerProperty getPortProperty() { return port; }
     @Override public Integer getPort() { return port.get(); }
     @Override public void setPort(Integer port) { this.port.set(port); }
-    @Override public boolean isPortEmpty() { return this.port == null; }
+    @Override public boolean isPortEmpty() { return this.port == null || this.port.get() == 0; }
 
     @Override public StringProperty getDbNameProperty() { return dbName; }
     @Override public String getDbName() { return dbName.get(); }
