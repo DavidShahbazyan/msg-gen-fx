@@ -27,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -102,6 +103,8 @@ public class MainScreenController implements Initializable {
     @FXML
     private VBox rootContainer;
     @FXML
+    private Menu newConnectionMenu;
+    @FXML
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
             connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
@@ -140,9 +143,30 @@ public class MainScreenController implements Initializable {
 
     private void prepareForm() {
         rootContainer.getChildren().add(0, new ApplicationTitleBar(Main.getPrimaryStage(), ResourceManager.getParam("APPLICATION.NAME")));
+        initIcons();
         initFilesTable();
         initPropertyBindings();
         validate();
+    }
+
+    private void initIcons() {
+        browseProjectMenuItem.setGraphic(new ImageView("images/icons/general/menu-open.png"));
+        appSettingsMenuItem.setGraphic(new ImageView("images/icons/general/settings.png"));
+        exitAppMenuItem.setGraphic(new ImageView("images/icons/general/exit.png"));
+        scanProjectMenuItem.setGraphic(new ImageView("images/icons/general/menu-find.png"));
+        scanDbMenuItem.setGraphic(new ImageView("images/icons/general/menu-find.png"));
+        generateMessagesMenuItem.setGraphic(new ImageView("images/icons/general/add.png"));
+        putMessagesMenuItem.setGraphic(new ImageView("images/icons/general/checkOut.png"));
+        transferMessagesMenuItem.setGraphic(new ImageView("images/icons/general/commit.png"));
+        cleanMessageRangeMenuItem.setGraphic(new ImageView("images/icons/general/gc.png"));
+        newConnectionMenu.setGraphic(new ImageView("images/icons/general/add.png"));
+        connectMSSQLMenuItem.setGraphic(new ImageView("images/icons/general/sqlServer.png"));
+        connectOracleMenuItem.setGraphic(new ImageView("images/icons/general/oracle.png"));
+        connectMySQLMenuItem.setGraphic(new ImageView("images/icons/general/mysql.png"));
+        configConnectionMenuItem.setGraphic(new ImageView("images/icons/general/edit.png"));
+        availableTagsListMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
+//        aboutAppMenuItem.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1.png", true));
+        showHrdcddMsgsInPrjMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
     }
 
     private void initPropertyBindings() {

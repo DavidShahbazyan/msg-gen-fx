@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import arm.davsoft.msgman.components.StatusBar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<?import arm.davsoft.msgman.components.StatusBar?>
 <VBox fx:id="rootContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="arm.davsoft.msgman.controllers.MainScreenController">
     <children>
         <MenuBar maxWidth="1.7976931348623157E308" VBox.vgrow="NEVER">
@@ -17,7 +17,7 @@
                             </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="appSettingsMenuItem" mnemonicParsing="false" onAction="#openAppSettings" text="Settings">
+                        <MenuItem fx:id="appSettingsMenuItem" mnemonicParsing="false" onAction="#openAppSettings" text="%label.menuItem.file.settings">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
@@ -76,7 +76,7 @@
                       -->
                 <Menu mnemonicParsing="false" text="%label.menuItem.connection">
                     <items>
-                        <Menu mnemonicParsing="false" text="%label.menuItem.connection.new">
+                        <Menu fx:id="newConnectionMenu" mnemonicParsing="false" text="%label.menuItem.connection.new">
                             <items>
                                 <MenuItem fx:id="connectMSSQLMenuItem" mnemonicParsing="false" onAction="#connectToMSSQL" text="%label.menuItem.connection.new.MSSQL" />
                                 <MenuItem fx:id="connectOracleMenuItem" mnemonicParsing="false" onAction="#connectToOracle" text="%label.menuItem.connection.new.Oracle" />
