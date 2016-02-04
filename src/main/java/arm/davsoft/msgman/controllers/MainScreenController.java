@@ -56,10 +56,11 @@ public class MainScreenController implements Initializable {
             portNumberProperty =             new SimpleStringProperty(),
             usernameProperty =               new SimpleStringProperty(),
             databaseProperty =               new SimpleStringProperty(),
-            emptyMessagesQuantityProperty =  new SimpleStringProperty(),
-            messageRangeProperty =           new SimpleStringProperty(),
-            totalHardcodedMessagesProperty = new SimpleStringProperty()
-            ;
+            messageRangeProperty =           new SimpleStringProperty();
+
+    private IntegerProperty emptyMessagesQuantityProperty =  new SimpleIntegerProperty(),
+                            totalHardcodedMessagesProperty = new SimpleIntegerProperty();
+
     private ListProperty<FileItem> fileItemsTableViewData = new SimpleListProperty<>();
 
     private List<Message> emptyMessagesList = new ArrayList<>();
@@ -177,9 +178,9 @@ public class MainScreenController implements Initializable {
         lbl_portNumber.textProperty().bind(portNumberProperty);
         lbl_username.textProperty().bind(usernameProperty);
         lbl_database.textProperty().bind(databaseProperty);
-        lbl_emptyMessagesQuantity.textProperty().bind(emptyMessagesQuantityProperty);
+        lbl_emptyMessagesQuantity.textProperty().bind(emptyMessagesQuantityProperty.asString());
         lbl_messageRange.textProperty().bind(messageRangeProperty);
-        lbl_totalHardcodedMessages.textProperty().bind(totalHardcodedMessagesProperty);
+        lbl_totalHardcodedMessages.textProperty().bind(totalHardcodedMessagesProperty.asString());
         fileItemsTableView.itemsProperty().bind(fileItemsTableViewData);
 
         // Visibility bindings
@@ -290,7 +291,7 @@ public class MainScreenController implements Initializable {
         }
 
         if (emptyMessagesList != null) {
-            emptyMessagesQuantityProperty.setValue(String.valueOf(emptyMessagesList.size()));
+            emptyMessagesQuantityProperty.setValue(emptyMessagesList.size());
         }
 
         if (fileItemsTableViewData != null && fileItemsTableViewData.get() != null) {
@@ -298,7 +299,7 @@ public class MainScreenController implements Initializable {
             for (FileItem fileItem : fileItemsTableViewData.get()) {
                 quantity += fileItem.getTotalMessagesQuantity();
             }
-            totalHardcodedMessagesProperty.set(String.valueOf(quantity));
+            totalHardcodedMessagesProperty.set(quantity);
             logger.info("Total hardcoded messages: " + quantity);
         }
     }
@@ -521,6 +522,10 @@ public class MainScreenController implements Initializable {
     @FXML
     private void transferMessagesToDB(ActionEvent event) {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.transferToDB"), null, ResourceManager.getMessage("label.confirmation.transferToDB"))) {
+            if (totalHardcodedMessagesProperty.get() > emptyMessagesQuantityProperty.get()
+                    && Dialogs.showConfirmPopup("Not enough empty messages in DB.", null, "Not enough of empty posts in the database, you would like to automatically adjust the difference by creating new ones?")) {
+                generateEmptyMessages(totalHardcodedMessagesProperty.get() - emptyMessagesQuantityProperty.get());
+            }
             Task task = new Task() {
                 @Override
                 protected Object call() throws Exception {
