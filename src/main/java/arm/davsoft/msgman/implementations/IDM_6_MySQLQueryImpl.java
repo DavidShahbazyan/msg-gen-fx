@@ -11,6 +11,7 @@ public final class IDM_6_MySQLQueryImpl implements SQLQuery {
     private static final IDM_6_MySQLQueryImpl INSTANCE = new IDM_6_MySQLQueryImpl();
 
     private static final String BACKUP_MESSAGES_TABLE = "SELECT * INTO dbo.kb_am_Message" + tableSuffix + " FROM kb_am_Message";
+    private static final String LOAD_LAST_MESSAGE_ID = "SELECT MAX(iMessageID) FROM kb_am_Message";
     private static final String REMOVE_MESSAGES = "UPDATE kb_am_Message SET sText = iMessageID, sComment = NULL, sDescription = 'Online DE', sUserName = NULL, iModuleID = NULL, iCategoryID = NULL, bIsGlobal = NULL WHERE iMessageID IN (?) AND iMessageID >= ? and iMessageID <= ?";
     private static final String REMOVE_MESSAGES_EXCEPT = "UPDATE kb_am_Message SET sText = iMessageID, sComment = NULL, sDescription = 'Online DE', sUserName = NULL, iModuleID = NULL, iCategoryID = NULL, bIsGlobal = NULL WHERE iMessageID NOT IN (?) AND iMessageID >= ? and iMessageID <= ?";
 //    private static final String REMOVE_UNUSED_MESSAGES = "UPDATE kb_am_Message SET sText = iMessageID, sComment = NULL, sDescription = 'Online DE', sUserName = NULL, iModuleID = NULL, iCategoryID = NULL, bIsGlobal = NULL WHERE iMessageID NOT IN (@@MessageIds) AND iMessageID >= @@RangeStart and iMessageID <= @@RangeEnd";
@@ -29,6 +30,8 @@ public final class IDM_6_MySQLQueryImpl implements SQLQuery {
     }
 
     @Override public String getBackupMessagesTable() { return BACKUP_MESSAGES_TABLE; }
+
+    @Override public String getLoadLastMessageId() { return LOAD_LAST_MESSAGE_ID; }
 
     @Override public String getRemoveMessages() { return REMOVE_MESSAGES; }
 

@@ -12,6 +12,8 @@ public interface SQLQuery {
 
     String getBackupMessagesTable();
 
+    String getLoadLastMessageId();
+
     String getRemoveMessagesExcept();
 
     String getRemoveMessages();

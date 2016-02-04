@@ -6,12 +6,12 @@ import arm.davsoft.msgman.components.ButtonTableCell;
 import arm.davsoft.msgman.components.CheckBoxTableCell;
 import arm.davsoft.msgman.components.StatusBar;
 import arm.davsoft.msgman.domains.FileItem;
+import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.DBServerType;
 import arm.davsoft.msgman.implementations.MessageFinderImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.MessageFinder;
-import arm.davsoft.msgman.interfaces.Range;
 import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
@@ -438,7 +438,6 @@ public class MainScreenController implements Initializable {
         };
 
         statusBar.setTask(task);
-//        Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, true);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);
@@ -484,27 +483,28 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void generateEmptyMessages(ActionEvent event) {
-        Range messageRange = Dialogs.showRangeDialog("Message Range", "Please define message range.");
-        if (messageRange != null && messageRange.isValid()) {
+        Integer msgQuantity = Dialogs.showMsgQuantityPopup("Message Quantity", null, "Please specify the quantity of messages to generate.");
+        if (msgQuantity != null) {
             if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"), null, ResourceManager.getMessage("label.confirmation.generateEmptyMessages"))) {
-                Task task = new Task() {
-                    @Override
-                    protected Object call() throws Exception {
-                        logger.info("Message generation started.");
-                        updateTitle(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"));
-                        messageTransferService.generateNewEmptyMessages(messageRange);
-                        initEmptyMessages();
-                        validate();
-                        logger.info("Message generation completed.");
-                        return null;
-                    }
-                };
-
-                Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
-
-                Thread thread = new Thread(task);
-                thread.setDaemon(true);
-                thread.start();
+                generateEmptyMessages(msgQuantity);
+//                Task task = new Task() {
+//                    @Override
+//                    protected Object call() throws Exception {
+//                        logger.info("Message generation started.");
+//                        updateTitle(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"));
+//                        messageTransferService.generateNewEmptyMessages(messageRange);
+//                        initEmptyMessages();
+//                        validate();
+//                        logger.info("Message generation completed.");
+//                        return null;
+//                    }
+//                };
+//
+//                Dialogs.showTaskProgressDialog(rootContainer.getScene().getWindow(), task, false);
+//
+//                Thread thread = new Thread(task);
+//                thread.setDaemon(true);
+//                thread.start();
             }
         }
     }
@@ -704,6 +704,50 @@ public class MainScreenController implements Initializable {
             item.setIsSelected(isSelected);
         }
         validate();
+    }
+
+    private void generateEmptyMessages(int quantity) {
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                logger.info("Message generation started.");
+                updateTitle(ResourceManager.getMessage("label.menuItem.edit.generateEmptyMessages"));
+                updateMessage(ResourceManager.getMessage("label.gettingLastMsgId"));
+                int lastMessageId = messageTransferService.loadLastMessageId();
+                updateMessage(ResourceManager.getMessage("label.generatingNewMessages"));
+                int from = lastMessageId + 1;
+                int to = from + quantity;
+                messageTransferService.generateNewEmptyMessages(new IntegerRange(from, to));
+                logger.info("Message generation completed.");
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                initEmptyMessages();
+                validate();
+                updateConnectionDetails();
+                logger.info(ResourceManager.getMessage("label.messageGenerationSucceeded"));
+                statusBar.reset();
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                initEmptyMessages();
+                validate();
+                updateConnectionDetails();
+                logger.info(ResourceManager.getMessage("label.messageGenerationFailed"));
+                statusBar.reset();
+            }
+        };
+
+        statusBar.setTask(task);
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private void putMessagesToFiles(List<File> filesList, List<Message> messages) throws IOException {

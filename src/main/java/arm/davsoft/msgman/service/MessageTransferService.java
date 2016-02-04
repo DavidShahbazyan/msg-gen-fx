@@ -46,6 +46,17 @@ public class MessageTransferService extends ServiceImpl {
     }
 
     @Override
+    public Integer loadLastMessageId() {
+        Integer retVal = null;
+        try {
+            retVal = dao.loadLastMessageId();
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass()).error(ex);
+        }
+        return retVal;
+    }
+
+    @Override
     public List<Message> loadMessages() {
         return loadMessages(messageRange);
     }

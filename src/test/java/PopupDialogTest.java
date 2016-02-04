@@ -1,8 +1,6 @@
-import arm.davsoft.msgman.components.ProcessIndicator;
+import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Application;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import org.junit.Test;
 
@@ -31,9 +29,11 @@ public class PopupDialogTest extends Application {
 //        Dialogs.showExceptionDialog("Header", "Exception ", new NullPointerException("Temp exception."));
 //        Dialogs.showExceptionDialog(null, "Exception", new NullPointerException("Temp exception."));
 
-        Alert alert = new Alert(Alert.AlertType.NONE, "Processing...", ButtonType.CANCEL);
-        alert.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1@2x.png", true));
-        alert.show();
+        Dialogs.showMsgQuantityPopup("Title", "Header", "Content");
+
+//        Alert alert = new Alert(Alert.AlertType.NONE, "Processing...", ButtonType.CANCEL);
+//        alert.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1@2x.png", true));
+//        alert.show();
     }
 
     public static void main(String[] args) {

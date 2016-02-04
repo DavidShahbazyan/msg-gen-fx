@@ -15,6 +15,8 @@ public interface Dao {
 
     List<String> loadSchemaNames() throws SQLException;
 
+    Integer loadLastMessageId() throws SQLException;
+
     List<Message> loadMessages(List<Object> params) throws SQLException;
 
     List<Message> loadMessagesExcept(List<Object> params) throws SQLException;

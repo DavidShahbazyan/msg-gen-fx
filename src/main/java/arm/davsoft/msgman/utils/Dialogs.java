@@ -87,6 +87,19 @@ public final class Dialogs {
         return result.get() == ButtonType.YES;
     }
 
+    public static Integer showMsgQuantityPopup(String title, String header, String content) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(content);
+        Integer retVal = null;
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent() && result.get().matches("\\d+")) {
+            retVal = Integer.parseInt(result.get());
+        }
+        return retVal;
+    }
+
     public static IDMVersion showIDMVersionPopup() {
         String title = ResourceManager.getMessage("title.dialog.idmVersion");
         String header = ResourceManager.getMessage("label.pleaseChooseIdmVersion");

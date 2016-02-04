@@ -15,6 +15,7 @@ public interface Service {
     void backupMessagesTable() throws SQLException;
 
     List<String> loadSchemaNames();
+    Integer loadLastMessageId();
 
     List<Message> loadMessages();
     List<Message> loadMessages(Range range);

@@ -79,6 +79,28 @@ public abstract class DaoImpl implements Dao {
     }
 
     @Override
+    public Integer loadLastMessageId() throws SQLException {
+        Integer retVal = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionConfig.getDataSource().getConnection();
+            preparedStatement = connection.prepareStatement(connectionConfig.getSqlQuery().getLoadLastMessageId());
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                retVal = resultSet.getInt(1);
+            }
+        } finally {
+            if (connection != null) connection.close();
+            if (preparedStatement != null) preparedStatement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return retVal;
+    }
+
+    @Override
     public List<Message> loadMessages(List<Object> params) throws SQLException {
         List<Message> messages = new ArrayList<>();
         Connection connection = null;
