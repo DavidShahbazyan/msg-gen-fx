@@ -523,7 +523,7 @@ public class MainScreenController implements Initializable {
     private void transferMessagesToDB(ActionEvent event) {
         if (Dialogs.showConfirmPopup(ResourceManager.getMessage("label.menuItem.edit.transferToDB"), null, ResourceManager.getMessage("label.confirmation.transferToDB"))) {
             if (totalHardcodedMessagesProperty.get() > emptyMessagesQuantityProperty.get()
-                    && Dialogs.showConfirmPopup("Not enough empty messages in DB.", null, "Not enough of empty posts in the database, you would like to automatically adjust the difference by creating new ones?")) {
+                    && Dialogs.showConfirmPopup("Not enough empty messages in DB.", null, "Not enough of empty posts in the database, would you like to automatically adjust the difference by creating new ones?")) {
                 generateEmptyMessages(totalHardcodedMessagesProperty.get() - emptyMessagesQuantityProperty.get());
             }
             Task task = new Task() {

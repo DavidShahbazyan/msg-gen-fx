@@ -1,8 +1,6 @@
-import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.junit.Test;
 
 /**
  * Author: tatevik
@@ -29,7 +27,7 @@ public class PopupDialogTest extends Application {
 //        Dialogs.showExceptionDialog("Header", "Exception ", new NullPointerException("Temp exception."));
 //        Dialogs.showExceptionDialog(null, "Exception", new NullPointerException("Temp exception."));
 
-        Dialogs.showMsgQuantityPopup("Title", "Header", "Content");
+//        Dialogs.showMsgQuantityPopup("Title", "Header", "Content");
 
 //        Alert alert = new Alert(Alert.AlertType.NONE, "Processing...", ButtonType.CANCEL);
 //        alert.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1@2x.png", true));
@@ -40,8 +38,4 @@ public class PopupDialogTest extends Application {
         launch(args);
     }
 
-    @Test
-    public void test1() {
-        launch();
-    }
 }
