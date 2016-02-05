@@ -9,6 +9,7 @@ import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.domains.Message;
 import arm.davsoft.msgman.enums.DBServerType;
+import arm.davsoft.msgman.enums.ErrorCode;
 import arm.davsoft.msgman.implementations.MessageFinderImpl;
 import arm.davsoft.msgman.interfaces.ConnectionConfig;
 import arm.davsoft.msgman.interfaces.MessageFinder;
@@ -37,6 +38,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -511,12 +513,14 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void putMessagesToFiles(ActionEvent event) {
-        try {
-            putMessagesToFiles(messageFinder.getMarkedFiles(), messageTransferService.loadMessages());
-        } catch (IOException e) {
-            logger.error(e);
-        }
+    private void putMessagesToFiles(ActionEvent event) throws Exception {
+        throw new NullPointerException("Blah!");
+//        try {
+//            putMessagesToFiles(messageFinder.getMarkedFiles(), messageTransferService.loadMessages());
+//        } catch (IOException e) {
+//            logger.error(e);
+//            Dialogs.showExceptionDialog("", "", e);
+//        }
     }
 
     @FXML
@@ -838,7 +842,9 @@ public class MainScreenController implements Initializable {
         if (!checkTheMessageRangeToBeSet()) {
             Dialogs.showWarningPopup(ResourceManager.getMessage("title.dialog.warning"), null, ResourceManager.getMessage("label.warning.invalidOrUndefinedMessageRange"));
         } else {
-            emptyMessagesList = messageTransferService.loadEmptyMessages();
+            if (isServerReachable()) {
+                emptyMessagesList = messageTransferService.loadEmptyMessages();
+            }
         }
         updateConnectionDetails();
     }
@@ -848,6 +854,18 @@ public class MainScreenController implements Initializable {
             specifyNewMessageRange(new ActionEvent());
         }
         return messageTransferService.getMessageRange().isValid();
+    }
+
+    private boolean isServerReachable() {
+        boolean isReachable = false;
+        try {
+            isReachable = messageTransferService.checkDbConnection();
+        } catch (SQLException ex) {
+            String content = ErrorCode.DB_NO_CONNECTION.getCode() + " - " + ErrorCode.DB_NO_CONNECTION.getDescription();
+            Dialogs.showExceptionDialog(null, content, ex);
+            logger.error(content, ex);
+        }
+        return isReachable;
     }
     /* ------------- /Other methods ------------- */
 

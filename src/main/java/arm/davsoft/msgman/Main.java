@@ -1,6 +1,6 @@
 package arm.davsoft.msgman;
 
-import arm.davsoft.msgman.enums.ErrorCodes;
+import arm.davsoft.msgman.enums.ErrorCode;
 import arm.davsoft.msgman.utils.AppSpecUncaughtExceptionHandler;
 import arm.davsoft.msgman.utils.FXMLFactory;
 import arm.davsoft.msgman.utils.ResourceManager;
@@ -59,7 +59,7 @@ public class Main extends Application {
         Properties props = new Properties();
         InputStream input = getClass().getResourceAsStream("/properties/log4j.properties");
         if (input == null) {
-            throw new FileNotFoundException(ErrorCodes.LOG4J_PROP_MISSING.getCode());
+            throw new FileNotFoundException(ErrorCode.LOG4J_PROP_MISSING.getCode());
         }
         props.load(input);
         if (Boolean.valueOf(ResourceManager.getSetting("exportLogToFile"))) {

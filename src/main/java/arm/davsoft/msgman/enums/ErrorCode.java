@@ -5,15 +5,16 @@ package arm.davsoft.msgman.enums;
  * <b>Date:</b> 8/4/15 <br/>
  * <b>Time:</b> 7:00 PM <br/>
  */
-public enum ErrorCodes {
-    LOG4J_PROP_MISSING("4041", "Log4j property file not found."),
-    UNCAUGHT_EXCEPTION("5001", "Uncaught exception occurred."),
+public enum ErrorCode {
+    UNKNOWN_EXCEPTION("ERR:502", "Unknown Error."),
+    LOG4J_PROP_MISSING("L4G:404", "Log4j property file not found."),
+    DB_NO_CONNECTION("DB:503", "Could not connect to DB."),
     ;
 
     private String code;
     private String description;
 
-    ErrorCodes(String code, String description) {
+    ErrorCode(String code, String description) {
         this.code = code;
         this.description = description;
     }

@@ -12,6 +12,7 @@ import java.util.Set;
  * <b>Time:</b> 6:26 AM <br/>
  */
 public interface Service {
+    boolean checkDbConnection() throws SQLException;
     void backupMessagesTable() throws SQLException;
 
     List<String> loadSchemaNames();

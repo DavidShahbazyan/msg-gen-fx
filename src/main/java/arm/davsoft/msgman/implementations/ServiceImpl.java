@@ -7,6 +7,7 @@ import arm.davsoft.msgman.interfaces.Service;
 import arm.davsoft.msgman.utils.DaoFactory;
 import arm.davsoft.msgman.utils.ResourceManager;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -37,7 +38,11 @@ public abstract class ServiceImpl implements Service {
         return messageRange;
     }
 
-    public List<String> loadSchemaNames() {
+    @Override public boolean checkDbConnection() throws SQLException {
+        return config.getDataSource().getConnection().isValid(10);
+    }
+
+    @Override public List<String> loadSchemaNames() {
         return null;
     }
 }
