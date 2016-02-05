@@ -1,11 +1,13 @@
 package arm.davsoft.msgman.utils.dialogs;
 
 import arm.davsoft.msgman.utils.ResourceManager;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.PrintWriter;
@@ -72,6 +74,13 @@ public class ExceptionDialog {
 
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
+        alert.getDialogPane().expandedProperty().addListener((l) -> {
+            Platform.runLater(() -> {
+                alert.getDialogPane().requestLayout();
+                Stage stage = (Stage)alert.getDialogPane().getScene().getWindow();
+                stage.sizeToScene();
+            });
+        });
 
         return this;
     }
