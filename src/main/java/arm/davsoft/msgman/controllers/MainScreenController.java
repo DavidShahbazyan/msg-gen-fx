@@ -648,36 +648,44 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void connectToMSSQL(ActionEvent event) {
-        createNewConnection(DBServerType.MSSQLServer);
+        createEditConnectionConfig(DBServerType.MSSQLServer);
     }
 
     @FXML
     private void connectToOracle(ActionEvent event) {
-        createNewConnection(DBServerType.ORAServer);
+        createEditConnectionConfig(DBServerType.ORAServer);
     }
 
     @FXML
     private void connectToMySQL(ActionEvent event) {
-        createNewConnection(DBServerType.MySQLServer);
-    }
-
-    private void createNewConnection(DBServerType serverType) {
-        ConnectionConfig config = Dialogs.showNewConnectionPopup(serverType, rootContainer.getScene().getWindow());
-        if (config != null && config.getIsValid()) {
-            messageTransferService = new MessageTransferService(config);
-            initEmptyMessages();
-            updateConnectionDetails();
-        }
-        validate();
+        createEditConnectionConfig(DBServerType.MySQLServer);
     }
 
     @FXML
     private void configureConnection(ActionEvent event) {
-        ConnectionConfig config = Dialogs.showEditConnectionPopup(messageTransferService.getConfig(), rootContainer.getScene().getWindow());
-        if (config != null && config.getIsValid()) {
-            messageTransferService = new MessageTransferService(config);
-            initEmptyMessages();
-            updateConnectionDetails();
+        createEditConnectionConfig(null);
+    }
+
+    private void createEditConnectionConfig(DBServerType serverType) {
+        try {
+            ConnectionConfig config = null;
+            if (serverType != null) {
+                config = Dialogs.showNewConnectionPopup(serverType, rootContainer.getScene().getWindow());
+            } else {
+                config = Dialogs.showEditConnectionPopup(messageTransferService.getConfig(), rootContainer.getScene().getWindow());
+            }
+            if (config != null && config.getIsValid()) {
+                logger.info("Connection config: " + config.toString());
+                if (MessageTransferService.checkDbConnection(config)) {
+                    messageTransferService = new MessageTransferService(config);
+                    initEmptyMessages();
+                    updateConnectionDetails();
+                }
+            }
+        } catch (SQLException ex) {
+            String content = ErrorCode.DB_NO_CONNECTION.getCode() + " - " + ErrorCode.DB_NO_CONNECTION.getDescription();
+            Dialogs.showExceptionDialog(null, content, ex);
+            logger.error(content, ex);
         }
         validate();
     }
@@ -842,9 +850,7 @@ public class MainScreenController implements Initializable {
         if (!checkTheMessageRangeToBeSet()) {
             Dialogs.showWarningPopup(ResourceManager.getMessage("title.dialog.warning"), null, ResourceManager.getMessage("label.warning.invalidOrUndefinedMessageRange"));
         } else {
-            if (isServerReachable()) {
-                emptyMessagesList = messageTransferService.loadEmptyMessages();
-            }
+            emptyMessagesList = messageTransferService.loadEmptyMessages();
         }
         updateConnectionDetails();
     }
@@ -856,17 +862,17 @@ public class MainScreenController implements Initializable {
         return messageTransferService.getMessageRange().isValid();
     }
 
-    private boolean isServerReachable() {
-        boolean isReachable = false;
-        try {
-            isReachable = messageTransferService.checkDbConnection();
-        } catch (SQLException ex) {
-            String content = ErrorCode.DB_NO_CONNECTION.getCode() + " - " + ErrorCode.DB_NO_CONNECTION.getDescription();
-            Dialogs.showExceptionDialog(null, content, ex);
-            logger.error(content, ex);
-        }
-        return isReachable;
-    }
+//    private boolean checkDbConnection(ConnectionConfig config) {
+//        boolean isReachable = false;
+//        try {
+//            isReachable = MessageTransferService.checkDbConnection(config);
+//        } catch (SQLException ex) {
+//            String content = ErrorCode.DB_NO_CONNECTION.getCode() + " - " + ErrorCode.DB_NO_CONNECTION.getDescription();
+//            Dialogs.showExceptionDialog(null, content, ex);
+//            logger.error(content, ex);
+//        }
+//        return isReachable;
+//    }
     /* ------------- /Other methods ------------- */
 
 

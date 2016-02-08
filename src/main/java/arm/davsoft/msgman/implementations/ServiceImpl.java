@@ -38,8 +38,8 @@ public abstract class ServiceImpl implements Service {
         return messageRange;
     }
 
-    @Override public boolean checkDbConnection() throws SQLException {
-        return config.getDataSource().getConnection().isValid(10);
+    public static boolean checkDbConnection(ConnectionConfig config) throws SQLException {
+        return config.getDataSource().getConnection().createStatement().execute("SELECT 1");
     }
 
     @Override public List<String> loadSchemaNames() {
