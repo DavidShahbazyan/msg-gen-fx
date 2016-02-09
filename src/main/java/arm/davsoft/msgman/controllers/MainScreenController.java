@@ -109,8 +109,9 @@ public class MainScreenController implements Initializable {
     private Menu newConnectionMenu;
     @FXML
     private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
-            generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem, connectMSSQLMenuItem,
-            connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem, availableTagsListMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
+            generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem,
+            connectMSSQLMenuItem, connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem,
+            availableTagsListMenuItem, submitIssueMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
 //    @FXML
 //    private Button scanProjectButton, transferMessagesButton, cleanMessageRangeButton;
     @FXML
@@ -168,6 +169,7 @@ public class MainScreenController implements Initializable {
         connectMySQLMenuItem.setGraphic(new ImageView("images/icons/general/mysql.png"));
         configConnectionMenuItem.setGraphic(new ImageView("images/icons/general/edit.png"));
         availableTagsListMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
+        submitIssueMenuItem.setGraphic(new ImageView("images/icons/general/quickfixBulb.png"));
 //        aboutAppMenuItem.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1.png", true));
         showHrdcddMsgsInPrjMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
     }
@@ -693,6 +695,11 @@ public class MainScreenController implements Initializable {
     @FXML
     private void availableTagsList(ActionEvent event) {
         Dialogs.showAvailableTagsDialog(rootContainer.getScene().getWindow());
+    }
+
+    @FXML
+    private void submitIssue(ActionEvent event) throws IOException {
+        new ProcessBuilder("x-www-browser", ResourceManager.getParam("URL.GITHUB.ISSUE.NEW")).start();
     }
 
     @FXML
