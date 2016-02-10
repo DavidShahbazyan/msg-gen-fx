@@ -93,7 +93,7 @@ public final class ResourceManager {
 //    public static String getSetting(String settingName) { return settingsResourceConfig.getString(settingName); }
     public static String getSetting(String settingName) { return customAppProps.getProperty(settingName); }
     public static Properties getSettings() { return customAppProps; }
-    public static String getUIThemeStyle() { return "css/" + Theme.getThemeById(Integer.valueOf(getSetting("uiTheme"))).getStyleName() + ".css"; }
+    public static String getUIThemeStyle() { return Theme.getThemeById(Integer.valueOf(getSetting("uiTheme"))).getStylePath(); }
     public static Image getAppLogoDark() { return new Image("images/appLogo_dark.png"); }
     public static Image getAppLogoLight() { return new Image("images/appLogo_light.png"); }
     public static Image getDavSoftLogo() { return new Image("images/davsoftLogo.png"); }

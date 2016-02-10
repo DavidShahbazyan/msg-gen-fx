@@ -82,6 +82,67 @@
 }
 
 
+.titled-pane:focused > .title > .arrow-button > .arrow {
+    -fx-background-color: -fx-focus-color, -fx-mark-color;
+    -fx-background-insets: 0, 0;
+    -fx-effect: none;
+}
+
+.progress-bar {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ProgressBarSkin";
+    -fx-border-style: solid;
+    -fx-border-color: -fx-accent;
+    -fx-border-radius: 5px;
+    -fx-padding: 1px;
+    -fx-pref-height: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 1;
+    -fx-indeterminate-bar-length: 60;
+    -fx-indeterminate-bar-escape: true;
+    -fx-indeterminate-bar-flip: true;
+    -fx-indeterminate-bar-animation-time: 2;
+}
+.progress-bar > .bar {
+    -fx-background-color: -fx-box-border, linear-gradient(to bottom, derive(-fx-accent,95%), derive(-fx-accent,10%)), linear-gradient(to bottom, derive(-fx-accent,38%), -fx-accent);
+    -fx-background-insets: 0;
+    -fx-padding: 0.1em;
+}
+.progress-bar:indeterminate > .bar {
+    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+}
+.progress-bar > .track {
+    -fx-background-color: transparent;
+    -fx-background-insets:  0, 1;
+}
+
+.dialog-pane > .button-bar > .container > .details-button.more {
+    -fx-graphic: url("/images/icons/dialog/dialog-more-details.png");
+}
+
+.dialog-pane > .button-bar > .container > .details-button.less {
+    -fx-graphic: url("/images/icons/dialog/dialog-fewer-details.png");
+}
+
+.alert.confirmation.dialog-pane,
+.text-input-dialog.dialog-pane,
+.choice-dialog.dialog-pane {
+    -fx-graphic: url("/images/icons/dialog/dialog-confirm.png");
+}
+
+.alert.information.dialog-pane {
+    -fx-graphic: url("/images/icons/dialog/dialog-information.png");
+}
+
+.alert.error.dialog-pane {
+    -fx-graphic: url("/images/icons/dialog/dialog-error.png");
+}
+
+.alert.warning.dialog-pane {
+    -fx-graphic: url("/images/icons/dialog/dialog-warning.png");
+}
+
+
 
 
 /*******************************************************************************

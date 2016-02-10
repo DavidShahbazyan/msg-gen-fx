@@ -1,6 +1,7 @@
 import arm.davsoft.msgman.utils.ResourceManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.junit.Test;
 
 /**
  * Author: tatevik
@@ -32,10 +33,16 @@ public class PopupDialogTest extends Application {
 //        Alert alert = new Alert(Alert.AlertType.NONE, "Processing...", ButtonType.CANCEL);
 //        alert.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1@2x.png", true));
 //        alert.show();
+        primaryStage.show();
+        primaryStage.close();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    @Test
+    public void mainTest() {
+        launch();
+    }
 }

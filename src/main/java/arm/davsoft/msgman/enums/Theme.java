@@ -6,18 +6,19 @@ package arm.davsoft.msgman.enums;
  * <b>Time:</b> 2:37 PM <br/>
  */
 public enum Theme {
-    LIGHT(1, "Winter", "light"),
-    DARK(2, "Darkness", "dark"),
+    LIGHT(1, "Light", "css/themes/light.css"),
+    WINTER(2, "Winter", "css/themes/winter.css"),
+    DARKNESS(3, "Darkness", "css/themes/darkness.css"),
     ;
 
     private Integer id;
     private String name;
-    private String styleName;
+    private String stylePath;
 
-    Theme(Integer id, String name, String styleName) {
+    Theme(Integer id, String name, String stylePath) {
         this.id = id;
         this.name = name;
-        this.styleName = styleName;
+        this.stylePath = stylePath;
     }
 
     public Integer getId() {
@@ -26,8 +27,8 @@ public enum Theme {
     public String getName() {
         return this.name;
     }
-    public String getStyleName() {
-        return this.styleName;
+    public String getStylePath() {
+        return this.stylePath;
     }
 
 
