@@ -698,8 +698,30 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void submitIssue(ActionEvent event) throws IOException {
-        new ProcessBuilder("x-www-browser", ResourceManager.getParam("URL.GITHUB.ISSUE.NEW")).start();
+    private void submitIssue(ActionEvent event) throws Exception {
+        String url = ResourceManager.getParam("URL.GITHUB.ISSUE.NEW");
+        String os = System.getProperty("os.name").toLowerCase();
+        Runtime rt = Runtime.getRuntime();
+
+        if (os.contains("win")) {
+            // this doesn't support showing urls in the form of "page.html#nameLink"
+            rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+        } else if (os.contains("mac")) {
+            rt.exec( "open " + url);
+        } else if (os.contains("nix") || os.contains("nux")) {
+            // Do a best guess on unix until we get a platform independent way
+            // Build a list of browsers to try, in this order.
+            String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape", "opera","links","lynx"};
+
+            // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
+            StringBuffer cmd = new StringBuffer();
+            for (int i = 0; i < browsers.length; i++) {
+                cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
+            }
+            rt.exec(new String[] { "sh", "-c", cmd.toString() });
+        } else {
+            Dialogs.showWarningPopup("Uoops!", null, "It seems like something went wrong. Please proceed by the link below to submit your issue.\n" + ResourceManager.getParam("URL.GITHUB.ISSUE.NEW"));
+        }
     }
 
     @FXML
