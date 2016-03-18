@@ -1,13 +1,10 @@
 package arm.davsoft.msgman.utils;
 
-import arm.davsoft.msgman.domains.FileItem;
-import arm.davsoft.msgman.domains.IntegerRange;
-import arm.davsoft.msgman.domains.Message;
-import arm.davsoft.msgman.enums.DBServerType;
-import arm.davsoft.msgman.enums.IDMVersion;
-import arm.davsoft.msgman.interfaces.ConnectionConfig;
-import arm.davsoft.msgman.interfaces.Range;
-import arm.davsoft.msgman.utils.dialogs.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -18,17 +15,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
+
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import arm.davsoft.msgman.domains.FileItem;
+import arm.davsoft.msgman.domains.IntegerRange;
+import arm.davsoft.msgman.domains.Message;
+import arm.davsoft.msgman.enums.DBServerType;
+import arm.davsoft.msgman.enums.IDMVersion;
+import arm.davsoft.msgman.interfaces.ConnectionConfig;
+import arm.davsoft.msgman.interfaces.Range;
+import arm.davsoft.msgman.utils.dialogs.*;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -252,6 +256,29 @@ public final class Dialogs {
         result.ifPresent(range -> retVal[0] = range);
 
         return retVal[0];
+    }
+
+    public static void showWebBrowser(String url) {
+        showWebBrowser(null, url);
+    }
+
+    public static void showWebBrowser(String title, String url) {
+        final Stage dialog = new Stage();
+        dialog.setTitle(title);
+
+        WebView browser = new WebView();
+        WebEngine engine = browser.getEngine();
+        engine.load(url);
+
+        Scene dialogScene = new Scene(browser);
+        dialogScene.getStylesheets().add(ResourceManager.getUIThemeStyle());
+        dialog.setScene(dialogScene);
+
+        dialog.setMinHeight(700);
+        dialog.setMinWidth(1050);
+
+        dialog.show();
+        dialog.requestFocus();
     }
 
     public static void showMessagesDialog(List<Message> messages) {

@@ -1,5 +1,30 @@
 package arm.davsoft.msgman.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.*;
+
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
+import org.apache.log4j.Logger;
+
 import arm.davsoft.msgman.Main;
 import arm.davsoft.msgman.components.ApplicationTitleBar;
 import arm.davsoft.msgman.components.ButtonTableCell;
@@ -17,29 +42,6 @@ import arm.davsoft.msgman.service.MessageTransferService;
 import arm.davsoft.msgman.utils.Dialogs;
 import arm.davsoft.msgman.utils.FileProcessor;
 import arm.davsoft.msgman.utils.ResourceManager;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.*;
 
 /**
  * <b>Author:</b> David Shahbazyan <br/>
@@ -699,6 +701,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void submitIssue(ActionEvent event) throws Exception {
+        Dialogs.showWebBrowser(ResourceManager.getMessage("title.dialog.submitAnIssue"), ResourceManager.getParam("URL.GITHUB.ISSUE.NEW"));
+
+/*
         String url = ResourceManager.getParam("URL.GITHUB.ISSUE.NEW");
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
@@ -722,6 +727,7 @@ public class MainScreenController implements Initializable {
         } else {
             Dialogs.showWarningPopup("Uoops!", null, "It seems like something went wrong. Please proceed by the link below to submit your issue.\n" + ResourceManager.getParam("URL.GITHUB.ISSUE.NEW"));
         }
+*/
     }
 
     @FXML
