@@ -2,10 +2,12 @@ package arm.davsoft.msgman.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 
+import arm.davsoft.msgman.components.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -26,10 +28,6 @@ import javafx.stage.Window;
 import org.apache.log4j.Logger;
 
 import arm.davsoft.msgman.Main;
-import arm.davsoft.msgman.components.ApplicationTitleBar;
-import arm.davsoft.msgman.components.ButtonTableCell;
-import arm.davsoft.msgman.components.CheckBoxTableCell;
-import arm.davsoft.msgman.components.StatusBar;
 import arm.davsoft.msgman.domains.FileItem;
 import arm.davsoft.msgman.domains.IntegerRange;
 import arm.davsoft.msgman.domains.Message;
@@ -75,6 +73,7 @@ public class MainScreenController implements Initializable {
     private BooleanProperty
             browseProjectMenuItemDisabledProperty =       new SimpleBooleanProperty(false),
             appSettingsMenuItemDisabledProperty =         new SimpleBooleanProperty(false),
+            appRestartMenuItemDisabledProperty =          new SimpleBooleanProperty(false),
             exitAppMenuItemDisabledProperty =             new SimpleBooleanProperty(false),
             scanProjectMenuItemDisabledProperty =         new SimpleBooleanProperty(false),
             scanDbMenuItemDisabledProperty =              new SimpleBooleanProperty(false),
@@ -110,7 +109,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private Menu newConnectionMenu;
     @FXML
-    private MenuItem browseProjectMenuItem, appSettingsMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
+    private MenuItem browseProjectMenuItem, appSettingsMenuItem, appRestartMenuItem, exitAppMenuItem, scanProjectMenuItem, scanDbMenuItem,
             generateMessagesMenuItem, putMessagesMenuItem, transferMessagesMenuItem, cleanMessageRangeMenuItem,
             connectMSSQLMenuItem, connectOracleMenuItem, connectMySQLMenuItem, configConnectionMenuItem,
             availableTagsListMenuItem, submitIssueMenuItem, aboutAppMenuItem, showHrdcddMsgsInPrjMenuItem;
@@ -158,6 +157,7 @@ public class MainScreenController implements Initializable {
     private void initIcons() {
         browseProjectMenuItem.setGraphic(new ImageView("images/icons/general/menu-open.png"));
         appSettingsMenuItem.setGraphic(new ImageView("images/icons/general/settings.png"));
+        appRestartMenuItem.setGraphic(new ImageView("images/icons/general/refresh.png"));
         exitAppMenuItem.setGraphic(new ImageView("images/icons/general/exit.png"));
         scanProjectMenuItem.setGraphic(new ImageView("images/icons/general/menu-find.png"));
         scanDbMenuItem.setGraphic(new ImageView("images/icons/general/menu-find.png"));
@@ -172,7 +172,7 @@ public class MainScreenController implements Initializable {
         configConnectionMenuItem.setGraphic(new ImageView("images/icons/general/edit.png"));
         availableTagsListMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
         submitIssueMenuItem.setGraphic(new ImageView("images/icons/general/quickfixBulb.png"));
-//        aboutAppMenuItem.setGraphic(new ProcessIndicator("images/icons/process/fs/step_1.png", true));
+        aboutAppMenuItem.setGraphic(new ImageView("images/icons/general/informationGreen.png"));
         showHrdcddMsgsInPrjMenuItem.setGraphic(new ImageView("images/icons/general/list.png"));
     }
 
@@ -204,6 +204,7 @@ public class MainScreenController implements Initializable {
         // Disability bindings
         browseProjectMenuItem.disableProperty().bind(browseProjectMenuItemDisabledProperty);
         appSettingsMenuItem.disableProperty().bind(appSettingsMenuItemDisabledProperty);
+        appRestartMenuItem.disableProperty().bind(appRestartMenuItemDisabledProperty);
         exitAppMenuItem.disableProperty().bind(exitAppMenuItemDisabledProperty);
         scanProjectMenuItem.disableProperty().bind(scanProjectMenuItemDisabledProperty);
         scanDbMenuItem.disableProperty().bind(scanDbMenuItemDisabledProperty);
@@ -269,6 +270,7 @@ public class MainScreenController implements Initializable {
 
         browseProjectMenuItemDisabledProperty.setValue(false);
         appSettingsMenuItemDisabledProperty.setValue(false);
+        appRestartMenuItemDisabledProperty.setValue(false);
         exitAppMenuItemDisabledProperty.setValue(false);
 
         scanProjectMenuItemDisabledProperty.setValue(messageFinder == null);
@@ -641,6 +643,16 @@ public class MainScreenController implements Initializable {
             Thread thread = new Thread(task);
             thread.setDaemon(true);
             thread.start();
+        }
+    }
+
+    @FXML
+    private void restartApp(ActionEvent event) throws Exception {
+        String title = "Restarting...";
+        String content = "The application is going to restart.\nContinue?";
+        ProcessIndicator graphic = new ProcessIndicator("images/icons/process/fs/step_1@2x.png", true);
+        if (Dialogs.showConfirmPopup(graphic, title, null, content)) {
+            Main.restart();
         }
     }
 

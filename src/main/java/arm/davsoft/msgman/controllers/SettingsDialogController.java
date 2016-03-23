@@ -137,7 +137,10 @@ public class SettingsDialogController implements Initializable {
             FileOutputStream fos = new FileOutputStream(path);
             customProps.store(fos, "User defined settings - DO NOT CHANGE ANYTHING HERE!");
             fos.close();
-            Dialogs.showInfoPopup(ResourceManager.getMessage("title.dialog.settings"), ResourceManager.getMessage("label.settingsRestartApp"));
+//            Dialogs.showInfoPopup(ResourceManager.getMessage("title.dialog.settings"), ResourceManager.getMessage("label.settingsRestartApp"));
+            if (Dialogs.showConfirmPopup(ResourceManager.getMessage("title.dialog.settings"), null, ResourceManager.getMessage("label.settingsRestartApp"))) {
+                Main.restart();
+            }
         } catch (Exception ex) {
             Logger.getLogger(getClass()).error("Error occurred in showSettingsDialog method: ", ex);
         }

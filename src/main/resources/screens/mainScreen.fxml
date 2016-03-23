@@ -23,6 +23,11 @@
                             </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="appRestartMenuItem" mnemonicParsing="false" onAction="#restartApp" text="%label.menuItem.file.restart">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                         <MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" onAction="#exitApp" text="%label.menuItem.file.exit">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

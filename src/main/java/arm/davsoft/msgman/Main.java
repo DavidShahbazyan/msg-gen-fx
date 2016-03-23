@@ -14,10 +14,13 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -98,6 +101,26 @@ public class Main extends Application {
 //        primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.requestFocus();
+    }
+
+    public static void restart() throws Exception {
+        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+		    /* is it a jar file? */
+        if (!currentJar.getName().endsWith(".jar")) return;
+
+		    /* Build command: java -jar application.jar */
+        final ArrayList<String> command = new ArrayList<String>();
+        command.add(javaBin);
+        command.add("-jar");
+        command.add(currentJar.getPath());
+
+        final ProcessBuilder builder = new ProcessBuilder(command);
+        builder.start();
+
+        LOGGER.info("Application is restarting.");
+        Platform.exit();
     }
 
     private void setPrimaryStage(Stage stage) {

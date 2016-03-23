@@ -83,7 +83,14 @@ public final class Dialogs {
     }
 
     public static boolean showConfirmPopup(String title, String header, String content) {
+        return showConfirmPopup(null, title, header, content);
+    }
+
+    public static boolean showConfirmPopup(Node graphic, String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.YES, ButtonType.NO);
+        if (graphic != null) {
+            alert.setGraphic(graphic);
+        }
         alert.setTitle(title);
         alert.setHeaderText(header);
 
